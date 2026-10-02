@@ -37,8 +37,7 @@ export function Rain() {
 
   useFrame((state) => {
     if (rainMaterialRef.current) {
-      rainMaterialRef.current.uniforms.uTime.value =
-        state.clock.elapsedTime * 1000; // s -> ms
+      rainMaterialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
     }
   });
 

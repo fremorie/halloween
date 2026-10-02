@@ -7,6 +7,8 @@ varying vec2 vUv;
 #include "../../../../shaders/includes/hash11.glsl"
 #include "../../../../shaders/includes/hash21.glsl"
 
+const float SPEED = 1.5; // screens per second
+
 void main() {
     vec3 color = vec3(0.0, 0.0, 0.0);
 
@@ -35,9 +37,14 @@ void main() {
     float y = p.y / slotHeight;
 
     // Infer new random from columnRandom, so we don't compute yet another hash
-    float verticalShift = fract(columnRandom * 13.7); // [0, 1)
+    float columnRandom2 = fract(columnRandom * 13.7); // [0, 1)
+    float verticalShift = columnRandom2;
     y += verticalShift;
-    y += uTime * 0.001;
+
+    // Animate
+    float columnRandom3 = fract(columnRandom * 7.31); // [0, 1)
+    float columnSpeed = SPEED * mix(0.7, 1.3, columnRandom3);
+    y += uTime * columnSpeed / slotHeight;
 
     float slotY = fract(y);
     float slotID = floor(y);
