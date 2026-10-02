@@ -11,7 +11,8 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
       "*.glsl": {
-        type: "raw",
+        loaders: ["./loaders/glsl-include-loader.js"],
+        as: "*.js",
       },
     },
   },
