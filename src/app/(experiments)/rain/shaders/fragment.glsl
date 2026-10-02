@@ -15,13 +15,19 @@ void main() {
     float x = p.x * columnsCount;
     float columnX = fract(x) - 0.5;
 
+    float lineWidth = 0.003;
+    float lineWidthInColumns = lineWidth * columnsCount;
+    float maxShift = 0.5 - lineWidthInColumns; // how far the center can move
+
     float columnID = floor(x);
-    float columnRandom = hash11(columnID);
+    float columnRandom = (hash11(columnID) - 0.5) * 2.0; // [-1, 1]
+    float shift = columnRandom * maxShift;
 
-    float dist = abs(columnX) / columnsCount; // convert to screen units
-    float line = 1.0 - smoothstep(0.0, 0.003, dist);
+    float distanceToLine = abs(columnX + shift); // in screen units
+    distanceToLine /= columnsCount; // convert to screen units
+    float line = 1.0 - smoothstep(0.0, lineWidth, distanceToLine);
 
-    color = vec3(columnRandom);
+    color = vec3(line);
 
     gl_FragColor = vec4(color, 1.0);
 }
