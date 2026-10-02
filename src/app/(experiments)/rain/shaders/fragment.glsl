@@ -33,6 +33,11 @@ void main() {
     // #start VERTICAL
     float slotHeight = 0.3;
     float y = p.y / slotHeight;
+
+    // Infer new random from columnRandom, so we don't compute yet another hash
+    float verticalShift = fract(columnRandom * 13.7); // [0, 1)
+    y += verticalShift;
+
     float slotY = fract(y);
     float slotID = floor(y);
 
