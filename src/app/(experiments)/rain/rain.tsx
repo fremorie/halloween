@@ -15,6 +15,7 @@ const RainMaterial = shaderMaterial(
   {
     uTime: 0,
     uPerlinNoise: null as Texture | null,
+    uAspectRatio: 1,
   },
   vertexShader,
   fragmentShader,
@@ -44,7 +45,11 @@ export function Rain() {
   return (
     <mesh scale={[width, height, 1]}>
       <planeGeometry />
-      <rainMaterial ref={rainMaterialRef} uPerlinNoise={perlinNoise} />
+      <rainMaterial
+        ref={rainMaterialRef}
+        uPerlinNoise={perlinNoise}
+        uAspectRatio={width / height}
+      />
     </mesh>
   );
 }
