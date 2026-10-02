@@ -11,6 +11,7 @@ void main() {
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
+    // #start HORIZONTAL
     float columnsCount = 80.0;
     float x = p.x * columnsCount;
     float columnX = fract(x) - 0.5;
@@ -26,8 +27,19 @@ void main() {
     float distanceToLine = abs(columnX + shift); // in screen units
     distanceToLine /= columnsCount; // convert to screen units
     float line = 1.0 - smoothstep(0.0, lineWidth, distanceToLine);
+    // #end HORIZONTAL
 
-    color = vec3(line);
+    // #start VERTICAL
+    float slotHeight = 0.3;
+    float y = p.y / slotHeight;
+    float slotY = fract(y);
+    float slotID = floor(y);
+    // #end VERTICAL
+
+    // Combine horizontal + vertical split
+    float drop = line * step(slotY, 0.4);
+
+    color = vec3(drop);
 
     gl_FragColor = vec4(color, 1.0);
 }
