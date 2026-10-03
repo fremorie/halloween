@@ -68,7 +68,9 @@ float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, f
 }
 
 void main() {
-    vec3 color = vec3(0.0, 0.0, 0.0);
+    vec3 skyTop = vec3(0.035, 0.05, 0.085);
+    vec3 skyBottom = vec3(0.008, 0.01, 0.018);
+    vec3 color = mix(skyBottom, skyTop, vUv.y);
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
