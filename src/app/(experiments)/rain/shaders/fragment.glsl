@@ -88,7 +88,7 @@ void main() {
         totalRain += drop * layerBrightness;
     }
 
-    color = vec3(totalRain);
+    color = totalRain * vec3(0.75, 0.82, 0.95);
 
     gl_FragColor = vec4(color, 1.0);
 }
