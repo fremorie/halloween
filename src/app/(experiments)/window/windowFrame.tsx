@@ -66,7 +66,7 @@ export function WindowFrame() {
 
   const { nodes, materials } = useGLTF(
     `${process.env.NEXT_PUBLIC_BASE_PATH}/models/window.glb`,
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
 
   return (
     <group dispose={null}>

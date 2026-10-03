@@ -2,7 +2,7 @@
 
 import { Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Stage } from "@react-three/drei";
 
 import { WindowFrame } from "./windowFrame";
 
@@ -19,23 +19,9 @@ export default function Page() {
         }}
       >
         <OrbitControls makeDefault />
-        <directionalLight
-          castShadow
-          color="#ffffff"
-          position={[10, 10, 5]}
-          intensity={4.5}
-          shadow-normalBias={0}
-          shadow-camera-left={-10}
-          shadow-camera-right={10}
-          shadow-camera-top={2}
-          shadow-camera-bottom={-4}
-          shadow-camera-near={-5}
-          shadow-camera-far={20}
-          shadow-radius={10}
-          shadow-mapSize={[1500, 1500]}
-        />
-        <ambientLight color="#ffffff" intensity={1.5} />
-        <WindowFrame />
+        <Stage>
+          <WindowFrame />
+        </Stage>
       </Canvas>
     </>
   );
