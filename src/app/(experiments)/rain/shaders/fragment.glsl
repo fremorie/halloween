@@ -12,7 +12,7 @@ const float COLUMNS_COUNT = 80.0;
 const float SLOT_HEIGHT = 0.3;
 const float LINE_WIDTH = 0.003;
 
-float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed) {
+float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed, float seed) {
     // #start HORIZONTAL
     float x = p.x * columnsCount;
     float columnX = fract(x) - 0.5;
@@ -21,7 +21,7 @@ float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, f
     float maxShift = 0.5 - lineWidthInColumns; // how far the center can move
 
     float columnID = floor(x);
-    float columnRandom = (hash11(columnID) - 0.5) * 2.0; // [-1, 1]
+    float columnRandom = (hash11(columnID + seed * 100.0) - 0.5) * 2.0; // [-1, 1]
     float shift = columnRandom * maxShift;
 
     float distanceToLine = abs(columnX + shift); // in column units
@@ -45,7 +45,7 @@ float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, f
     float slotY = fract(y);
     float slotID = floor(y);
 
-    float slotRandom = hash21(vec2(columnID, slotID));
+    float slotRandom = hash21(vec2(columnID + seed * 113.0, slotID));
     float dropLength = mix(0.2, 0.8, slotRandom);
 
     float density = 0.3;
@@ -77,7 +77,7 @@ void main() {
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
-    float drop = rainLayer(p, COLUMNS_COUNT, SLOT_HEIGHT, LINE_WIDTH, SPEED);
+    float drop = rainLayer(p, COLUMNS_COUNT, SLOT_HEIGHT, LINE_WIDTH, SPEED, 1.0);
 
     color = vec3(drop);
 
