@@ -8,8 +8,8 @@ function toShaderColor(hex: string) {
 export function useRainControls() {
   const { skyTopColor, skyBottomColor, rainDropTintNear, rainDropTintFar } =
     useControls("Rain", {
-      skyTopColor: "#15213b",
-      skyBottomColor: "#0a152a",
+      skyTopColor: "#141d31",
+      skyBottomColor: "#050b17",
       rainDropTintNear: "#d9e6ff",
       rainDropTintFar: "#bfd1f2",
     });

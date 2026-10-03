@@ -130,8 +130,10 @@ void main() {
 
     // Vignette
     vec2 fromCenter = vUv - 0.5;
-    float vignetteStrength = mix(2.0, 0.0, lightningStrike);
-    float vignette = 1.0 - dot(fromCenter, fromCenter) * vignetteStrength;
+    float distFromCenter = length(fromCenter);
+    float darkness = smoothstep(0.45, 0.75, distFromCenter);
+    float vignetteStrength = mix(0.5, 0.0, lightningStrike);
+    float vignette = 1.0 - darkness * vignetteStrength;
     vignette = max(vignette, 0.0);
     color *= vignette;
 
