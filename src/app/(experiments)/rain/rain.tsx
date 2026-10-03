@@ -35,7 +35,9 @@ declare module "@react-three/fiber" {
 }
 
 export function Rain() {
-  const perlinNoise = useTexture("/perlin.png");
+  const perlinNoise = useTexture(
+    `${process.env.NEXT_PUBLIC_BASE_PATH}/perlin.png`,
+  );
   const { skyTopColor, skyBottomColor, rainDropTintNear, rainDropTintFar } =
     useRainControls();
 
