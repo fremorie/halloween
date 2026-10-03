@@ -70,9 +70,13 @@ float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, f
 float lightning(float time) {
     float period = 7.0; // seconds
     float periodID = floor(time / period);
+
+    float periodRandom = hash11(periodID);
+    float hasFlash = step(periodRandom, 0.45); // 45% of periods get a flash
+
     float timeInPeriod = fract(time / period) * period; // seconds since period started (0-7)
 
-    return exp(-timeInPeriod * 9.0);
+    return exp(-timeInPeriod * 9.0) * hasFlash;
 }
 
 void main() {
