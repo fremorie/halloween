@@ -14,7 +14,7 @@ const float LINE_WIDTH = 0.003;
 
 float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed, float seed) {
     // #start HORIZONTAL
-    float x = p.x * columnsCount;
+    float x = (p.x + seed * 0.37) * columnsCount;
     float columnX = fract(x) - 0.5;
 
     float lineWidthInColumns = lineWidth * columnsCount;
