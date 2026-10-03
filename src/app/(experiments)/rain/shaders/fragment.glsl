@@ -75,7 +75,7 @@ void main() {
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
     // Slant
-    float slant = 0.1;
+    float slant = 0.12 + 0.04 * sin(uTime * 0.25);
     p.x += p.y * slant;
 
     const int LAYERS = 6;
