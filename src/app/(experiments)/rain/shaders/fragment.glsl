@@ -91,7 +91,7 @@ void main() {
 
     // Lightning
     float lightningStrike = lightning(uTime);
-    color += vec3(0.35, 0.4, 0.55) * lightningStrike;
+    color += vec3(0.35, 0.4, 0.55) * lightningStrike * mix(0.4, 1.0, vUv.y);
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
