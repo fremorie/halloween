@@ -73,7 +73,6 @@ void main() {
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
     const int LAYERS = 6;
-    float totalRain = 0.0;
 
     for (int i = 0; i < LAYERS; i++) {
         float depth = float(i) / float(LAYERS - 1); // 0 = near, 1 = far
@@ -85,10 +84,11 @@ void main() {
 
         float drop = rainLayer(p, columnsCount, slotHeight, lineWidth, speed, float(i));
 
-        totalRain += drop * layerBrightness;
-    }
+        vec3 tint = mix(vec3(0.85, 0.9, 1.0), vec3(0.75, 0.82, 0.95), depth);
+        vec3 layerColor = drop * layerBrightness * tint;
 
-    color = totalRain * vec3(0.75, 0.82, 0.95);
+        color += layerColor;
+    }
 
     gl_FragColor = vec4(color, 1.0);
 }
