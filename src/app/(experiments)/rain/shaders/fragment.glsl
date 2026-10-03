@@ -92,5 +92,12 @@ void main() {
         color += layerColor;
     }
 
+    // Vignette
+    vec2 fromCenter = vUv - 0.5;
+    float vignette = 1.0 - dot(fromCenter, fromCenter) * 2.0;
+    vignette = max(vignette, 0.0);
+    color *= vignette;
+
+    // Final color
     gl_FragColor = vec4(color, 1.0);
 }
