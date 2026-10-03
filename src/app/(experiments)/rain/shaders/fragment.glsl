@@ -9,11 +9,7 @@ varying vec2 vUv;
 
 const float SPEED = 1.5; // screens per second
 
-void main() {
-    vec3 color = vec3(0.0, 0.0, 0.0);
-
-    vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
-
+float rainLayer(vec2 p) {
     // #start HORIZONTAL
     float columnsCount = 80.0;
     float x = p.x * columnsCount;
@@ -72,6 +68,16 @@ void main() {
 
     // Combine horizontal + vertical split
     float drop = line * tailFade * headFade * shouldShowDrop * dropBrightness;
+
+    return drop;
+}
+
+void main() {
+    vec3 color = vec3(0.0, 0.0, 0.0);
+
+    vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
+
+    float drop = rainLayer(p);
 
     color = vec3(drop);
 
