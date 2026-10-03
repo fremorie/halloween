@@ -8,14 +8,15 @@ varying vec2 vUv;
 #include "../../../../shaders/includes/hash21.glsl"
 
 const float SPEED = 1.5; // screens per second
+const float COLUMNS_COUNT = 80.0;
+const float SLOT_HEIGHT = 0.3;
+const float LINE_WIDTH = 0.003;
 
-float rainLayer(vec2 p) {
+float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed) {
     // #start HORIZONTAL
-    float columnsCount = 80.0;
     float x = p.x * columnsCount;
     float columnX = fract(x) - 0.5;
 
-    float lineWidth = 0.003;
     float lineWidthInColumns = lineWidth * columnsCount;
     float maxShift = 0.5 - lineWidthInColumns; // how far the center can move
 
@@ -29,7 +30,6 @@ float rainLayer(vec2 p) {
     // #end HORIZONTAL
 
     // #start VERTICAL
-    float slotHeight = 0.3;
     float y = p.y / slotHeight;
 
     // Infer new random from columnRandom, so we don't compute yet another hash
@@ -39,7 +39,7 @@ float rainLayer(vec2 p) {
 
     // Animate
     float columnRandom3 = fract(columnRandom * 7.31); // [0, 1)
-    float columnSpeed = SPEED * mix(0.7, 1.3, columnRandom3);
+    float columnSpeed = speed * mix(0.7, 1.3, columnRandom3);
     y += uTime * columnSpeed / slotHeight;
 
     float slotY = fract(y);
@@ -77,7 +77,7 @@ void main() {
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
-    float drop = rainLayer(p);
+    float drop = rainLayer(p, COLUMNS_COUNT, SLOT_HEIGHT, LINE_WIDTH, SPEED);
 
     color = vec3(drop);
 
