@@ -57,8 +57,13 @@ void main() {
     float shouldShowDrop = step(slotRandom2, density);
     // #end VERTICAL
 
+    // Fade the tail of the drop
+    float distanceFromHead = slotY / dropLength; // 0 at the head, 1 at the tail, n above the tail
+    distanceFromHead = 1.0 - distanceFromHead; // 1 at the head, 0 at the tail, -n above the tail
+    float tailFade = clamp(distanceFromHead, 0.0, 1.0); // 1 at the head, 0 at the tail, 0 above the tail
+
     // Combine horizontal + vertical split
-    float drop = line * step(slotY, dropLength) * shouldShowDrop;
+    float drop = line * tailFade * shouldShowDrop;
 
     color = vec3(drop);
 
