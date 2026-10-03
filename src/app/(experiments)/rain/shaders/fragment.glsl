@@ -114,6 +114,9 @@ void main() {
         vec3 tint = mix(vec3(0.85, 0.9, 1.0), vec3(0.75, 0.82, 0.95), depth);
         vec3 layerColor = drop * layerBrightness * tint;
 
+        // lightning
+        layerColor *= 1.0 + lightningStrike * 2.5;
+
         color += layerColor;
     }
 
