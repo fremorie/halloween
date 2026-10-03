@@ -76,7 +76,7 @@ void main() {
 
     // Slant
     float slant = 0.1;
-    p.x += mix(0.0, slant, p.y);
+    p.x += p.y * slant;
 
     const int LAYERS = 6;
 
