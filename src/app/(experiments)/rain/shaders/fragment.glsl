@@ -66,8 +66,12 @@ void main() {
     // Fade the head of the drop
     float headFade = smoothstep(0.0, 0.02, slotY);
 
+    // Randomize drops brightness
+    float slotRandom3 = fract(slotRandom * 3.1);
+    float dropBrightness = mix(0.6, 1.0, slotRandom3);
+
     // Combine horizontal + vertical split
-    float drop = line * tailFade * headFade * shouldShowDrop;
+    float drop = line * tailFade * headFade * shouldShowDrop * dropBrightness;
 
     color = vec3(drop);
 
