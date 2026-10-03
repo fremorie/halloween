@@ -61,6 +61,7 @@ void main() {
     float distanceFromHead = slotY / dropLength; // 0 at the head, 1 at the tail, n above the tail
     distanceFromHead = 1.0 - distanceFromHead; // 1 at the head, 0 at the tail, -n above the tail
     float tailFade = clamp(distanceFromHead, 0.0, 1.0); // 1 at the head, 0 at the tail, 0 above the tail
+    tailFade = pow(tailFade, 3.0);
 
     // Combine horizontal + vertical split
     float drop = line * tailFade * shouldShowDrop;
