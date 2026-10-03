@@ -74,6 +74,10 @@ void main() {
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
+    // Slant
+    float slant = 0.1;
+    p.x += mix(0.0, slant, p.y);
+
     const int LAYERS = 6;
 
     for (int i = 0; i < LAYERS; i++) {
