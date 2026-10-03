@@ -63,8 +63,11 @@ void main() {
     float tailFade = clamp(distanceFromHead, 0.0, 1.0); // 1 at the head, 0 at the tail, 0 above the tail
     tailFade = pow(tailFade, 3.0);
 
+    // Fade the head of the drop
+    float headFade = smoothstep(0.0, 0.02, slotY);
+
     // Combine horizontal + vertical split
-    float drop = line * tailFade * shouldShowDrop;
+    float drop = line * tailFade * headFade * shouldShowDrop;
 
     color = vec3(drop);
 
