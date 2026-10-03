@@ -7,11 +7,6 @@ varying vec2 vUv;
 #include "../../../../shaders/includes/hash11.glsl"
 #include "../../../../shaders/includes/hash21.glsl"
 
-const float SPEED = 1.5; // screens per second
-const float COLUMNS_COUNT = 80.0;
-const float SLOT_HEIGHT = 0.3;
-const float LINE_WIDTH = 0.003;
-
 float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed, float seed) {
     // #start HORIZONTAL
     float x = (p.x + seed * 0.37) * columnsCount;
@@ -77,9 +72,23 @@ void main() {
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
-    float drop = rainLayer(p, COLUMNS_COUNT, SLOT_HEIGHT, LINE_WIDTH, SPEED, 1.0);
+    const int LAYERS = 6;
+    float totalRain = 0.0;
 
-    color = vec3(drop);
+    for (int i = 0; i < LAYERS; i++) {
+        float depth = float(i) / float(LAYERS - 1); // 0 = near, 1 = far
+        float columnsCount = mix(20.0, 100.0, depth);
+        float slotHeight = mix(0.4, 0.2, depth);
+        float lineWidth = mix(0.003, 0.001, depth);
+        float speed = mix(1.5, 1.0, depth);
+        float layerBrightness = mix(1.0, 0.4, depth);
+
+        float drop = rainLayer(p, columnsCount, slotHeight, lineWidth, speed, float(i));
+
+        totalRain += drop * layerBrightness;
+    }
+
+    color = vec3(totalRain);
 
     gl_FragColor = vec4(color, 1.0);
 }
