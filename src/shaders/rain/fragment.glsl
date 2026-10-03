@@ -8,8 +8,8 @@ uniform vec3 uRainDropTintFar;
 
 varying vec2 vUv;
 
-#include "../../../../shaders/includes/hash11.glsl"
-#include "../../../../shaders/includes/hash21.glsl"
+#include "../includes/hash11.glsl"
+#include "../includes/hash21.glsl"
 
 float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed, float seed) {
     // #start HORIZONTAL

@@ -8,8 +8,8 @@ import { useTexture, shaderMaterial } from "@react-three/drei";
 import { Color, type ShaderMaterial, type Texture } from "three";
 import { useRef } from "react";
 
-import vertexShader from "./shaders/vertex.glsl";
-import fragmentShader from "./shaders/fragment.glsl";
+import vertexShader from "@/shaders/rain/vertex.glsl";
+import fragmentShader from "@/shaders/rain/fragment.glsl";
 import { useRainControls } from "./useRainControls";
 
 const RainMaterial = shaderMaterial(
