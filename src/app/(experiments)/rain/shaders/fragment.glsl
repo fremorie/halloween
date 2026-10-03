@@ -122,7 +122,8 @@ void main() {
 
     // Vignette
     vec2 fromCenter = vUv - 0.5;
-    float vignette = 1.0 - dot(fromCenter, fromCenter) * 2.0;
+    float vignetteStrength = mix(2.0, 0.5, lightningStrike);
+    float vignette = 1.0 - dot(fromCenter, fromCenter) * vignetteStrength;
     vignette = max(vignette, 0.0);
     color *= vignette;
 
