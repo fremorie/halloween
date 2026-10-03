@@ -64,7 +64,7 @@ export function WindowFrame() {
     }
   });
 
-  const { nodes, materials } = useGLTF(
+  const { nodes } = useGLTF(
     `${process.env.NEXT_PUBLIC_BASE_PATH}/models/window.glb`,
   ) as unknown as GLTFResult;
 
@@ -81,16 +81,15 @@ export function WindowFrame() {
           uRainDropTintFar={rainDropTintFar}
         />
       </mesh>
-      <mesh
-        geometry={nodes.Wall.geometry}
-        material={nodes.Wall.material}
-        position={[0, 10, -14.407]}
-      />
+      <mesh geometry={nodes.Wall.geometry} position={[0, 10, -14.407]}>
+        <meshStandardMaterial color="#ccd0d8" roughness={1} />
+      </mesh>
       <mesh
         geometry={nodes.WindowFrame.geometry}
-        material={materials.WindowFrame}
         position={[0, 12.118, -14.897]}
-      />
+      >
+        <meshStandardMaterial color="#624d2f" roughness={1} metalness={0.2} />
+      </mesh>
     </group>
   );
 }
