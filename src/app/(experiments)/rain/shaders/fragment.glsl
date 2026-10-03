@@ -80,7 +80,14 @@ float lightning(float time) {
 
     float hasStarted = step(0.0, timeSinceFlash);
 
-    return exp(-timeSinceFlash * 9.0) * hasFlash * hasStarted;
+    float firstFlash = exp(-timeSinceFlash * 9.0) * hasFlash * hasStarted;
+
+    // Second flash
+    float timeSinceSecondFlash = timeSinceFlash - 0.5;
+    float secondFlashHasStarted = step(0.0, timeSinceSecondFlash);
+    float secondFlash = exp(-timeSinceSecondFlash * 9.0) * hasFlash * secondFlashHasStarted;
+
+    return firstFlash + secondFlash;
 }
 
 void main() {
@@ -122,7 +129,7 @@ void main() {
 
     // Vignette
     vec2 fromCenter = vUv - 0.5;
-    float vignetteStrength = mix(2.0, 0.5, lightningStrike);
+    float vignetteStrength = mix(2.0, 0.1, lightningStrike);
     float vignette = 1.0 - dot(fromCenter, fromCenter) * vignetteStrength;
     vignette = max(vignette, 0.0);
     color *= vignette;
