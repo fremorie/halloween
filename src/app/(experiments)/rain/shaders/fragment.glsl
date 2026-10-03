@@ -13,10 +13,14 @@ varying vec2 vUv;
 
 float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, float speed, float seed) {
     // #start HORIZONTAL
+    float pixelSize = fwidth(p.x); // how many units one pixel covers
+    float drawWidth = max(lineWidth, pixelSize * 0.7); // never thinner than a pixel
+    float widthCompensation = lineWidth / drawWidth; // 1 if not widened, smaller if widened
+
     float x = (p.x + seed * 0.37) * columnsCount;
     float columnX = fract(x) - 0.5;
 
-    float lineWidthInColumns = lineWidth * columnsCount;
+    float lineWidthInColumns = drawWidth * columnsCount;
     float maxShift = 0.5 - lineWidthInColumns; // how far the center can move
 
     float columnID = floor(x);
@@ -25,7 +29,8 @@ float rainLayer(vec2 p, float columnsCount, float slotHeight, float lineWidth, f
 
     float distanceToLine = abs(columnX + shift); // in column units
     distanceToLine /= columnsCount; // convert to screen units
-    float line = 1.0 - smoothstep(0.0, lineWidth, distanceToLine);
+    float line = 1.0 - smoothstep(0.0, drawWidth, distanceToLine);
+    line *= widthCompensation;
     // #end HORIZONTAL
 
     // #start VERTICAL
