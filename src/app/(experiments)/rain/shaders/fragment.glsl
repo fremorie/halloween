@@ -83,7 +83,7 @@ float lightning(float time) {
     float firstFlash = exp(-timeSinceFlash * 9.0) * hasFlash * hasStarted;
 
     // Second flash
-    float timeSinceSecondFlash = timeSinceFlash - 0.5;
+    float timeSinceSecondFlash = timeSinceFlash - 0.18;
     float secondFlashHasStarted = step(0.0, timeSinceSecondFlash);
     float secondFlash = exp(-timeSinceSecondFlash * 9.0) * hasFlash * secondFlashHasStarted * 0.6;
 
