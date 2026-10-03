@@ -1,6 +1,10 @@
 uniform float uTime;
 uniform sampler2D uPerlinNoise;
 uniform float uAspectRatio;
+uniform vec3 uSkyTopColor;
+uniform vec3 uSkyBottomColor;
+uniform vec3 uRainDropTintNear;
+uniform vec3 uRainDropTintFar;
 
 varying vec2 vUv;
 
@@ -92,9 +96,7 @@ float lightning(float time) {
 
 void main() {
     // Sky
-    vec3 skyTop = vec3(0.035, 0.05, 0.085);
-    vec3 skyBottom = vec3(0.008, 0.01, 0.018);
-    vec3 color = mix(skyBottom, skyTop, vUv.y);
+    vec3 color = mix(uSkyBottomColor, uSkyTopColor, vUv.y);
 
     // Lightning
     float lightningStrike = lightning(uTime);
@@ -117,7 +119,7 @@ void main() {
 
         float drop = rainLayer(p, columnsCount, slotHeight, lineWidth, speed, float(i));
 
-        vec3 tint = mix(vec3(0.85, 0.9, 1.0), vec3(0.75, 0.82, 0.95), depth);
+        vec3 tint = mix(uRainDropTintNear, uRainDropTintFar, depth);
         vec3 layerColor = drop * layerBrightness * tint;
 
         // lightning
