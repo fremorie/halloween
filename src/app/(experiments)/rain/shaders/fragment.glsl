@@ -98,7 +98,6 @@ void main() {
 
     // Lightning
     float lightningStrike = lightning(uTime);
-    color += vec3(0.35, 0.4, 0.55) * lightningStrike * mix(0.4, 1.0, vUv.y);
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
@@ -133,6 +132,9 @@ void main() {
     float vignette = 1.0 - dot(fromCenter, fromCenter) * vignetteStrength;
     vignette = max(vignette, 0.0);
     color *= vignette;
+
+    // Lightning
+    color += vec3(0.35, 0.4, 0.55) * lightningStrike * mix(0.4, 1.0, vUv.y);
 
     // Final color
     gl_FragColor = vec4(color, 1.0);
