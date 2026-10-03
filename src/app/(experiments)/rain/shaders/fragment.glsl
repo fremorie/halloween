@@ -84,9 +84,14 @@ float lightning(float time) {
 }
 
 void main() {
+    // Sky
     vec3 skyTop = vec3(0.035, 0.05, 0.085);
     vec3 skyBottom = vec3(0.008, 0.01, 0.018);
     vec3 color = mix(skyBottom, skyTop, vUv.y);
+
+    // Lightning
+    float lightningStrike = lightning(uTime);
+    color += vec3(0.35, 0.4, 0.55) * lightningStrike;
 
     vec2 p = vec2(vUv.x * uAspectRatio, vUv.y);
 
@@ -117,10 +122,6 @@ void main() {
     float vignette = 1.0 - dot(fromCenter, fromCenter) * 2.0;
     vignette = max(vignette, 0.0);
     color *= vignette;
-
-    // Lightning
-    float lightningStrike = lightning(uTime);
-    color = vec3(lightningStrike);
 
     // Final color
     gl_FragColor = vec4(color, 1.0);
