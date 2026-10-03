@@ -74,9 +74,13 @@ float lightning(float time) {
     float periodRandom = hash11(periodID);
     float hasFlash = step(periodRandom, 0.45); // 45% of periods get a flash
 
+    float flashStart = fract(periodRandom * 13.7) * (period - 1.0); // between 0 and 6 seconds
     float timeInPeriod = fract(time / period) * period; // seconds since period started (0-7)
+    float timeSinceFlash = timeInPeriod - flashStart;
 
-    return exp(-timeInPeriod * 9.0) * hasFlash;
+    float hasStarted = step(0.0, timeSinceFlash);
+
+    return exp(-timeSinceFlash * 9.0) * hasFlash * hasStarted;
 }
 
 void main() {
