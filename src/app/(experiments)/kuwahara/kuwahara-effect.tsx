@@ -1,20 +1,48 @@
-import { Effect, EffectAttribute } from "postprocessing";
-import { Uniform, type WebGLRenderer } from "three";
+import { Effect, EffectAttribute, type ShaderPass } from "postprocessing";
+import {
+  Uniform,
+  Vector2,
+  type WebGLRenderer,
+  type WebGLRenderTarget,
+} from "three";
 
-import fragmentShader from "@/shaders/sobel/fragment.glsl";
+import { makePass, makeTarget } from "./passes";
+import fragmentShader from "@/shaders/kuwahara/fragment.glsl";
+import tensorShader from "@/shaders/kuwahara/tensor.glsl";
 
 export default class KuwaharaEffect extends Effect {
+  private pixelRatio: Uniform<number>;
+  private texelSize: Uniform<Vector2>;
+  private tensorTarget: WebGLRenderTarget;
+  private tensorPass: ShaderPass;
+
   constructor() {
+    const pixelRatio = new Uniform(1);
+    const texelSize = new Uniform(new Vector2(1, 1));
+    const tensorTarget = makeTarget();
+
     super("KuwaharaEffect", fragmentShader, {
       attributes: EffectAttribute.CONVOLUTION,
-      uniforms: new Map([
-        ["uPixelRatio", new Uniform(1)],
+      uniforms: new Map<string, Uniform>([
+        ["uPixelRatio", pixelRatio],
         ["uBrushRadius", new Uniform(14)],
+        ["tTensor", new Uniform(tensorTarget.texture)],
       ]),
     });
+
+    this.pixelRatio = pixelRatio;
+    this.texelSize = texelSize;
+    this.tensorTarget = tensorTarget;
+    this.tensorPass = makePass(tensorShader, { uTexelSize: texelSize });
   }
 
-  update(renderer: WebGLRenderer) {
-    this.uniforms.get("uPixelRatio")!.value = renderer.getPixelRatio();
+  setSize(width: number, height: number) {
+    this.tensorTarget.setSize(width, height);
+    this.texelSize.value.set(1 / width, 1 / height);
+  }
+
+  update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
+    this.pixelRatio.value = renderer.getPixelRatio();
+    this.tensorPass.render(renderer, inputBuffer, this.tensorTarget);
   }
 }

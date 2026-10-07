@@ -1,5 +1,6 @@
 uniform float uPixelRatio;
 uniform float uBrushRadius;
+uniform sampler2D tTensor;
 
 #define SECTOR_COUNT 8
 #define RING_COUNT 8
@@ -73,5 +74,6 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
         }
     }
 
-    outputColor = vec4(smoothestSector.meanColor, inputColor.a);
+    // outputColor = vec4(smoothestSector.meanColor, inputColor.a);
+    outputColor = vec4(texture2D(tTensor, uv).rgb, 1.0);
 }
