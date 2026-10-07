@@ -8,6 +8,8 @@ import {
   type Object3D,
 } from "three";
 
+const DEBUG = false;
+
 export function Environment() {
   const lightRef = useRef<DirectionalLight>(null);
   const shadowCameraRef = useRef<Camera>(null);
@@ -21,10 +23,14 @@ export function Environment() {
     setHasShadowCamera(true);
   }, []);
 
-  useHelper(lightRef as RefObject<Object3D>, DirectionalLightHelper, 1);
+  useHelper(
+    DEBUG && (lightRef as RefObject<Object3D>),
+    DirectionalLightHelper,
+    1,
+  );
 
   useHelper(
-    hasShadowCamera && (shadowCameraRef as RefObject<Object3D>),
+    DEBUG && hasShadowCamera && (shadowCameraRef as RefObject<Object3D>),
     CameraHelper,
   );
 
