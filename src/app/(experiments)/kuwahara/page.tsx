@@ -17,6 +17,7 @@ export default function Page() {
       <Leva theme={{ sizes: { rootWidth: "380px", controlWidth: "160px" } }} />
       <Canvas
         shadows
+        dpr={[1, 2]}
         camera={{
           fov: 45,
           near: 0.1,
