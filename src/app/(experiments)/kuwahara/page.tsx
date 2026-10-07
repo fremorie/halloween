@@ -9,6 +9,7 @@ import { BlendFunction } from "postprocessing";
 import { Pumpkins } from "./pumpkins";
 import { RenderStats } from "./renderStats";
 import { Environment } from "./environment";
+import { Kuwahara } from "./kuwahara";
 
 export default function Page() {
   return (
@@ -31,6 +32,7 @@ export default function Page() {
             darkness={0.7}
             blendFunction={BlendFunction.NORMAL}
           />
+          <Kuwahara />
         </EffectComposer>
 
         <Environment />
