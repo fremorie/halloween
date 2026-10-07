@@ -19,5 +19,10 @@ void main() {
     vec3 gradientX = (topRight + 2.0 * right + bottomRight) - (topLeft + 2.0 * left + bottomLeft);
     vec3 gradientY = (topLeft + 2.0 * top + topRight) - (bottomLeft + 2.0 * bottom + bottomRight);
 
-    gl_FragColor = vec4(dot(gradientX, gradientX), dot(gradientY, gradientY), dot(gradientX, gradientY), 1.0);
+    float gradientXSquared = dot(gradientX, gradientX); // Jxx: change left to right
+    float gradientYSquared = dot(gradientY, gradientY); // Jyy: change bottom to top
+    float gradientXTimesY = dot(gradientX, gradientY); // Jxy: tells the two diagonals apart
+
+    // Not a color
+    gl_FragColor = vec4(gradientXSquared, gradientYSquared, gradientXTimesY, 1.0);
 }
