@@ -22,7 +22,7 @@ export default function Page() {
           fov: 45,
           near: 0.1,
           far: 1000,
-          position: [1, 1, 1],
+          position: [5, 3, -6],
         }}
       >
         <color args={["#ffffff"]} attach="background" />
