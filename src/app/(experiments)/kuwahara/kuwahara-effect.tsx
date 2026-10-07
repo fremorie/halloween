@@ -1,7 +1,7 @@
 import { Effect, EffectAttribute } from "postprocessing";
 import { Uniform, type WebGLRenderer } from "three";
 
-import fragmentShader from "@/shaders/kuwahara/fragment.glsl";
+import fragmentShader from "@/shaders/sobel/fragment.glsl";
 
 export default class KuwaharaEffect extends Effect {
   constructor() {
