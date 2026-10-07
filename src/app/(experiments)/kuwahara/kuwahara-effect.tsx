@@ -7,7 +7,10 @@ export default class KuwaharaEffect extends Effect {
   constructor() {
     super("KuwaharaEffect", fragmentShader, {
       attributes: EffectAttribute.CONVOLUTION,
-      uniforms: new Map([["uPixelRatio", new Uniform(1)]]),
+      uniforms: new Map([
+        ["uPixelRatio", new Uniform(1)],
+        ["uBrushRadius", new Uniform(14)],
+      ]),
     });
   }
 
