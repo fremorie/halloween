@@ -12,8 +12,12 @@ import tensorShader from "@/shaders/kuwahara/tensor.glsl";
 import blurShader from "@/shaders/kuwahara/blur.glsl";
 import brushShader from "@/shaders/kuwahara/brush.glsl";
 
+// Target pixels per CSS pixel
+// 1 = CSS size
+// 2 = device size
+const PAINT_RESOLUTION_SCALE = 1.5;
+
 export default class KuwaharaEffect extends Effect {
-  private pixelRatio: Uniform<number>;
   private texelSize: Uniform<Vector2>;
   private tensorTarget: WebGLRenderTarget;
   private tensorPass: ShaderPass;
@@ -26,7 +30,7 @@ export default class KuwaharaEffect extends Effect {
   private brushPass: ShaderPass;
 
   constructor() {
-    const pixelRatio = new Uniform(1);
+    const pixelRatio = new Uniform(PAINT_RESOLUTION_SCALE);
     const texelSize = new Uniform(new Vector2(1, 1));
 
     const tensorTarget = makeTarget();
@@ -63,13 +67,28 @@ export default class KuwaharaEffect extends Effect {
       uAlpha: { value: 1 },
     });
 
-    this.pixelRatio = pixelRatio;
     this.texelSize = texelSize;
     this.tensorTarget = tensorTarget;
     this.tensorPass = makePass(tensorShader, { uTexelSize: texelSize });
   }
 
-  setSize(width: number, height: number) {
+  private resizeTargets(
+    renderer: WebGLRenderer,
+    inputBuffer: WebGLRenderTarget,
+  ) {
+    const devicePixelsPerCssPixel = renderer.getPixelRatio();
+    const width = Math.round(
+      (inputBuffer.width / devicePixelsPerCssPixel) * PAINT_RESOLUTION_SCALE,
+    );
+    const height = Math.round(
+      (inputBuffer.height / devicePixelsPerCssPixel) * PAINT_RESOLUTION_SCALE,
+    );
+
+    const target = this.paintedTarget;
+    if (target.width === width && target.height === height) {
+      return;
+    }
+
     this.tensorTarget.setSize(width, height);
     this.blurredTarget.setSize(width, height);
     this.paintedTarget.setSize(width, height);
@@ -77,12 +96,11 @@ export default class KuwaharaEffect extends Effect {
   }
 
   update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
-    this.pixelRatio.value = renderer.getPixelRatio();
-    this.tensorPass.render(renderer, inputBuffer, this.tensorTarget);
+    this.resizeTargets(renderer, inputBuffer);
 
+    this.tensorPass.render(renderer, inputBuffer, this.tensorTarget);
     this.blurAcross.render(renderer, this.tensorTarget, this.blurredTarget);
     this.blurDown.render(renderer, this.blurredTarget, this.tensorTarget);
-
     this.brushPass.render(renderer, inputBuffer, this.paintedTarget);
   }
 }
