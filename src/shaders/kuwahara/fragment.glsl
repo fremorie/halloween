@@ -2,6 +2,8 @@ uniform float uPixelRatio;
 uniform float uBrushRadius;
 uniform sampler2D tTensor;
 
+#include "../includes/hueToRgb.glsl"
+
 #define SECTOR_COUNT 8
 #define RING_COUNT 8
 #define RAYS_PER_SIDE 2
@@ -24,6 +26,11 @@ vec3 sampleSceneColor(vec2 uv, vec2 pixelOffset) {
 struct SectorStatistics {
     vec3 meanColor;
     float perceivedVariance;
+};
+
+struct EdgeOrientation {
+    vec2 gradientDirection;
+    float anisotropy;
 };
 
 SectorStatistics measureSector(vec2 uv, int sectorIndex) {
@@ -57,6 +64,28 @@ SectorStatistics measureSector(vec2 uv, int sectorIndex) {
     return SectorStatistics(meanColor, perceivedVariance);
 }
 
+EdgeOrientation readEdgeOrientation(vec2 uv) {
+    vec3 tensor = texture2D(tTensor, uv).xyz;
+    float jxx = tensor.x;
+    float jyy = tensor.y;
+    float jxy = tensor.z;
+
+    // Eigenvalues of [[jxx, jxy], [jxy, jyy]]: the strongest and weakest change
+    float trace = jxx + jyy;
+    float determinant = jxx * jyy - jxy * jxy;
+    float root = sqrt(max(0.0, trace * trace * 0.25 - determinant));
+    float strongestChange = trace * 0.5 + root;
+    float weakestChange = trace * 0.5 - root;
+
+    vec2 gradientDirection = abs(jxy) > 0.0
+        ? normalize(vec2(-jxy, jxx - strongestChange))
+        : (jxx >= jyy ? vec2(1.0, 0.0) : vec2(0.0, 1.0));
+
+    float anisotropy = (strongestChange - weakestChange) / (strongestChange + weakestChange + 1e-7);
+
+    return EdgeOrientation(gradientDirection, anisotropy);
+}
+
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
     vec3 smoothestSectorMeanColor = inputColor.rgb;
     float lowestSectorVariance = 1e9; // infinity (sort of)
@@ -75,5 +104,12 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     }
 
     // outputColor = vec4(smoothestSector.meanColor, inputColor.a);
-    outputColor = vec4(texture2D(tTensor, uv).rgb, 1.0);
+    // outputColor = vec4(texture2D(tTensor, uv).rgb, 1.0);
+
+    // DEBUG
+    EdgeOrientation edge = readEdgeOrientation(uv);
+    float edgeAngle = atan(edge.gradientDirection.y, edge.gradientDirection.x);
+    float hue = fract(edgeAngle / (0.5 * TAU));
+
+    outputColor = vec4(mix(vec3(1.0), hueToRgb(hue), edge.anisotropy), 1.0);
 }
