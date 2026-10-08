@@ -10,6 +10,7 @@ import { makePass, makeTarget } from "./passes";
 import fragmentShader from "@/shaders/kuwahara/fragment.glsl";
 import tensorShader from "@/shaders/kuwahara/tensor.glsl";
 import blurShader from "@/shaders/kuwahara/blur.glsl";
+import brushShader from "@/shaders/kuwahara/brush.glsl";
 
 export default class KuwaharaEffect extends Effect {
   private pixelRatio: Uniform<number>;
@@ -21,18 +22,20 @@ export default class KuwaharaEffect extends Effect {
   private blurAcross: ShaderPass;
   private blurDown: ShaderPass;
 
+  private paintedTarget: WebGLRenderTarget;
+  private brushPass: ShaderPass;
+
   constructor() {
     const pixelRatio = new Uniform(1);
     const texelSize = new Uniform(new Vector2(1, 1));
+
     const tensorTarget = makeTarget();
+    const paintedTarget = makeTarget();
 
     super("KuwaharaEffect", fragmentShader, {
       attributes: EffectAttribute.CONVOLUTION,
       uniforms: new Map<string, Uniform>([
-        ["uPixelRatio", pixelRatio],
-        ["uBrushRadius", new Uniform(14)],
-        ["tTensor", new Uniform(tensorTarget.texture)],
-        ["uAlpha", new Uniform(1)],
+        ["tPainted", new Uniform(paintedTarget.texture)],
       ]),
     });
 
@@ -51,6 +54,15 @@ export default class KuwaharaEffect extends Effect {
       uSigma: sigma,
     });
 
+    this.paintedTarget = paintedTarget;
+    this.brushPass = makePass(brushShader, {
+      uTexelSize: texelSize,
+      uPixelRatio: pixelRatio,
+      uBrushRadius: { value: 14 },
+      tTensor: { value: tensorTarget.texture },
+      uAlpha: { value: 1 },
+    });
+
     this.pixelRatio = pixelRatio;
     this.texelSize = texelSize;
     this.tensorTarget = tensorTarget;
@@ -60,6 +72,7 @@ export default class KuwaharaEffect extends Effect {
   setSize(width: number, height: number) {
     this.tensorTarget.setSize(width, height);
     this.blurredTarget.setSize(width, height);
+    this.paintedTarget.setSize(width, height);
     this.texelSize.value.set(1 / width, 1 / height);
   }
 
@@ -69,5 +82,7 @@ export default class KuwaharaEffect extends Effect {
 
     this.blurAcross.render(renderer, this.tensorTarget, this.blurredTarget);
     this.blurDown.render(renderer, this.blurredTarget, this.tensorTarget);
+
+    this.brushPass.render(renderer, inputBuffer, this.paintedTarget);
   }
 }
