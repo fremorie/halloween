@@ -32,6 +32,7 @@ export default class KuwaharaEffect extends Effect {
         ["uPixelRatio", pixelRatio],
         ["uBrushRadius", new Uniform(14)],
         ["tTensor", new Uniform(tensorTarget.texture)],
+        ["uAlpha", new Uniform(1)],
       ]),
     });
 

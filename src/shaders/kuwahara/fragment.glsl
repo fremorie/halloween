@@ -1,6 +1,9 @@
 uniform float uPixelRatio;
 uniform float uBrushRadius;
+uniform float uAlpha;
 uniform sampler2D tTensor;
+
+#include "../includes/hueToRgb.glsl"
 
 #define SECTOR_COUNT 8
 #define RING_COUNT 8
@@ -26,7 +29,12 @@ struct SectorStatistics {
     float perceivedVariance;
 };
 
-SectorStatistics measureSector(vec2 uv, int sectorIndex) {
+struct EdgeOrientation {
+    vec2 gradientDirection;
+    float anisotropy;
+};
+
+SectorStatistics measureSector(vec2 uv, int sectorIndex, mat2 shape) {
     float sectorMiddleAngle = float(sectorIndex) * SECTOR_ANGLE;
 
     vec3 weightedSum = vec3(0.0);
@@ -40,7 +48,7 @@ SectorStatistics measureSector(vec2 uv, int sectorIndex) {
 
         for (int ray = -RAYS_PER_SIDE; ray <= RAYS_PER_SIDE; ray++) {
             float rayAngle = sectorMiddleAngle + float(ray) * RAY_SPACING;
-            vec2 pixelOffset = ringRadius * vec2(cos(rayAngle), sin(rayAngle));
+            vec2 pixelOffset = shape * (ringRadius * vec2(cos(rayAngle), sin(rayAngle)));
             vec3 sampleColor = sampleSceneColor(uv, pixelOffset);
 
             weightedSum += sampleColor * ringWeight;
@@ -57,7 +65,41 @@ SectorStatistics measureSector(vec2 uv, int sectorIndex) {
     return SectorStatistics(meanColor, perceivedVariance);
 }
 
+EdgeOrientation readEdgeOrientation(vec2 uv) {
+    vec3 tensor = texture2D(tTensor, uv).xyz;
+    float jxx = tensor.x;
+    float jyy = tensor.y;
+    float jxy = tensor.z;
+
+    // Eigenvalues of [[jxx, jxy], [jxy, jyy]]: the strongest and weakest change
+    float trace = jxx + jyy;
+    float determinant = jxx * jyy - jxy * jxy;
+    float root = sqrt(max(0.0, trace * trace * 0.25 - determinant));
+    float strongestChange = trace * 0.5 + root;
+    float weakestChange = trace * 0.5 - root;
+
+    vec2 gradientDirection = abs(jxy) > 0.0
+        ? normalize(vec2(-jxy, jxx - strongestChange))
+        : (jxx >= jyy ? vec2(1.0, 0.0) : vec2(0.0, 1.0));
+
+    float anisotropy = (strongestChange - weakestChange) / (strongestChange + weakestChange + 1e-7);
+
+    return EdgeOrientation(gradientDirection, anisotropy);
+}
+
+// Squashes the round kernel into an ellipse along the edge.
+mat2 kernelShape(EdgeOrientation edge) {
+    float acrossScale = uAlpha / (edge.anisotropy + uAlpha);
+    float alongScale = (edge.anisotropy + uAlpha) / uAlpha;
+    vec2 d = edge.gradientDirection;
+    mat2 rotation = mat2(d.x, d.y, -d.y, d.x);
+
+    return rotation * mat2(acrossScale, 0.0, 0.0, alongScale);
+}
+
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
+    mat2 shape = kernelShape(readEdgeOrientation(uv));
+
     vec3 smoothestSectorMeanColor = inputColor.rgb;
     float lowestSectorVariance = 1e9; // infinity (sort of)
 
@@ -67,13 +109,20 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     );
 
     for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
-        SectorStatistics sector = measureSector(uv, sectorIndex);
+        SectorStatistics sector = measureSector(uv, sectorIndex, shape);
 
         if (sector.perceivedVariance < smoothestSector.perceivedVariance) {
             smoothestSector = sector;
         }
     }
 
-    // outputColor = vec4(smoothestSector.meanColor, inputColor.a);
-    outputColor = vec4(texture2D(tTensor, uv).rgb, 1.0);
+    outputColor = vec4(smoothestSector.meanColor, inputColor.a);
+    // outputColor = vec4(texture2D(tTensor, uv).rgb, 1.0);
+
+    // DEBUG
+//    EdgeOrientation edge = readEdgeOrientation(uv);
+//    float edgeAngle = atan(edge.gradientDirection.y, edge.gradientDirection.x);
+//    float hue = fract(edgeAngle / (0.5 * TAU));
+//
+//    outputColor = vec4(mix(vec3(1.0), hueToRgb(hue), edge.anisotropy), 1.0);
 }
