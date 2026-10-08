@@ -28,12 +28,12 @@ export default function Page() {
         <color args={["#ffffff"]} attach="background" />
 
         <EffectComposer multisampling={0}>
+          <Kuwahara />
           <Vignette
             offset={0.3}
             darkness={0.7}
             blendFunction={BlendFunction.NORMAL}
           />
-          <Kuwahara />
         </EffectComposer>
 
         <Environment />

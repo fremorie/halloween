@@ -2,12 +2,30 @@
 
 import { useEffect, useMemo } from "react";
 
-import KuwaharaEffect from "./kuwahara-effect";
+import KuwaharaEffect from "./kuwaharaEffect";
+import ColorGradeEffect from "./colorGradeEffect";
 
 export function Kuwahara() {
-  const effect = useMemo(() => new KuwaharaEffect(), []);
+  const effects = useMemo(
+    () => ({
+      kuwahara: new KuwaharaEffect(),
+      colorGrade: new ColorGradeEffect(),
+    }),
+    [],
+  );
 
-  useEffect(() => () => effect.dispose(), [effect]);
+  useEffect(
+    () => () => {
+      effects.kuwahara.dispose();
+      effects.colorGrade.dispose();
+    },
+    [effects],
+  );
 
-  return <primitive object={effect} />;
+  return (
+    <>
+      <primitive object={effects.kuwahara} />
+      <primitive object={effects.colorGrade} />
+    </>
+  );
 }
