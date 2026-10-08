@@ -6,12 +6,12 @@ uniform sampler2D tTensor;
 #include "../includes/hueToRgb.glsl"
 
 #define SECTOR_COUNT 8
-#define RING_COUNT 8
-#define RAYS_PER_SIDE 2
+#define RING_COUNT 5
+#define RAYS_PER_SIDE 1
 
 const float TAU = 6.28318530718;
 const float SECTOR_ANGLE = TAU / float(SECTOR_COUNT);
-const float RAY_SPACING = SECTOR_ANGLE / float(2 * RAYS_PER_SIDE); // 4 gaps between 5 rays
+const float RAY_SPACING = SECTOR_ANGLE / float(2 * RAYS_PER_SIDE); // 2 gaps between 3 rays
 
 // exp(-d² / (2σ²)) with σ = radius / 3
 // For d = ringFraction:
