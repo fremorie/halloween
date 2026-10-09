@@ -1,6 +1,5 @@
 "use client";
 
-import { Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, StatsGl } from "@react-three/drei";
 
@@ -11,7 +10,6 @@ import { YARN_PALETTE } from "@/settings/yarnPalette";
 export default function Page() {
   return (
     <>
-      <Leva theme={{ sizes: { rootWidth: "380px", controlWidth: "160px" } }} />
       <Canvas
         shadows
         dpr={[1, 2]}
