@@ -2,9 +2,10 @@
 
 import { Leva, useControls } from "leva";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, StatsGl } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { EffectComposer, Vignette } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
+import { Perf } from "r3f-perf";
 
 import { Lights } from "@/components/lightning/lights";
 import { YarnBalls } from "./yarnBalls";
@@ -55,7 +56,7 @@ export default function Page() {
         </mesh>
 
         <OrbitControls makeDefault />
-        <StatsGl className="fixed top-0 left-0" />
+        <Perf position="bottom-right" />
       </Canvas>
     </>
   );
