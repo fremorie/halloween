@@ -39,14 +39,14 @@ export function YarnBallModel({ position, rotation, color }: Props) {
   useEffect(() => () => material.dispose(), [material]);
 
   return (
-    <group position={position} rotation-y={rotation} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.YarnBall.geometry}
-        material={material}
-      />
-    </group>
+    <mesh
+      castShadow
+      receiveShadow
+      geometry={nodes.YarnBall.geometry}
+      material={material}
+      position={position}
+      rotation-y={rotation}
+    />
   );
 }
 
