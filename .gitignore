@@ -28,3 +28,5 @@ TODO.md
 .next
 *.tsbuildinfo
 /out/
+
+*.blend1
