@@ -26,7 +26,7 @@ export default function Page() {
           fov: 45,
           near: 0.1,
           far: 1000,
-          position: [5, 3, -6],
+          position: [0, 2.5, 9],
         }}
       >
         <color args={["#ffffff"]} attach="background" />
@@ -55,7 +55,7 @@ export default function Page() {
           <meshStandardMaterial color="#ffffff" />
         </mesh>
 
-        <OrbitControls makeDefault />
+        <OrbitControls makeDefault target={[0, 2, 0]} />
         <Perf position="bottom-right" />
       </Canvas>
     </>

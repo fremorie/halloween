@@ -1,3 +1,5 @@
+import { YARN_BALL_RADIUS } from "@/components/yarnBall/constants";
+
 export type Vec3 = [number, number, number];
 
 export type GraphNode = {
@@ -40,16 +42,20 @@ export const NODE_RADIUS = 0.45;
 
 /* Lifts the graph so that the lowest ball rests on the ground */
 function grounded(graph: Graph): Graph {
-  const lowestY = Math.min(...graph.nodes.map(({ position }) => position[1]));
+  const lowestY = Math.min(
+    ...graph.nodes.map(({ position }) => position[1]),
+  );
   const lift = NODE_RADIUS - lowestY;
 
   return {
     ...graph,
-    nodes: graph.nodes.map((node) => ({
-      id: node.id,
-      position: [node.position[0], node.position[1] + lift, node.position[2]],
+    nodes: graph.nodes.map(({ id, position: [x, y, z] }) => ({
+      id,
+      position: [x, y + lift, z],
     })),
   };
 }
 
 export const level = grounded(hat);
+
+export const NODE_SCALE = NODE_RADIUS / YARN_BALL_RADIUS;

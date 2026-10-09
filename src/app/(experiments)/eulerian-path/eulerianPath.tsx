@@ -1,26 +1,25 @@
 import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
 import { useYarnMaterials } from "@/components/yarnBall/materials";
+import { level, NODE_SCALE } from "./utils/graph";
 
 export function EulerianPath() {
   const yarnMaterials = useYarnMaterials();
 
   return (
     <>
-      <YarnBallModel
-        position={[0, 1.5, 0]}
-        rotationY={1}
-        material={yarnMaterials[0]}
-      />
-      <YarnBallModel
-        position={[0, 2.5, -2]}
-        rotationY={2}
-        material={yarnMaterials[1]}
-      />
-      <YarnBallModel
-        position={[0, 2, 2]}
-        rotationY={3}
-        material={yarnMaterials[2]}
-      />
+      {level.nodes.map((node) => {
+        const materialIndex = node.id % yarnMaterials.length;
+
+        return (
+          <YarnBallModel
+            key={node.id}
+            position={node.position}
+            rotationY={node.id * 1.7}
+            material={yarnMaterials[materialIndex]}
+            scale={NODE_SCALE}
+          />
+        );
+      })}
     </>
   );
 }
