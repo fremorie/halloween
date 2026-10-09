@@ -9,7 +9,7 @@ import { BlendFunction } from "postprocessing";
 import { Pumpkins } from "./pumpkins";
 import { RenderStats } from "./renderStats";
 import { Lights } from "@/components/lightning/lights";
-import { Kuwahara } from "./kuwahara";
+import { Kuwahara } from "@/components/postprocessing/kuwahara";
 
 export default function Page() {
   return (

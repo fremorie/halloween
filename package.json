@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint && prettier --check .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "postinstall": "rm -f node_modules/r3f-perf/dist/roboto.woff.*.map"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -42,6 +43,9 @@
     "typescript": "^5"
   },
   "overrides": {
-    "fast-glob": "npm:tinyglobby@^0.2.17"
+    "fast-glob": "npm:tinyglobby@^0.2.17",
+    "r3f-perf": {
+      "@react-three/drei": "$@react-three/drei"
+    }
   }
 }
