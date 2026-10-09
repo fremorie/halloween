@@ -10,7 +10,7 @@ import {
 
 const DEBUG = false;
 
-export function Environment() {
+export function Lights() {
   const lightRef = useRef<DirectionalLight>(null);
   const shadowCameraRef = useRef<Camera>(null);
 

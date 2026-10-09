@@ -4,9 +4,9 @@ import { Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, StatsGl } from "@react-three/drei";
 
+import { Lights } from "@/components/lightning/lights";
 import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
 import { YARN_PALETTE } from "@/settings/yarnPalette";
-import { Environment } from "./environment";
 
 export default function Page() {
   return (
@@ -24,7 +24,7 @@ export default function Page() {
       >
         <color args={["#ffffff"]} attach="background" />
 
-        <Environment />
+        <Lights />
 
         <YarnBallModel
           position={[0, 1.5, 0]}

@@ -8,7 +8,7 @@ import { BlendFunction } from "postprocessing";
 
 import { Pumpkins } from "./pumpkins";
 import { RenderStats } from "./renderStats";
-import { Environment } from "./environment";
+import { Lights } from "@/components/lightning/lights";
 import { Kuwahara } from "./kuwahara";
 
 export default function Page() {
@@ -36,7 +36,7 @@ export default function Page() {
           />
         </EffectComposer>
 
-        <Environment />
+        <Lights />
 
         <Pumpkins />
         {/* Ground */}
