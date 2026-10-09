@@ -2,9 +2,12 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, StatsGl } from "@react-three/drei";
+import { EffectComposer, Vignette } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 
 import { Lights } from "@/components/lightning/lights";
 import { YarnBalls } from "./yarnBalls";
+import { Kuwahara } from "@/components/postprocessing/kuwahara";
 
 export default function Page() {
   return (
@@ -19,6 +22,15 @@ export default function Page() {
       }}
     >
       <color args={["#ffffff"]} attach="background" />
+
+      <EffectComposer multisampling={4}>
+        <Kuwahara />
+        <Vignette
+          offset={0.3}
+          darkness={0.7}
+          blendFunction={BlendFunction.NORMAL}
+        />
+      </EffectComposer>
 
       <Lights />
 
