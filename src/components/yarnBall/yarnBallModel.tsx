@@ -6,9 +6,10 @@ type Props = {
   position?: [number, number, number];
   rotationY?: number;
   material: MeshStandardMaterial;
+  scale?: number;
 };
 
-export function YarnBallModel({ position, rotationY, material }: Props) {
+export function YarnBallModel({ position, rotationY, material, scale }: Props) {
   const { nodes } = useYarnBallGLTF();
 
   return (
@@ -19,6 +20,7 @@ export function YarnBallModel({ position, rotationY, material }: Props) {
       material={material}
       position={position}
       rotation-y={rotationY}
+      scale={scale}
     />
   );
 }

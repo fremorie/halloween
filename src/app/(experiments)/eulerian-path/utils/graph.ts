@@ -41,7 +41,7 @@ export const NODE_RADIUS = 0.45;
 /* Lifts the graph so that the lowest ball rests on the ground */
 function grounded(graph: Graph): Graph {
   const lowestY = Math.min(...graph.nodes.map(({ position }) => position[1]));
-  const lift = lowestY + NODE_RADIUS;
+  const lift = NODE_RADIUS - lowestY;
 
   return {
     ...graph,
