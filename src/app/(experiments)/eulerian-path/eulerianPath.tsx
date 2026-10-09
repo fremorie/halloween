@@ -1,5 +1,6 @@
 import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
 import { useYarnMaterials } from "@/components/yarnBall/materials";
+import { BranchModel } from "@/components/branch/branchModel";
 import { level, NODE_SCALE } from "./utils/graph";
 
 export function EulerianPath() {
@@ -20,6 +21,8 @@ export function EulerianPath() {
           />
         );
       })}
+
+      <BranchModel position={[0, 2, 0]} />
     </>
   );
 }
