@@ -6,6 +6,7 @@ const experiments = [
   "rain",
   "window",
   "yarn-balls",
+  "eulerian-path",
 ] as const;
 
 export default function Page() {
