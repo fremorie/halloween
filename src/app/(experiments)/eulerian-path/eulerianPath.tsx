@@ -10,6 +10,11 @@ const level = getGroundedGraph(hat);
 export function EulerianPath() {
   const yarnMaterials = useYarnMaterials();
 
+  // const branchSegments = level.edges.map((edge) => ({
+  //   from: level.nodes[edge.a].position,
+  //   to: level.nodes[edge.b].position,
+  // }));
+
   return (
     <>
       {level.nodes.map((node) => {
