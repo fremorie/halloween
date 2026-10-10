@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import * as THREE from "three";
 
 import type { Vec3 } from "@/types/math";
 import { useBranchGLTF } from "./useBranchGLTF";
@@ -12,10 +13,30 @@ type Props = {
 
 export function BranchModel({ from, to, tuckDistance }: Props) {
   const { nodes, materials } = useBranchGLTF();
-  const { matrix } = useMemo(
+  const { matrix, turn } = useMemo(
     () => getEdgePlacement(from, to, tuckDistance),
     [from, to, tuckDistance],
   );
+
+  const placedLeafMatrices = useMemo(() => {
+    const leafNodes = [
+      nodes.Leaf001,
+      nodes.Leaf002,
+      nodes.Leaf003,
+      nodes.Leaf004,
+    ];
+
+    return leafNodes.map((leafNode) => {
+      const placedLeafPosition = leafNode.position.clone().applyMatrix4(matrix);
+      const placedLeafRotation = turn.clone().multiply(leafNode.quaternion);
+
+      return new THREE.Matrix4().compose(
+        placedLeafPosition,
+        placedLeafRotation,
+        leafNode.scale,
+      );
+    });
+  }, [matrix, nodes, turn]);
 
   return (
     <group>
@@ -27,42 +48,17 @@ export function BranchModel({ from, to, tuckDistance }: Props) {
         matrix={matrix}
         matrixAutoUpdate={false}
       />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Leaf001.geometry}
-        material={materials.Leaf}
-        position={[0.398, 0.343, -0.018]}
-        rotation={[0.819, 0, 0]}
-        scale={0.139}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Leaf002.geometry}
-        material={materials.Leaf}
-        position={[0.401, 0.339, -0.015]}
-        rotation={[2.26, -1.004, 0.201]}
-        scale={0.139}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Leaf003.geometry}
-        material={materials.Leaf}
-        position={[0.707, -0.245, -0.067]}
-        rotation={[-1.919, -0.002, 2.735]}
-        scale={0.139}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Leaf004.geometry}
-        material={materials.Leaf}
-        position={[0.711, -0.238, -0.067]}
-        rotation={[-1.395, -0.969, 2.178]}
-        scale={0.139}
-      />
+      {placedLeafMatrices.map((placedLeafMatrix, leafIndex) => (
+        <mesh
+          key={leafIndex}
+          castShadow
+          receiveShadow
+          geometry={nodes.Leaf001.geometry}
+          material={materials.Leaf}
+          matrix={placedLeafMatrix}
+          matrixAutoUpdate={false}
+        />
+      ))}
     </group>
   );
 }
