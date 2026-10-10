@@ -6,7 +6,7 @@ const WORLD_UP_DIRECTION = new THREE.Vector3(0, 1, 0);
 const WORLD_X_DIRECTION = new THREE.Vector3(1, 0, 0);
 const NEARLY_VERTICAL_THRESHOLD = 0.99;
 
-export function branchPlacement(from: Vec3, to: Vec3, tuckDistance: number) {
+export function getEdgePlacement(from: Vec3, to: Vec3, tuckDistance: number) {
   const start = new THREE.Vector3(...from);
   const end = new THREE.Vector3(...to);
   const direction = end.clone().sub(start).normalize();
@@ -15,34 +15,34 @@ export function branchPlacement(from: Vec3, to: Vec3, tuckDistance: number) {
   end.addScaledVector(direction, -tuckDistance);
   const length = start.distanceTo(end);
 
-  const isBranchNearlyVertical =
+  const isEdgeNearlyVertical =
     Math.abs(direction.y) > NEARLY_VERTICAL_THRESHOLD;
 
-  const upReferenceDirection = isBranchNearlyVertical
+  const upReferenceDirection = isEdgeNearlyVertical
     ? WORLD_X_DIRECTION
     : WORLD_UP_DIRECTION;
-  const branchUpDirection = upReferenceDirection
+  const edgeUpDirection = upReferenceDirection
     .clone()
     .projectOnPlane(direction)
     .normalize();
-  const branchSideDirection = new THREE.Vector3().crossVectors(
+  const edgeSideDirection = new THREE.Vector3().crossVectors(
     direction,
-    branchUpDirection,
+    edgeUpDirection,
   );
 
   const stretchedPlacementMatrix = new THREE.Matrix4()
     .makeBasis(
       direction.clone().multiplyScalar(length),
-      branchUpDirection,
-      branchSideDirection,
+      edgeUpDirection,
+      edgeSideDirection,
     )
     .setPosition(start);
 
   const unstretchedRotation = new THREE.Quaternion().setFromRotationMatrix(
     new THREE.Matrix4().makeBasis(
       direction,
-      branchUpDirection,
-      branchSideDirection,
+      edgeUpDirection,
+      edgeSideDirection,
     ),
   );
 

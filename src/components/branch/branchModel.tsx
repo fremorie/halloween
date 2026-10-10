@@ -1,19 +1,20 @@
-import { Vec3 } from "@/types/math";
-import { useBranchGLTF } from "./useBranchGLTF";
-import { branchPlacement } from "@/components/branch/utils/branchPlacement";
-import { NODE_RADIUS } from "@/app/(experiments)/eulerian-path/utils/graph";
 import { useMemo } from "react";
+
+import type { Vec3 } from "@/types/math";
+import { useBranchGLTF } from "./useBranchGLTF";
+import { getEdgePlacement } from "@/utils/graph/getEdgePlacement";
 
 type Props = {
   from: Vec3;
   to: Vec3;
+  tuckDistance: number;
 };
 
-export function BranchModel({ from, to }: Props) {
+export function BranchModel({ from, to, tuckDistance }: Props) {
   const { nodes, materials } = useBranchGLTF();
   const { matrix } = useMemo(
-    () => branchPlacement(from, to, NODE_RADIUS * 0.8),
-    [from, to],
+    () => getEdgePlacement(from, to, tuckDistance),
+    [from, to, tuckDistance],
   );
 
   return (

@@ -1,7 +1,11 @@
 import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
 import { useYarnMaterials } from "@/components/yarnBall/materials";
 import { BranchModel } from "@/components/branch/branchModel";
-import { level, NODE_SCALE } from "./utils/graph";
+import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
+import { getGroundedGraph } from "@/utils/graph/getGroundedGraph";
+import { hat } from "@/data/levels";
+
+const level = getGroundedGraph(hat);
 
 export function EulerianPath() {
   const yarnMaterials = useYarnMaterials();
@@ -27,6 +31,7 @@ export function EulerianPath() {
           key={i}
           from={level.nodes[a].position}
           to={level.nodes[b].position}
+          tuckDistance={NODE_RADIUS * 0.8}
         />
       ))}
     </>
