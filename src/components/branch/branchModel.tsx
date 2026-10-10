@@ -1,21 +1,30 @@
+import { Vec3 } from "@/types/math";
 import { useBranchGLTF } from "./useBranchGLTF";
+import { branchPlacement } from "@/components/branch/utils/branchPlacement";
+import { NODE_RADIUS } from "@/app/(experiments)/eulerian-path/utils/graph";
+import { useMemo } from "react";
 
 type Props = {
-  position?: [number, number, number];
-  rotationY?: number;
-  scale?: number;
+  from: Vec3;
+  to: Vec3;
 };
 
-export function BranchModel({ position, rotationY, scale }: Props) {
+export function BranchModel({ from, to }: Props) {
   const { nodes, materials } = useBranchGLTF();
+  const { matrix } = useMemo(
+    () => branchPlacement(from, to, NODE_RADIUS * 0.8),
+    [from, to],
+  );
 
   return (
-    <group position={position} rotation-y={rotationY} scale={scale}>
+    <group>
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.Branch.geometry}
         material={materials["branch.001"]}
+        matrix={matrix}
+        matrixAutoUpdate={false}
       />
       <mesh
         castShadow

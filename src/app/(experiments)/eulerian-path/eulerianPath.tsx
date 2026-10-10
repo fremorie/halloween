@@ -22,7 +22,13 @@ export function EulerianPath() {
         );
       })}
 
-      <BranchModel position={[0, 2, 0]} />
+      {level.edges.map(({ a, b }, i) => (
+        <BranchModel
+          key={i}
+          from={level.nodes[a].position}
+          to={level.nodes[b].position}
+        />
+      ))}
     </>
   );
 }

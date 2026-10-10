@@ -1,6 +1,5 @@
 import { YARN_BALL_RADIUS } from "@/components/yarnBall/constants";
-
-export type Vec3 = [number, number, number];
+import type { Vec3 } from "@/types/math";
 
 export type GraphNode = {
   id: number;
