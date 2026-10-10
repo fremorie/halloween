@@ -8,7 +8,7 @@ export type BranchSegment = { from: Vec3; to: Vec3 };
 export function getBranchInstanceMatrices(
   branchSegments: BranchSegment[],
   tuckDistance: number,
-  leafNodes: THREE.Object3D[],
+  leafNodes: THREE.Mesh[],
 ) {
   const stemMatrices: THREE.Matrix4[] = [];
   const leafMatrices: THREE.Matrix4[] = [];

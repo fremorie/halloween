@@ -1,19 +1,19 @@
 import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
 import { useYarnMaterials } from "@/components/yarnBall/materials";
-import { BranchModel } from "@/components/branch/branchModel";
 import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { getGroundedGraph } from "@/utils/graph/getGroundedGraph";
 import { hat } from "@/data/levels";
+import { InstancedBranches } from "@/components/branch/instancedBranches";
 
 const level = getGroundedGraph(hat);
 
+const branchSegments = level.edges.map((edge) => ({
+  from: level.nodes[edge.a].position,
+  to: level.nodes[edge.b].position,
+}));
+
 export function EulerianPath() {
   const yarnMaterials = useYarnMaterials();
-
-  // const branchSegments = level.edges.map((edge) => ({
-  //   from: level.nodes[edge.a].position,
-  //   to: level.nodes[edge.b].position,
-  // }));
 
   return (
     <>
@@ -31,14 +31,10 @@ export function EulerianPath() {
         );
       })}
 
-      {level.edges.map(({ a, b }, i) => (
-        <BranchModel
-          key={i}
-          from={level.nodes[a].position}
-          to={level.nodes[b].position}
-          tuckDistance={NODE_RADIUS * 0.8}
-        />
-      ))}
+      <InstancedBranches
+        branchSegments={branchSegments}
+        tuckDistance={NODE_RADIUS * 0.8}
+      />
     </>
   );
 }
