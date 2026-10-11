@@ -8,17 +8,28 @@ import { BlendFunction } from "postprocessing";
 import { Perf } from "r3f-perf";
 
 import { Lights } from "@/components/lightning/lights";
-import { JackOLantern } from "./jackOLantern";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
+import { JackOLantern } from "./jackOLantern";
+import { useLanternControls } from "./useLanternControls";
 
 export default function Page() {
   const { kuwahara } = useControls({
     kuwahara: { value: true, label: "Kuwahara filter" },
   });
 
+  useLanternControls();
+
   return (
     <>
-      <Leva theme={{ sizes: { rootWidth: "280px", controlWidth: "30px" } }} />
+      <Leva
+        theme={{
+          sizes: {
+            rootWidth: "320px",
+            controlWidth: "160px",
+            colorPickerHeight: "140px",
+          },
+        }}
+      />
       <Canvas
         shadows
         dpr={[1, 2]}
