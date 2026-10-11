@@ -8,7 +8,7 @@ export function useLanternControls() {
     "Lantern",
     {
       glowColor: "#ffb648",
-      emberColor: "#c8441a",
+      emberColor: "#c96e52",
       glowIntensity: { value: 1.5, min: 0, max: 4, step: 0.1 },
       flickerSeed: { value: 0, min: 0, max: 100, step: 1 },
     },

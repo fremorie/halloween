@@ -1,5 +1,5 @@
-import { JackOLanternModel } from "@/components/jackOLantern/jackOLanternModel";
+import { JackOLanternHappyModel } from "@/components/jackOLanternHappy/jackOLanternHappyModel";
 
 export function JackOLantern() {
-  return <JackOLanternModel />;
+  return <JackOLanternHappyModel />;
 }
