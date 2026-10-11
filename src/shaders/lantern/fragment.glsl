@@ -13,9 +13,12 @@ const float FACE_TOP = 0.9;
 const float FLICKER_SPEED = 8.0;
 const float FLICKER_DEPTH = 0.25;
 
+const float DRIFT_SPEED = 1.5;
+const float DRIFT_DEPTH = 0.15;
+
 #include "../includes/hash11.glsl"
 
-float flickerNoise1D(float sampleTime) {
+float candleNoise(float sampleTime) {
     float tickIndex = floor(sampleTime);
     float tickFraction = fract(sampleTime);
 
@@ -27,7 +30,11 @@ float flickerNoise1D(float sampleTime) {
 
 void main() {
     float flickerTime = uTime * FLICKER_SPEED + uFlickerSeed;
-    float flickerNoise = flickerNoise1D(flickerTime);
+    // 101 - just so that the second layer is far enough from the first
+    float driftTime = uTime * DRIFT_SPEED + uFlickerSeed + 101.0;
+
+    float flickerNoise = candleNoise(flickerTime);
+    float driftNoise = candleNoise(driftTime);
 
     float flicker = 1.0 - FLICKER_DEPTH * flickerNoise;
 
@@ -35,5 +42,5 @@ void main() {
     vec3 faceColor = mix(uEmberColor, uGlowColor, candleCloseness);
     faceColor *= flicker;
 
-    gl_FragColor = vec4(faceColor, 1.0);
+    gl_FragColor = vec4(vec3(driftNoise), 1.0);
 }
