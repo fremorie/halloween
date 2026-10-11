@@ -15,14 +15,19 @@ const float FLICKER_DEPTH = 0.25;
 
 #include "../includes/hash11.glsl"
 
-void main() {
-    float flickerTime = uTime * FLICKER_SPEED + uFlickerSeed;
-    float tickIndex = floor(flickerTime);
-    float tickFraction = fract(flickerTime);
+float flickerNoise1D(float sampleTime) {
+    float tickIndex = floor(sampleTime);
+    float tickFraction = fract(sampleTime);
 
     float valueNow = hash11(tickIndex);
     float valueNext = hash11(tickIndex + 1.0);
-    float flickerNoise = mix(valueNow, valueNext, smoothstep(0.0, 1.0, tickFraction));
+
+    return mix(valueNow, valueNext, smoothstep(0.0, 1.0, tickFraction));
+}
+
+void main() {
+    float flickerTime = uTime * FLICKER_SPEED + uFlickerSeed;
+    float flickerNoise = flickerNoise1D(flickerTime);
 
     float flicker = 1.0 - FLICKER_DEPTH * flickerNoise;
 
