@@ -14,5 +14,7 @@ void main() {
     float heightFraction = (vLocalPosition.y - FACE_BOTTOM) / (FACE_TOP - FACE_BOTTOM);
     float candleCloseness = 1.0 - smoothstep(FACE_BOTTOM, FACE_TOP, vLocalPosition.y);
 
-    gl_FragColor = vec4(vec3(candleCloseness), 1.0);
+    vec3 faceColor = mix(uEmberColor, uGlowColor, candleCloseness);
+
+    gl_FragColor = vec4(faceColor, 1.0);
 }
