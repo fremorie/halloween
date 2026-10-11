@@ -16,18 +16,13 @@ export function JackOLanternModel() {
         castShadow
         receiveShadow
         geometry={nodes.pumpkin.geometry}
-        material={materials.pumpkinSkin}
+        material={materials.pumpkin}
       />
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.pumpkin_1.geometry}
-        material={materials.stem}
-      />
-      <mesh geometry={nodes.pumpkin_2.geometry} material={lanternMaterial} />
-      <mesh
-        geometry={nodes.pumpkin_3.geometry}
-        material={materials.pumpkinCut}
+        material={lanternMaterial}
       />
     </group>
   );
