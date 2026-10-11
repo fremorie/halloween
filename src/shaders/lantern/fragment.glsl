@@ -36,11 +36,11 @@ void main() {
     float flickerNoise = candleNoise(flickerTime);
     float driftNoise = candleNoise(driftTime);
 
-    float flicker = 1.0 - FLICKER_DEPTH * flickerNoise;
+    float flicker = (1.0 - FLICKER_DEPTH * flickerNoise) * (1.0 - DRIFT_DEPTH * driftNoise);
 
     float candleCloseness = 1.0 - smoothstep(FACE_BOTTOM, FACE_TOP, vLocalPosition.y);
     vec3 faceColor = mix(uEmberColor, uGlowColor, candleCloseness);
     faceColor *= flicker;
 
-    gl_FragColor = vec4(vec3(driftNoise), 1.0);
+    gl_FragColor = vec4(faceColor, 1.0);
 }
