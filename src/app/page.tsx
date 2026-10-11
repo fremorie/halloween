@@ -8,6 +8,7 @@ const experiments = [
   "yarn-balls",
   "eulerian-path",
   "jack-o-lantern",
+  "jack-o-lantern-2",
 ] as const;
 
 export default function Page() {
