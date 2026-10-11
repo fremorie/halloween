@@ -9,6 +9,7 @@ const experiments = [
   "eulerian-path",
   "jack-o-lantern",
   "jack-o-lantern-2",
+  "jack-o-lantern-3",
 ] as const;
 
 export default function Page() {
