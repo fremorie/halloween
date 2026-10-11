@@ -10,11 +10,21 @@ varying vec3 vLocalPosition;
 const float FACE_BOTTOM = 0.26;
 const float FACE_TOP = 0.9;
 
-void main() {
-    float heightFraction = (vLocalPosition.y - FACE_BOTTOM) / (FACE_TOP - FACE_BOTTOM);
-    float candleCloseness = 1.0 - smoothstep(FACE_BOTTOM, FACE_TOP, vLocalPosition.y);
+const float FLICKER_SPEED = 8.0;
 
+#include "../includes/hash11.glsl"
+
+void main() {
+    float flickerTime = uTime * FLICKER_SPEED + uFlickerSeed;
+    float tickIndex = floor(flickerTime);
+    float tickFraction = fract(flickerTime);
+
+    float valueNow = hash11(tickIndex);
+    float valueNext = hash11(tickIndex + 1.0);
+    float flickerNoise = mix(valueNow, valueNext, smoothstep(0.0, 1.0, tickFraction));
+
+    float candleCloseness = 1.0 - smoothstep(FACE_BOTTOM, FACE_TOP, vLocalPosition.y);
     vec3 faceColor = mix(uEmberColor, uGlowColor, candleCloseness);
 
-    gl_FragColor = vec4(faceColor, 1.0);
+    gl_FragColor = vec4(vec3(flickerNoise), 1.0);
 }
