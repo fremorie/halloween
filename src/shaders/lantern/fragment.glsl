@@ -41,6 +41,7 @@ void main() {
     float candleCloseness = 1.0 - smoothstep(FACE_BOTTOM, FACE_TOP, vLocalPosition.y);
     vec3 faceColor = mix(uEmberColor, uGlowColor, candleCloseness);
     faceColor *= flicker;
+    faceColor *= uGlowIntensity;
 
     gl_FragColor = vec4(faceColor, 1.0);
 }
