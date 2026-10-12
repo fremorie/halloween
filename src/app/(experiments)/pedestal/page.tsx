@@ -9,7 +9,7 @@ import { Perf } from "r3f-perf";
 
 import { Lights } from "@/components/lightning/lights";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
-import { PedestalModel } from "@/components/pedestal/pedestalModel";
+import { Level1 } from "@/components/puzzles/level1/level1";
 
 export default function Page() {
   const { kuwahara } = useControls({
@@ -50,7 +50,7 @@ export default function Page() {
 
         <Lights />
 
-        <PedestalModel />
+        <Level1 />
 
         {/* Ground */}
         <mesh
