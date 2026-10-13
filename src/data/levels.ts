@@ -1,4 +1,6 @@
 import type { Graph } from "@/types/graph";
+import { Level } from "@/types/level";
+import { getGroundedGraph } from "@/utils/graph/getGroundedGraph";
 
 export const hat: Graph = {
   nodes: [
@@ -20,3 +22,25 @@ export const hat: Graph = {
     { a: 1, b: 5 },
   ],
 };
+
+export const levels: Level[] = [
+  {
+    piece: "hat",
+    title: "Witch hat",
+    graph: getGroundedGraph(hat),
+    pumpkin: "classic",
+  },
+  // All levels are hats for now
+  {
+    piece: "cape",
+    title: "Cape",
+    graph: getGroundedGraph(hat),
+    pumpkin: "cheerful",
+  },
+  {
+    piece: "wings",
+    title: "Bat wings",
+    graph: getGroundedGraph(hat),
+    pumpkin: "happy",
+  },
+];

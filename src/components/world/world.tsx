@@ -1,12 +1,15 @@
 import { Lights } from "@/components/lighting/lights";
-import { Level1 } from "@/components/puzzles/level1/level1";
 import { Ground } from "./ground";
+import { Station } from "@/components/world/station";
+import { levels } from "@/data/levels";
 
 export function World() {
   return (
     <>
       <Lights />
-      <Level1 />
+      {levels.map((level, stationIndex) => (
+        <Station key={level.piece} level={level} stationIndex={stationIndex} />
+      ))}
       <Ground />
     </>
   );
