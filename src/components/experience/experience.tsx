@@ -27,6 +27,7 @@ export function Experience() {
             colorPickerHeight: "140px",
           },
         }}
+        collapsed
       />
       <KeyboardControls map={KEYBOARD_CONTROLS_MAP}>
         <Canvas
