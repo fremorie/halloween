@@ -9,6 +9,7 @@ import {
   PEDESTAL_TOP_HEIGHT,
   PUMPKIN_DISTANCE_FROM_STATION_CENTRE,
   PUMPKIN_FORWARD_OFFSET,
+  PUMPKIN_TURN_TOWARDS_PATH,
 } from "@/settings/journeySettings";
 import {
   getStationOrigin,
@@ -43,7 +44,7 @@ export function Station({ level, stationIndex }: Props) {
           0,
           PUMPKIN_FORWARD_OFFSET,
         ]}
-        rotation-y={-outerSide * 0.4}
+        rotation-y={-outerSide * PUMPKIN_TURN_TOWARDS_PATH}
       >
         <PumpkinModel />
       </group>
