@@ -1,4 +1,4 @@
-import { Lights } from "@/components/lightning/lights";
+import { Lights } from "@/components/lighting/lights";
 import { Level1 } from "@/components/puzzles/level1/level1";
 import { Ground } from "./ground";
 
