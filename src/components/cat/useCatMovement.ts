@@ -31,7 +31,7 @@ export function useCatMovement(
 
     runFactorRef.current = MathUtils.damp(
       runFactorRef.current,
-      keys.run ? 1 : 0,
+      0,
       CAT_RUN_EASE,
       stepDuration,
     );
