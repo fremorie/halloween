@@ -7,9 +7,9 @@ import { EffectComposer, Vignette } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import { Perf } from "r3f-perf";
 
-import { Lights } from "@/components/lightning/lights";
+import { Lights } from "@/components/lighting/experiments/lights";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
-import { PedestalModel } from "@/components/pedestal/pedestalModel";
+import { PedestalModel } from "@/components/models/pedestal/pedestalModel";
 
 export default function Page() {
   const { kuwahara } = useControls({

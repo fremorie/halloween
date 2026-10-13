@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import type { BranchSegment } from "@/utils/graph/getBranchInstanceMatrices";
 import { getBranchInstanceMatrices } from "@/utils/graph/getBranchInstanceMatrices";
-import { useBranchGLTF } from "@/components/branch/useBranchGLTF";
+import { useBranchGLTF } from "./useBranchGLTF";
 import { applyInstanceMatrices } from "@/utils/instances/applyInstanceMatrices";
 
 type Props = {

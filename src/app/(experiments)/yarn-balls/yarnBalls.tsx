@@ -1,5 +1,5 @@
-import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
-import { useYarnMaterials } from "@/components/yarnBall/materials";
+import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
+import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 
 export function YarnBalls() {
   const yarnMaterials = useYarnMaterials();

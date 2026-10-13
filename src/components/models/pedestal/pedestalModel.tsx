@@ -1,4 +1,4 @@
-import { usePedestalGLTF } from "@/components/pedestal/usePedestalGLTF";
+import { usePedestalGLTF } from "./usePedestalGLTF";
 
 export function PedestalModel() {
   const { nodes, materials } = usePedestalGLTF();
