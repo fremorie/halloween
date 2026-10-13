@@ -16,6 +16,7 @@ export const SUN_LIGHT_SETTINGS = {
   shadowReach: 13,
   shadowNear: 0.5,
   shadowFar: 40,
+  targetLead: 4,
 };
 
 export const ENVIRONMENT_LIGHTING_SETTINGS = {
