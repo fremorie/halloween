@@ -1,7 +1,7 @@
 import { Lights } from "@/components/lighting/lights";
-import { Ground } from "./ground";
-import { Station } from "@/components/world/station";
 import { levels } from "@/data/levels";
+import { Ground } from "./ground";
+import { Station } from "./station";
 
 export function World() {
   return (
