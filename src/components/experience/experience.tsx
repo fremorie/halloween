@@ -22,7 +22,7 @@ export function Experience() {
           },
         }}
       />
-      <Canvas shadows="percentage" dpr={[1, 2]} camera={CAMERA_SETTINGS}>
+      <Canvas flat shadows="percentage" dpr={[1, 1.5]} camera={CAMERA_SETTINGS}>
         <color args={[PAPER_COLOR]} attach="background" />
 
         <Effects />
