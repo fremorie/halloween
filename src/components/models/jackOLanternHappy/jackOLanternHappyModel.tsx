@@ -1,15 +1,19 @@
-import { useFrame } from "@react-three/fiber";
 import { FrontSide } from "three";
 
-import { lanternMaterial } from "@/components/materials/lanternFaceMaterial";
+import { useLanternFaceMaterial } from "@/components/materials/useLanternFaceMaterial";
+import type { LanternFaceParams } from "@/types/lantern";
 import { useJackOLanternHappyGLTF } from "./useJackOLanternHappyGLTF";
 
-export function JackOLanternHappyModel() {
-  const { nodes, materials } = useJackOLanternHappyGLTF();
+type Props = {
+  faceParams: LanternFaceParams;
+};
 
-  useFrame((state) => {
-    lanternMaterial.uniforms.uTime.value = state.clock.elapsedTime;
-  });
+export function JackOLanternHappyModel({ faceParams }: Props) {
+  const { nodes, materials } = useJackOLanternHappyGLTF();
+  const faceMaterial = useLanternFaceMaterial(
+    nodes.pumpkin001_1.geometry,
+    faceParams,
+  );
 
   return (
     <group dispose={null}>
@@ -20,7 +24,7 @@ export function JackOLanternHappyModel() {
         material={materials.pumpkin}
         material-shadowSide={FrontSide}
       />
-      <mesh geometry={nodes.pumpkin001_1.geometry} material={lanternMaterial} />
+      <mesh geometry={nodes.pumpkin001_1.geometry} material={faceMaterial} />
     </group>
   );
 }

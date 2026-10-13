@@ -1,5 +1,10 @@
 import { JackOLanternModel } from "@/components/models/jackOLantern/jackOLanternModel";
+import type { LanternFaceParams } from "@/types/lantern";
 
-export function JackOLantern() {
-  return <JackOLanternModel />;
+type Props = {
+  faceParams: LanternFaceParams;
+};
+
+export function JackOLantern({ faceParams }: Props) {
+  return <JackOLanternModel faceParams={faceParams} />;
 }

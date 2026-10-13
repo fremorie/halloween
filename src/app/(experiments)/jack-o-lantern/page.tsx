@@ -11,13 +11,14 @@ import { Lights } from "@/components/lighting/experiments/lights";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
 import { JackOLantern } from "./jackOLantern";
 import { useLanternControls } from "./useLanternControls";
+import { LanternFaceClock } from "@/components/materials/lanternFaceClock";
 
 export default function Page() {
   const { kuwahara } = useControls({
     kuwahara: { value: true, label: "Kuwahara filter" },
   });
 
-  useLanternControls();
+  const faceParams = useLanternControls();
 
   return (
     <>
@@ -53,7 +54,8 @@ export default function Page() {
 
         <Lights />
 
-        <JackOLantern />
+        <JackOLantern faceParams={faceParams} />
+        <LanternFaceClock />
 
         {/* Ground */}
         <mesh

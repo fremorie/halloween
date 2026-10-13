@@ -3,12 +3,10 @@ uniform vec3 uGlowColor;
 uniform vec3 uEmberColor;
 uniform float uGlowIntensity;
 uniform float uFlickerSeed;
+uniform float uFaceBottom;
+uniform float uFaceTop;
 
 varying vec3 vLocalPosition;
-
-// See resources/pumpkins/magic-numbers
-const float FACE_BOTTOM = 0.26;
-const float FACE_TOP = 0.9;
 
 const float FLICKER_SPEED = 8.0;
 const float FLICKER_DEPTH = 0.25;
@@ -38,7 +36,7 @@ void main() {
 
     float flicker = (1.0 - FLICKER_DEPTH * flickerNoise) * (1.0 - DRIFT_DEPTH * driftNoise);
 
-    float candleCloseness = 1.0 - smoothstep(FACE_BOTTOM, FACE_TOP, vLocalPosition.y);
+    float candleCloseness = 1.0 - smoothstep(uFaceBottom, uFaceTop, vLocalPosition.y);
     vec3 faceColor = mix(uEmberColor, uGlowColor, candleCloseness);
     faceColor *= flicker;
     faceColor *= uGlowIntensity;

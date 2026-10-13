@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 
 import type { Level, PumpkinVariant } from "@/types/level";
+import type { LanternFaceParams } from "@/types/lantern";
 import { JackOLanternCheerfulModel } from "@/components/models/jackOLanternCheerful/jackOLanternCheerfulModel";
 import { JackOLanternHappyModel } from "@/components/models/jackOLanternHappy/jackOLanternHappyModel";
 import { JackOLanternModel } from "@/components/models/jackOLantern/jackOLanternModel";
@@ -21,7 +22,10 @@ const PUMPKIN_MODEL_BY_VARIANT = {
   classic: JackOLanternModel,
   cheerful: JackOLanternCheerfulModel,
   happy: JackOLanternHappyModel,
-} satisfies Record<PumpkinVariant, ComponentType>;
+} satisfies Record<
+  PumpkinVariant,
+  ComponentType<{ faceParams: LanternFaceParams }>
+>;
 
 type Props = {
   level: Level;
@@ -29,7 +33,7 @@ type Props = {
 };
 
 export function Station({ level, stationIndex }: Props) {
-  const PumpkinModel = PUMPKIN_MODEL_BY_VARIANT[level.pumpkin];
+  const PumpkinModel = PUMPKIN_MODEL_BY_VARIANT[level.pumpkin.variant];
   const outerSide = getStationSide(stationIndex);
 
   return (
@@ -46,7 +50,7 @@ export function Station({ level, stationIndex }: Props) {
         ]}
         rotation-y={-outerSide * PUMPKIN_TURN_TOWARDS_PATH}
       >
-        <PumpkinModel />
+        <PumpkinModel faceParams={level.pumpkin.faceParams} />
       </group>
     </group>
   );

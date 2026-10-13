@@ -28,19 +28,19 @@ export const levels: Level[] = [
     piece: "hat",
     title: "Witch hat",
     graph: getGroundedGraph(hat),
-    pumpkin: "classic",
+    pumpkin: { variant: "classic", faceParams: { emberColor: "#c8441a" } },
   },
   // All levels are hats for now
   {
     piece: "cape",
     title: "Cape",
     graph: getGroundedGraph(hat),
-    pumpkin: "cheerful",
+    pumpkin: { variant: "cheerful", faceParams: { emberColor: "#c97a52" } },
   },
   {
     piece: "wings",
     title: "Bat wings",
     graph: getGroundedGraph(hat),
-    pumpkin: "happy",
+    pumpkin: { variant: "happy", faceParams: { emberColor: "#c96e52" } },
   },
 ];
