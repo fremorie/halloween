@@ -8,7 +8,7 @@ import { BlendFunction } from "postprocessing";
 
 import { Pumpkins } from "./pumpkins";
 import { RenderStats } from "./renderStats";
-import { Lights } from "@/components/lighting/lights";
+import { Lights } from "@/components/lighting/experiments/lights";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
 
 export default function Page() {

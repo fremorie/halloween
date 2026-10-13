@@ -7,7 +7,7 @@ import { EffectComposer, Vignette } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import { Perf } from "r3f-perf";
 
-import { Lights } from "@/components/lighting/lights";
+import { Lights } from "@/components/lighting/experiments/lights";
 import { EulerianPath } from "./eulerianPath";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
 
