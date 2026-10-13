@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="antialiased">
-      <body>{children}</body>
+      <body>
+        <div className="relative h-screen w-full">{children}</div>
+      </body>
     </html>
   );
 }
