@@ -1,5 +1,5 @@
-import { PedestalModel } from "@/components/pedestal/pedestalModel";
-import { EulerianPath } from "@/components/puzzles/level1/eulerianPath";
+import { PedestalModel } from "@/components/models/pedestal/pedestalModel";
+import { EulerianPath } from "./eulerianPath";
 
 export function Level1() {
   return (

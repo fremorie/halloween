@@ -1,9 +1,9 @@
-import { YarnBallModel } from "@/components/yarnBall/yarnBallModel";
-import { useYarnMaterials } from "@/components/yarnBall/materials";
+import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
+import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { getGroundedGraph } from "@/utils/graph/getGroundedGraph";
 import { hat } from "@/data/levels";
-import { InstancedBranches } from "@/components/branch/instancedBranches";
+import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 
 const level = getGroundedGraph(hat);
 
