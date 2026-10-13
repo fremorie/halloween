@@ -52,6 +52,39 @@ const cape: Graph = {
   ],
 };
 
+const wings: Graph = {
+  nodes: [
+    { id: 0, position: [0, 0.3, 0] },
+    { id: 1, position: [0, -1.4, 0] },
+    { id: 2, position: [-1.3, 1.7, 0] },
+    { id: 3, position: [-2.9, 1.6, 0] },
+    { id: 4, position: [-2.75, 0, 0] },
+    { id: 5, position: [-1.8, -1.3, 0] },
+    { id: 6, position: [1.3, 1.7, 0] },
+    { id: 7, position: [2.9, 1.6, 0] },
+    { id: 8, position: [2.75, 0, 0] },
+    { id: 9, position: [1.8, -1.3, 0] },
+  ],
+  edges: [
+    { a: 2, b: 3 },
+    { a: 3, b: 4 },
+    { a: 2, b: 4 },
+    { a: 4, b: 5 },
+    { a: 2, b: 5 },
+    { a: 5, b: 0 },
+    { a: 2, b: 0 },
+    { a: 5, b: 1 },
+    { a: 6, b: 7 },
+    { a: 7, b: 8 },
+    { a: 6, b: 8 },
+    { a: 8, b: 9 },
+    { a: 6, b: 9 },
+    { a: 9, b: 0 },
+    { a: 6, b: 0 },
+    { a: 9, b: 1 },
+  ],
+};
+
 export const levels: Level[] = [
   {
     piece: "hat",
@@ -68,7 +101,7 @@ export const levels: Level[] = [
   {
     piece: "wings",
     title: "Bat wings",
-    graph: getGroundedGraph(hat),
+    graph: getGroundedGraph(wings),
     pumpkin: { variant: "happy", faceParams: { emberColor: "#c96e52" } },
   },
 ];
