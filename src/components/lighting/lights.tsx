@@ -7,16 +7,23 @@ import {
   type DirectionalLight,
   type Object3D,
 } from "three";
+import { useControls } from "leva";
+
 import {
   HEMISPHERE_LIGHT_SETTINGS,
   SUN_LIGHT_SETTINGS,
 } from "@/settings/lightSettings";
+import { EnvironmentLighting } from "./environmentLighting";
 
 const DEBUG = false;
 
 export function Lights() {
   const lightRef = useRef<DirectionalLight>(null);
   const shadowCameraRef = useRef<Camera>(null);
+
+  const { environmentLighting } = useControls({
+    environmentLighting: { value: true, label: "Environment light" },
+  });
 
   const [hasShadowCamera, setHasShadowCamera] = useState(false);
 
@@ -64,6 +71,8 @@ export function Lights() {
         shadow-camera-near={SUN_LIGHT_SETTINGS.shadowNear}
         shadow-camera-far={SUN_LIGHT_SETTINGS.shadowFar}
       />
+
+      {environmentLighting && <EnvironmentLighting />}
     </>
   );
 }
