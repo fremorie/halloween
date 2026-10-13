@@ -25,15 +25,15 @@ export const hat: Graph = {
 
 const cape: Graph = {
   nodes: [
-    { id: 0, position: [-1.1, 2.6, 0] },
-    { id: 1, position: [1.1, 2.6, 0] },
-    { id: 2, position: [0, 1.5, 0] },
-    { id: 3, position: [-2.2, 1.3, 0] },
-    { id: 4, position: [2.2, 1.3, 0] },
-    { id: 5, position: [-2.6, -1.3, 0] },
-    { id: 6, position: [-1.0, -1.9, 0] },
-    { id: 7, position: [1.0, -1.9, 0] },
-    { id: 8, position: [2.6, -1.3, 0] },
+    { id: 0, position: [-1.1, 2.3, 0] },
+    { id: 1, position: [1.1, 2.3, 0] },
+    { id: 2, position: [0, 1.2, 0] },
+    { id: 3, position: [-2.0, 1.0, 0] },
+    { id: 4, position: [2.0, 1.0, 0] },
+    { id: 5, position: [-2.9, -0.3, 0] },
+    { id: 6, position: [-1.2, -1.7, 0] },
+    { id: 7, position: [1.2, -1.7, 0] },
+    { id: 8, position: [2.9, -0.3, 0] },
   ],
   edges: [
     { a: 0, b: 2 },
