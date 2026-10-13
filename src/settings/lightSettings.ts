@@ -1,4 +1,4 @@
-import { Vec3 } from "@/types/math";
+import type { Vec3 } from "@/types/math";
 
 export const HEMISPHERE_LIGHT_SETTINGS = {
   skyColor: "#fff8ee",
@@ -34,4 +34,9 @@ export const ENVIRONMENT_LIGHTING_SETTINGS = {
       rotationY: Math.PI / 2,
     },
   ],
+};
+
+export const SHADOW_CATCHER_SETTINGS = {
+  shadowColor: "#4a3d52",
+  shadowOpacity: 0.7,
 };
