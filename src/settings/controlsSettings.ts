@@ -8,3 +8,5 @@ export const KEYBOARD_CONTROLS_MAP: KeyboardControlsEntry<ControlName>[] = [
   { name: "left", keys: ["ArrowLeft", "KeyA"] },
   { name: "right", keys: ["ArrowRight", "KeyD"] },
 ];
+
+export type HeldControls = Record<ControlName, boolean>;
