@@ -1,3 +1,5 @@
+import { FrontSide } from "three";
+
 import { usePedestalGLTF } from "./usePedestalGLTF";
 
 export function PedestalModel() {
@@ -10,6 +12,7 @@ export function PedestalModel() {
         receiveShadow
         geometry={nodes.pedestal.geometry}
         material={materials.palette}
+        material-shadowSide={FrontSide}
       />
     </group>
   );

@@ -1,4 +1,5 @@
 import { useFrame } from "@react-three/fiber";
+import { FrontSide } from "three";
 
 import { lanternMaterial } from "@/components/materials/lanternFaceMaterial";
 import { useJackOLanternCheerfulGLTF } from "./useJackOLanternCheerfulGLTF";
@@ -17,6 +18,7 @@ export function JackOLanternCheerfulModel() {
         receiveShadow
         geometry={nodes.pumpkin002.geometry}
         material={materials.pumpkin}
+        material-shadowSide={FrontSide}
       />
       <mesh geometry={nodes.pumpkin002_1.geometry} material={lanternMaterial} />
     </group>

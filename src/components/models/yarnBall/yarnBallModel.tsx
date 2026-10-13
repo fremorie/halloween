@@ -1,4 +1,4 @@
-import { MeshStandardMaterial } from "three";
+import { FrontSide, MeshStandardMaterial } from "three";
 
 import { useYarnBallGLTF } from "./useYarnBallGLTF";
 
@@ -18,6 +18,7 @@ export function YarnBallModel({ position, rotationY, material, scale }: Props) {
       receiveShadow
       geometry={nodes.YarnBall.geometry}
       material={material}
+      material-shadowSide={FrontSide}
       position={position}
       rotation-y={rotationY}
       scale={scale}

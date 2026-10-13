@@ -14,12 +14,15 @@ import {
   SUN_LIGHT_SETTINGS,
 } from "@/settings/lightSettings";
 import { EnvironmentLighting } from "./environmentLighting";
+import { useSunFollowing } from "./useSunFollowing";
 
 const DEBUG = false;
 
 export function Lights() {
   const lightRef = useRef<DirectionalLight>(null);
   const shadowCameraRef = useRef<Camera>(null);
+
+  useSunFollowing(lightRef);
 
   const { environmentLighting } = useControls({
     environmentLighting: { value: true, label: "Environment light" },

@@ -1,9 +1,20 @@
 import type { CameraProps } from "@react-three/fiber";
 
-import { Vec3 } from "@/types/math";
+import type { Vec3 } from "@/types/math";
+
+export const CAMERA_FOV = 38;
+export const CAMERA_FIT_RADIUS = 3.5;
+export const SOLVING_HALF_WIDTH = 5.5;
+export const CAMERA_FIT_MARGIN = 1.15;
+export const LOOK_AT_HEIGHT = 3.2;
+export const CAMERA_HEIGHT = 1.05;
+export const WALKING_LEAD = 1;
+export const WALKING_DROP = 1.3;
+export const WALKING_ZOOM = 0.75;
+export const CAMERA_FOLLOW_SPEED = 2.5;
 
 export const CAMERA_SETTINGS: CameraProps = {
-  fov: 45,
+  fov: CAMERA_FOV,
   near: 0.1,
   far: 1000,
   position: [4, 1.5, 8],

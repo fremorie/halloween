@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
+import { FrontSide, type InstancedMesh } from "three";
 
 import type { BranchSegment } from "@/utils/graph/getBranchInstanceMatrices";
 import { getBranchInstanceMatrices } from "@/utils/graph/getBranchInstanceMatrices";
@@ -13,8 +13,8 @@ type Props = {
 
 export function InstancedBranches({ branchSegments, tuckDistance }: Props) {
   const { nodes, materials } = useBranchGLTF();
-  const stemInstancesRef = useRef<THREE.InstancedMesh>(null);
-  const leafInstancesRef = useRef<THREE.InstancedMesh>(null);
+  const stemInstancesRef = useRef<InstancedMesh>(null);
+  const leafInstancesRef = useRef<InstancedMesh>(null);
 
   const leafNodes = useMemo(
     () => [nodes.Leaf001, nodes.Leaf002, nodes.Leaf003, nodes.Leaf004],
@@ -43,6 +43,7 @@ export function InstancedBranches({ branchSegments, tuckDistance }: Props) {
         ]}
         castShadow
         receiveShadow
+        material-shadowSide={FrontSide}
       />
       <instancedMesh
         key={`leaves-${leafMatrices.length}`}
@@ -50,6 +51,7 @@ export function InstancedBranches({ branchSegments, tuckDistance }: Props) {
         args={[leafNodes[0].geometry, materials.Leaf, leafMatrices.length]}
         castShadow
         receiveShadow
+        material-shadowSide={FrontSide}
       />
     </>
   );
