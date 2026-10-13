@@ -28,10 +28,7 @@ export function Experience() {
           },
         }}
       />
-      <KeyboardControls
-        map={KEYBOARD_CONTROLS_MAP}
-        onChange={(name, pressed) => console.log(name, pressed)}
-      >
+      <KeyboardControls map={KEYBOARD_CONTROLS_MAP}>
         <Canvas
           flat
           shadows="percentage"
