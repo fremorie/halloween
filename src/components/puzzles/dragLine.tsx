@@ -36,7 +36,7 @@ export function DragLine({ groupRef, graph }: Props) {
     const group = groupRef.current;
     if (!mesh || !group) return;
 
-    const { attempt, puzzleFeedback } = useGameStore.getState();
+    const { attempt } = useGameStore.getState();
     const currentNodeId = getCurrentNodeId(attempt);
     if (currentNodeId === null) {
       mesh.visible = false;
@@ -57,14 +57,12 @@ export function DragLine({ groupRef, graph }: Props) {
     group.localToWorld(currentNodeWorldPosition);
 
     raycaster.setFromCamera(pointer, camera);
-    camera.getWorldDirection(planeNormal).negate();
+    camera.getWorldDirection(planeNormal);
     plane.setFromNormalAndCoplanarPoint(planeNormal, currentNodeWorldPosition);
-    if (raycaster.ray.intersectPlane(plane, hitPoint)) {
-      puzzleFeedback.dragPoint.copy(hitPoint);
-    }
+    raycaster.ray.intersectPlane(plane, hitPoint);
 
     group.worldToLocal(lineStart.copy(currentNodeWorldPosition));
-    group.worldToLocal(lineEnd.copy(puzzleFeedback.dragPoint));
+    group.worldToLocal(lineEnd.copy(hitPoint));
     lineDirection.copy(lineEnd).sub(lineStart);
     const lineLength = lineDirection.length() - NODE_RADIUS;
     mesh.visible = lineLength > DRAG_LINE_MIN_LENGTH;

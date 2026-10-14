@@ -15,13 +15,8 @@ import {
   undoLastStep,
 } from "@/utils/puzzle/attempt";
 
-export type PuzzleFeedback = {
-  dragPoint: Vector3;
-};
-
 type GameState = {
   catPosition: Vector3;
-  puzzleFeedback: PuzzleFeedback;
   activeLevelIndex: number | null;
   attempt: Attempt;
   puzzlePhase: PuzzlePhase;
@@ -36,9 +31,6 @@ type GameState = {
 
 export const useGameStore = create<GameState>()((set, get) => ({
   catPosition: new Vector3(),
-  puzzleFeedback: {
-    dragPoint: new Vector3(),
-  },
   activeLevelIndex: null,
   attempt: EMPTY_ATTEMPT,
   puzzlePhase: "ready",
