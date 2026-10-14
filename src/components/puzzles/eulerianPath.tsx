@@ -19,10 +19,12 @@ type Props = {
 export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const yarnMaterials = useYarnMaterials();
 
-  const attempt = useGameStore((state) =>
-    state.currentStationIndex === levelIndex
-      ? state.attempt
-      : (state.solvedAttempts[levelIndex] ?? EMPTY_ATTEMPT),
+  const attempt = useGameStore(
+    (state) =>
+      state.solvedAttempts[levelIndex] ??
+      (state.currentStationIndex === levelIndex
+        ? state.attempt
+        : EMPTY_ATTEMPT),
   );
   const puzzlePhase = useGameStore((state) =>
     state.currentStationIndex === levelIndex ? state.puzzlePhase : "ready",
