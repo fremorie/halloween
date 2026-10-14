@@ -19,7 +19,6 @@ type GameState = {
   catPosition: Vector3;
   currentStationIndex: number;
   isNearStation: boolean;
-  activeLevelIndex: number | null;
   attempt: Attempt;
   puzzlePhase: PuzzlePhase;
   rejection: Rejection | null;
@@ -38,22 +37,26 @@ export const useGameStore = create<GameState>()((set, get) => ({
   catPosition: new Vector3(),
   currentStationIndex: 0,
   isNearStation: false,
-  activeLevelIndex: null,
   attempt: EMPTY_ATTEMPT,
   puzzlePhase: "ready",
   rejection: null,
   solvedAttempts: {},
 
   pressNode: (levelIndex, nodeId) => {
-    const { puzzlePhase, activeLevelIndex } = get();
-    if (puzzlePhase === "drawing" && activeLevelIndex === levelIndex) {
+    const { mode, currentStationIndex, puzzlePhase } = get();
+    const isTakingInput =
+      mode === "solving" && levelIndex === currentStationIndex;
+    if (!isTakingInput || puzzlePhase === "won") {
+      return;
+    }
+
+    if (puzzlePhase === "drawing") {
       get().threadToNode(nodeId);
 
       return;
     }
 
     set({
-      activeLevelIndex: levelIndex,
       attempt: startAttemptAt(nodeId),
       puzzlePhase: "drawing",
       rejection: null,
@@ -61,8 +64,10 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
 
   enterNode: (levelIndex, nodeId) => {
-    const { puzzlePhase, activeLevelIndex } = get();
-    if (puzzlePhase !== "drawing" || activeLevelIndex !== levelIndex) {
+    const { mode, currentStationIndex, puzzlePhase } = get();
+    const isTakingInput =
+      mode === "solving" && levelIndex === currentStationIndex;
+    if (!isTakingInput || puzzlePhase !== "drawing") {
       return;
     }
 
@@ -70,8 +75,8 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
 
   threadToNode: (nodeId) => {
-    const { attempt, activeLevelIndex } = get();
-    if (activeLevelIndex === null || getCurrentNodeId(attempt) === nodeId) {
+    const { attempt, currentStationIndex } = get();
+    if (getCurrentNodeId(attempt) === nodeId) {
       return;
     }
 
@@ -81,7 +86,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
       return;
     }
 
-    const { graph } = levels[activeLevelIndex];
+    const { graph } = levels[currentStationIndex];
     const traversal = traverseToNode(graph, attempt, nodeId);
     if ("refusal" in traversal) {
       if (attempt.usedEdgeIndices.length === 0) {
@@ -92,7 +97,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
 
       set({
         rejection: {
-          levelIndex: activeLevelIndex,
+          levelIndex: currentStationIndex,
           nodeId,
           reason: traversal.refusal,
         },
@@ -113,7 +118,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
       rejection: null,
       solvedAttempts: {
         ...state.solvedAttempts,
-        [activeLevelIndex]: traversal.attempt,
+        [currentStationIndex]: traversal.attempt,
       },
     }));
   },

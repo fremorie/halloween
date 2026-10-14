@@ -17,6 +17,7 @@ import {
   getStationSide,
 } from "@/utils/journey/getStationOrigin";
 import { EulerianPath } from "@/components/puzzles/eulerianPath";
+import { useGameStore } from "@/store/gameStore";
 
 const PUMPKIN_MODEL_BY_VARIANT = {
   classic: JackOLanternModel,
@@ -35,12 +36,20 @@ type Props = {
 export function Station({ level, stationIndex }: Props) {
   const PumpkinModel = PUMPKIN_MODEL_BY_VARIANT[level.pumpkin.variant];
   const outerSide = getStationSide(stationIndex);
+  const isActive = useGameStore(
+    (state) =>
+      state.mode === "solving" && state.currentStationIndex === stationIndex,
+  );
 
   return (
     <group position={getStationOrigin(stationIndex)}>
       <PedestalModel />
       <group position-y={PEDESTAL_TOP_HEIGHT}>
-        <EulerianPath graph={level.graph} levelIndex={stationIndex} isActive />
+        <EulerianPath
+          graph={level.graph}
+          levelIndex={stationIndex}
+          isActive={isActive}
+        />
       </group>
       <group
         position={[
