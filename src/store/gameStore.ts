@@ -30,6 +30,7 @@ type GameState = {
   setNearStation: (isNearStation: boolean) => void;
   beginApproach: () => void;
   arriveAtStation: () => void;
+  advanceToNextStation: () => void;
 };
 
 export const useGameStore = create<GameState>()((set, get) => ({
@@ -153,5 +154,22 @@ export const useGameStore = create<GameState>()((set, get) => ({
     }
 
     set({ mode: "solving" });
+  },
+
+  advanceToNextStation: () => {
+    const { currentStationIndex } = get();
+    const isLastStation = currentStationIndex === levels.length - 1;
+
+    if (isLastStation) {
+      return;
+    }
+
+    set({
+      mode: "walking",
+      currentStationIndex: currentStationIndex + 1,
+      attempt: EMPTY_ATTEMPT,
+      puzzlePhase: "ready",
+      rejection: null,
+    });
   },
 }));

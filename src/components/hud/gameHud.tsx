@@ -12,6 +12,9 @@ export function GameHud() {
   const cutThread = useGameStore((state) => state.cutThread);
   const isNearStation = useGameStore((state) => state.isNearStation);
   const beginApproach = useGameStore((state) => state.beginApproach);
+  const currentStationIndex = useGameStore(
+    (state) => state.currentStationIndex,
+  );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -60,6 +63,14 @@ export function GameHud() {
           >
             Start (E)
           </button>
+        )}
+
+        {mode === "walking" && !isNearStation && (
+          <p className="opacity-70">
+            {currentStationIndex === 0
+              ? "Walk to the first piece"
+              : "Walk to the next piece"}
+          </p>
         )}
       </div>
     </>

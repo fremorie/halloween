@@ -4,8 +4,11 @@ import { Cat } from "@/components/cat/cat";
 import { LanternFaceClock } from "@/components/materials/lanternFaceClock";
 import { Ground } from "./ground";
 import { Station } from "./station";
+import { useCelebrationTimer } from "./useCelebrationTimer";
 
 export function World() {
+  useCelebrationTimer();
+
   return (
     <>
       <Lights />
