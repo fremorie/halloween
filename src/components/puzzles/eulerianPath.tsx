@@ -3,7 +3,6 @@ import type { Group } from "three";
 
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 import { useYarnMaterials } from "@/components/models/yarnBall/materials";
-import { NODE_RADIUS } from "@/settings/graphSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
@@ -37,15 +36,6 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const isCelebrating = isThisLevelLive && puzzlePhase === "won";
   const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
 
-  const branchSegments = useMemo(
-    () =>
-      graph.edges.map((edge) => ({
-        from: graph.nodes[edge.a].position,
-        to: graph.nodes[edge.b].position,
-      })),
-    [graph],
-  );
-
   const edgeThreading = useMemo(
     () => getEdgeThreading(graph, attempt),
     [graph, attempt],
@@ -72,11 +62,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
         />
       ))}
 
-      <InstancedBranches
-        branchSegments={branchSegments}
-        tuckDistance={NODE_RADIUS * 0.8}
-        edgeThreading={edgeThreading}
-      />
+      <InstancedBranches graph={graph} edgeThreading={edgeThreading} />
 
       {isDrawing && <DragLine groupRef={groupRef} graph={graph} />}
     </group>

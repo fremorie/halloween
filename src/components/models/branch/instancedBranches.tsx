@@ -1,32 +1,34 @@
 import { useMemo } from "react";
 import { FrontSide } from "three";
 
-import type { BranchSegment } from "@/utils/graph/getBranchInstanceMatrices";
+import { BRANCH_TUCK_DISTANCE } from "@/settings/graphSettings";
+import type { Graph } from "@/types/graph";
 import { getBranchInstanceMatrices } from "@/utils/graph/getBranchInstanceMatrices";
+import { getBranchSegments } from "@/utils/graph/getBranchSegments";
 import { useBranchGLTF } from "./useBranchGLTF";
 import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";
 import { useLeafMaterial } from "./useLeafMaterial";
 
 type Props = {
-  branchSegments: BranchSegment[];
-  tuckDistance: number;
+  graph: Graph;
   edgeThreading: boolean[];
 };
 
-export function InstancedBranches({
-  branchSegments,
-  tuckDistance,
-  edgeThreading,
-}: Props) {
+export function InstancedBranches({ graph, edgeThreading }: Props) {
   const { nodes, materials } = useBranchGLTF();
   const leafNodes = useMemo(
     () => [nodes.Leaf001, nodes.Leaf002, nodes.Leaf003, nodes.Leaf004],
     [nodes],
   );
   const { stemMatrices, leafMatrices } = useMemo(
-    () => getBranchInstanceMatrices(branchSegments, tuckDistance, leafNodes),
-    [branchSegments, tuckDistance, leafNodes],
+    () =>
+      getBranchInstanceMatrices(
+        getBranchSegments(graph),
+        BRANCH_TUCK_DISTANCE,
+        leafNodes,
+      ),
+    [graph, leafNodes],
   );
 
   const stemInstancesRef = useInstanceMatrices(stemMatrices);
