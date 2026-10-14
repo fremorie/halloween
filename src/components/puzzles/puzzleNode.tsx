@@ -1,6 +1,6 @@
 import type { ThreeEvent } from "@react-three/fiber";
 import { useRef } from "react";
-import type { Group, MeshStandardMaterial } from "three";
+import { type Group, type MeshStandardMaterial, SphereGeometry } from "three";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { NODE_SCALE } from "@/settings/graphSettings";
@@ -13,6 +13,8 @@ import { useHoverAnimation } from "./useHoverAnimation";
 import { usePointerHover } from "./usePointerHover";
 import { useRejectShake } from "./useRejectShake";
 import { useScaleAnimation } from "./useScaleAnimation";
+
+const HIT_SPHERE_GEOMETRY = new SphereGeometry(HIT_SPHERE_RADIUS, 8, 6);
 
 type Props = {
   node: GraphNode;
@@ -63,13 +65,12 @@ export function PuzzleNode({
 
       {isActive && (
         <mesh
+          geometry={HIT_SPHERE_GEOMETRY}
           visible={false}
           onPointerDown={() => pressNode(levelIndex, node.id)}
           onPointerEnter={handlePointerEnter}
           onPointerLeave={endHover}
-        >
-          <sphereGeometry args={[HIT_SPHERE_RADIUS, 16, 12]} />
-        </mesh>
+        />
       )}
     </group>
   );
