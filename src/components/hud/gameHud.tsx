@@ -15,6 +15,7 @@ export function GameHud() {
   const currentStationIndex = useGameStore(
     (state) => state.currentStationIndex,
   );
+  const restartGame = useGameStore((state) => state.restartGame);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -71,6 +72,16 @@ export function GameHud() {
               ? "Walk to the first piece"
               : "Walk to the next piece"}
           </p>
+        )}
+
+        {mode === "done" && (
+          <button
+            type="button"
+            onClick={restartGame}
+            className="pointer-events-auto bg-white px-6 py-2 text-xl text-orange-700 transition-colors hover:text-orange-500"
+          >
+            Play again
+          </button>
         )}
       </div>
     </>

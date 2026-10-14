@@ -16,6 +16,7 @@ import type { GameMode } from "@/types/game";
 
 type GameState = {
   mode: GameMode;
+  runCount: number;
   catPosition: Vector3;
   currentStationIndex: number;
   isNearStation: boolean;
@@ -31,10 +32,12 @@ type GameState = {
   beginApproach: () => void;
   arriveAtStation: () => void;
   advanceToNextStation: () => void;
+  restartGame: () => void;
 };
 
 export const useGameStore = create<GameState>()((set, get) => ({
   mode: "walking",
+  runCount: 0,
   catPosition: new Vector3(),
   currentStationIndex: 0,
   isNearStation: false,
@@ -160,16 +163,27 @@ export const useGameStore = create<GameState>()((set, get) => ({
     const { currentStationIndex } = get();
     const isLastStation = currentStationIndex === levels.length - 1;
 
-    if (isLastStation) {
-      return;
-    }
-
     set({
-      mode: "walking",
-      currentStationIndex: currentStationIndex + 1,
+      mode: isLastStation ? "done" : "walking",
+      currentStationIndex: isLastStation
+        ? currentStationIndex
+        : currentStationIndex + 1,
       attempt: EMPTY_ATTEMPT,
       puzzlePhase: "ready",
       rejection: null,
     });
+  },
+
+  restartGame: () => {
+    set((state) => ({
+      mode: "walking",
+      runCount: state.runCount + 1,
+      currentStationIndex: 0,
+      isNearStation: false,
+      attempt: EMPTY_ATTEMPT,
+      puzzlePhase: "ready",
+      rejection: null,
+      solvedAttempts: {},
+    }));
   },
 }));

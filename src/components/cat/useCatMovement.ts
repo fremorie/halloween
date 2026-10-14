@@ -35,7 +35,7 @@ export function useCatMovement(
       arriveAtStation,
     } = useGameStore.getState();
 
-    if (mode === "walking") {
+    if (mode === "walking" || mode === "done") {
       getMoveDirection(getKeys(), direction);
       root.position.addScaledVector(direction, CAT_WALK_SPEED * stepDuration);
       clampToRoamingArea(root.position, stationCount);

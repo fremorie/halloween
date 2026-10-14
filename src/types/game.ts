@@ -1,1 +1,1 @@
-export type GameMode = "walking" | "approaching" | "solving";
+export type GameMode = "walking" | "approaching" | "solving" | "done";

@@ -11,8 +11,10 @@ import { PAPER_COLOR } from "@/settings/paperSettings";
 import { World } from "@/components/world/world";
 import { KEYBOARD_CONTROLS_MAP } from "@/settings/controlsSettings";
 import { CameraRig } from "@/components/experience/cameraRig";
+import { useGameStore } from "@/store/gameStore";
 
 export function Experience() {
+  const runCount = useGameStore((state) => state.runCount);
   const { freeCamera } = useControls({
     freeCamera: { value: false, label: "Free camera" },
   });
@@ -45,7 +47,7 @@ export function Experience() {
           {freeCamera ? (
             <OrbitControls makeDefault target={CAMERA_TARGET} />
           ) : (
-            <CameraRig />
+            <CameraRig key={runCount} />
           )}
           <Perf position="bottom-right" />
         </Canvas>
