@@ -9,6 +9,7 @@ export function GameHud() {
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
   const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
+  const isNearStation = useGameStore((state) => state.isNearStation);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -36,6 +37,10 @@ export function GameHud() {
         >
           Reset (Esc)
         </button>
+      )}
+
+      {isNearStation && (
+        <p className="text-xl text-orange-700">Press E to start</p>
       )}
     </div>
   );

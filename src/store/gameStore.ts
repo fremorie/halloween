@@ -15,6 +15,8 @@ import {
 
 type GameState = {
   catPosition: Vector3;
+  currentStationIndex: number;
+  isNearStation: boolean;
   activeLevelIndex: number | null;
   attempt: Attempt;
   puzzlePhase: PuzzlePhase;
@@ -24,10 +26,13 @@ type GameState = {
   enterNode: (levelIndex: number, nodeId: number) => void;
   threadToNode: (nodeId: number) => void;
   cutThread: () => void;
+  setNearStation: (isNearStation: boolean) => void;
 };
 
 export const useGameStore = create<GameState>()((set, get) => ({
   catPosition: new Vector3(),
+  currentStationIndex: 0,
+  isNearStation: false,
   activeLevelIndex: null,
   attempt: EMPTY_ATTEMPT,
   puzzlePhase: "ready",
@@ -110,4 +115,6 @@ export const useGameStore = create<GameState>()((set, get) => ({
       rejection: null,
     });
   },
+
+  setNearStation: (isNearStation) => set({ isNearStation }),
 }));

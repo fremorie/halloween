@@ -8,6 +8,8 @@ import { CAT_WALK_SPEED, MAX_STEP_DURATION } from "@/settings/catSettings";
 import { useGameStore } from "@/store/gameStore";
 import { clampToRoamingArea } from "@/utils/journey/clampToRoamingArea";
 import { getMoveDirection } from "@/utils/cat/getMoveDirection";
+import { isInsideGroundEllipse } from "@/utils/journey/isInsideGroundEllipse";
+import { getArrivalArea } from "@/utils/journey/getArrivalArea";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
@@ -27,6 +29,17 @@ export function useCatMovement(
     root.position.addScaledVector(direction, CAT_WALK_SPEED * stepDuration);
     clampToRoamingArea(root.position, stationCount);
 
-    useGameStore.getState().catPosition.copy(root.position);
+    const { catPosition, currentStationIndex, isNearStation, setNearStation } =
+      useGameStore.getState();
+    catPosition.copy(root.position);
+
+    const isNearStationNow = isInsideGroundEllipse(
+      root.position,
+      getArrivalArea(currentStationIndex),
+    );
+
+    if (isNearStationNow !== isNearStation) {
+      setNearStation(isNearStationNow);
+    }
   });
 }
