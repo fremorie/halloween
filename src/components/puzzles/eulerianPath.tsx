@@ -37,26 +37,29 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
     [graph, attempt],
   );
 
-  const getNodeState = (nodeId: number): NodeState => {
+  const getNodeState = (nodeId: number, pathOrder: number): NodeState => {
     if (nodeId === currentNodeId) return "current";
-    if (attempt.path.includes(nodeId)) return "visited";
+    if (pathOrder !== -1) return "visited";
     return "idle";
   };
 
   return (
     <group>
-      {graph.nodes.map((node) => (
-        <PuzzleNode
-          key={node.id}
-          node={node}
-          levelIndex={levelIndex}
-          material={yarnMaterials[node.id % yarnMaterials.length]}
-          state={getNodeState(node.id)}
-          pathOrder={attempt.path.indexOf(node.id)}
-          isActive={isActive}
-          isCelebrating={isCelebrating}
-        />
-      ))}
+      {graph.nodes.map((node) => {
+        const pathOrder = attempt.path.indexOf(node.id);
+        return (
+          <PuzzleNode
+            key={node.id}
+            node={node}
+            levelIndex={levelIndex}
+            material={yarnMaterials[node.id % yarnMaterials.length]}
+            state={getNodeState(node.id, pathOrder)}
+            pathOrder={pathOrder}
+            isActive={isActive}
+            isCelebrating={isCelebrating}
+          />
+        );
+      })}
 
       <InstancedBranches graph={graph} edgeThreading={edgeThreading} />
 
