@@ -6,8 +6,3 @@ export type Attempt = {
 export type PuzzlePhase = "ready" | "drawing" | "won";
 
 export type NodeState = "idle" | "visited" | "current";
-
-export type EdgeThreading = {
-  isThreaded: boolean;
-  isThreadedFromA: boolean;
-};

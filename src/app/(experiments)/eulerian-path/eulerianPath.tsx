@@ -12,6 +12,8 @@ const branchSegments = level.edges.map((edge) => ({
   to: level.nodes[edge.b].position,
 }));
 
+const allThreaded = level.edges.map(() => true);
+
 export function EulerianPath() {
   const yarnMaterials = useYarnMaterials();
 
@@ -34,6 +36,7 @@ export function EulerianPath() {
       <InstancedBranches
         branchSegments={branchSegments}
         tuckDistance={NODE_RADIUS * 0.8}
+        edgeThreading={allThreaded}
       />
     </>
   );

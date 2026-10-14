@@ -1,16 +1,8 @@
 import type { Graph } from "@/types/graph";
-import type { Attempt, EdgeThreading } from "@/types/puzzle";
+import type { Attempt } from "@/types/puzzle";
 
-export function getEdgeThreading(
-  graph: Graph,
-  attempt: Attempt,
-): EdgeThreading[] {
-  return graph.edges.map((edge, edgeIndex) => {
-    const stepIndex = attempt.usedEdgeIndices.indexOf(edgeIndex);
-
-    return {
-      isThreaded: stepIndex !== -1,
-      isThreadedFromA: stepIndex !== -1 && attempt.path[stepIndex] === edge.a,
-    };
-  });
+export function getEdgeThreading(graph: Graph, attempt: Attempt): boolean[] {
+  return graph.edges.map((_, edgeIndex) =>
+    attempt.usedEdgeIndices.includes(edgeIndex),
+  );
 }
