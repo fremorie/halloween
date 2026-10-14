@@ -1,3 +1,4 @@
+import type { ThreeEvent } from "@react-three/fiber";
 import { useRef } from "react";
 import type { Group, MeshStandardMaterial } from "three";
 
@@ -44,9 +45,12 @@ export function PuzzleNode({
   useCelebrationHop(groupRef, isCelebrating, pathOrder, restingY);
   useRejectShake(groupRef, levelIndex, node.id, restingX);
 
-  const handlePointerEnter = () => {
+  const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
-    enterNode(levelIndex, node.id);
+    const isPointerHeld = event.buttons !== 0;
+    if (isPointerHeld) {
+      enterNode(levelIndex, node.id);
+    }
   };
 
   return (

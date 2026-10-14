@@ -16,7 +16,6 @@ import {
 } from "@/utils/puzzle/attempt";
 
 export type PuzzleFeedback = {
-  isPointerDown: boolean;
   dragPoint: Vector3;
 };
 
@@ -32,14 +31,12 @@ type GameState = {
   pressNode: (levelIndex: number, nodeId: number) => void;
   enterNode: (levelIndex: number, nodeId: number) => void;
   threadToNode: (nodeId: number) => void;
-  releasePointer: () => void;
   cutThread: () => void;
 };
 
 export const useGameStore = create<GameState>()((set, get) => ({
   catPosition: new Vector3(),
   puzzleFeedback: {
-    isPointerDown: false,
     dragPoint: new Vector3(),
   },
   activeLevelIndex: null,
@@ -50,9 +47,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
   solvedAttempts: {},
 
   pressNode: (levelIndex, nodeId) => {
-    const { puzzlePhase, activeLevelIndex, puzzleFeedback } = get();
-    puzzleFeedback.isPointerDown = true;
-
+    const { puzzlePhase, activeLevelIndex } = get();
     if (puzzlePhase === "drawing" && activeLevelIndex === levelIndex) {
       get().threadToNode(nodeId);
       return;
@@ -68,14 +63,8 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
 
   enterNode: (levelIndex, nodeId) => {
-    const { puzzlePhase, activeLevelIndex, puzzleFeedback } = get();
-    if (
-      !puzzleFeedback.isPointerDown ||
-      puzzlePhase !== "drawing" ||
-      activeLevelIndex !== levelIndex
-    ) {
-      return;
-    }
+    const { puzzlePhase, activeLevelIndex } = get();
+    if (puzzlePhase !== "drawing" || activeLevelIndex !== levelIndex) return;
 
     get().threadToNode(nodeId);
   },
@@ -124,10 +113,6 @@ export const useGameStore = create<GameState>()((set, get) => ({
         [activeLevelIndex]: nextAttempt,
       },
     }));
-  },
-
-  releasePointer: () => {
-    get().puzzleFeedback.isPointerDown = false;
   },
 
   cutThread: () => {

@@ -1,11 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useGameStore } from "@/store/gameStore";
 
 export function GameHud() {
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
   const puzzleMessage = useGameStore((state) => state.puzzleMessage);
   const cutThread = useGameStore((state) => state.cutThread);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === "Escape") cutThread();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [cutThread]);
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
