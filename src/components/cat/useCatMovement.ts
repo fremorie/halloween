@@ -5,9 +5,13 @@ import { useFrame } from "@react-three/fiber";
 
 import type { ControlName } from "@/settings/controlsSettings";
 import { CAT_WALK_SPEED, MAX_STEP_DURATION } from "@/settings/catSettings";
+import { ROUTE_ARRIVAL_DISTANCE } from "@/settings/journeySettings";
 import { useGameStore } from "@/store/gameStore";
 import { clampToRoamingArea } from "@/utils/journey/clampToRoamingArea";
 import { getMoveDirection } from "@/utils/cat/getMoveDirection";
+import { getArrivalArea } from "@/utils/journey/getArrivalArea";
+import { getStandSpot } from "@/utils/journey/getStandSpot";
+import { isInsideGroundEllipse } from "@/utils/journey/isInsideGroundEllipse";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
@@ -15,18 +19,50 @@ export function useCatMovement(
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
+  const [standSpot] = useState(() => new Vector3());
 
   useFrame((_, delta) => {
     const root = rootRef.current;
     if (!root) return;
 
     const stepDuration = Math.min(delta, MAX_STEP_DURATION);
-    const keys = getKeys();
+    const {
+      catPosition,
+      mode,
+      currentStationIndex,
+      isNearStation,
+      setNearStation,
+      arriveAtStation,
+    } = useGameStore.getState();
 
-    getMoveDirection(keys, direction);
-    root.position.addScaledVector(direction, CAT_WALK_SPEED * stepDuration);
-    clampToRoamingArea(root.position, stationCount);
+    if (mode === "walking" || mode === "done") {
+      getMoveDirection(getKeys(), direction);
+      root.position.addScaledVector(direction, CAT_WALK_SPEED * stepDuration);
+      clampToRoamingArea(root.position, stationCount);
+    }
 
-    useGameStore.getState().catPosition.copy(root.position);
+    if (mode === "approaching") {
+      standSpot.set(...getStandSpot(currentStationIndex));
+      direction.copy(standSpot).sub(root.position);
+      const distanceToSpot = direction.length();
+
+      if (distanceToSpot <= ROUTE_ARRIVAL_DISTANCE) {
+        root.position.copy(standSpot);
+        arriveAtStation();
+      } else {
+        direction.normalize();
+        root.position.addScaledVector(
+          direction,
+          Math.min(distanceToSpot, CAT_WALK_SPEED * stepDuration),
+        );
+      }
+    }
+
+    catPosition.copy(root.position);
+
+    const isNearStationNow =
+      mode === "walking" &&
+      isInsideGroundEllipse(root.position, getArrivalArea(currentStationIndex));
+    if (isNearStationNow !== isNearStation) setNearStation(isNearStationNow);
   });
 }

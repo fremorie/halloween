@@ -12,10 +12,14 @@ import {
   traverseToNode,
   undoLastStep,
 } from "@/utils/puzzle/attempt";
+import type { GameMode } from "@/types/game";
 
 type GameState = {
+  mode: GameMode;
+  runCount: number;
   catPosition: Vector3;
-  activeLevelIndex: number | null;
+  currentStationIndex: number;
+  isNearStation: boolean;
   attempt: Attempt;
   puzzlePhase: PuzzlePhase;
   rejection: Rejection | null;
@@ -24,25 +28,39 @@ type GameState = {
   enterNode: (levelIndex: number, nodeId: number) => void;
   threadToNode: (nodeId: number) => void;
   cutThread: () => void;
+  setNearStation: (isNearStation: boolean) => void;
+  beginApproach: () => void;
+  arriveAtStation: () => void;
+  advanceToNextStation: () => void;
+  restartGame: () => void;
 };
 
 export const useGameStore = create<GameState>()((set, get) => ({
+  mode: "walking",
+  runCount: 0,
   catPosition: new Vector3(),
-  activeLevelIndex: null,
+  currentStationIndex: 0,
+  isNearStation: false,
   attempt: EMPTY_ATTEMPT,
   puzzlePhase: "ready",
   rejection: null,
   solvedAttempts: {},
 
   pressNode: (levelIndex, nodeId) => {
-    const { puzzlePhase, activeLevelIndex } = get();
-    if (puzzlePhase === "drawing" && activeLevelIndex === levelIndex) {
+    const { mode, currentStationIndex, puzzlePhase } = get();
+    const isTakingInput =
+      mode === "solving" && levelIndex === currentStationIndex;
+    if (!isTakingInput || puzzlePhase === "won") {
+      return;
+    }
+
+    if (puzzlePhase === "drawing") {
       get().threadToNode(nodeId);
+
       return;
     }
 
     set({
-      activeLevelIndex: levelIndex,
       attempt: startAttemptAt(nodeId),
       puzzlePhase: "drawing",
       rejection: null,
@@ -50,43 +68,51 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
 
   enterNode: (levelIndex, nodeId) => {
-    const { puzzlePhase, activeLevelIndex } = get();
-    if (puzzlePhase !== "drawing" || activeLevelIndex !== levelIndex) return;
+    const { mode, currentStationIndex, puzzlePhase } = get();
+    const isTakingInput =
+      mode === "solving" && levelIndex === currentStationIndex;
+    if (!isTakingInput || puzzlePhase !== "drawing") {
+      return;
+    }
 
     get().threadToNode(nodeId);
   },
 
   threadToNode: (nodeId) => {
-    const { attempt, activeLevelIndex } = get();
-    if (activeLevelIndex === null || getCurrentNodeId(attempt) === nodeId) {
+    const { attempt, currentStationIndex } = get();
+    if (getCurrentNodeId(attempt) === nodeId) {
       return;
     }
 
     if (getPreviousNodeId(attempt) === nodeId) {
       set({ attempt: undoLastStep(attempt), rejection: null });
+
       return;
     }
 
-    const { graph } = levels[activeLevelIndex];
+    const { graph } = levels[currentStationIndex];
     const traversal = traverseToNode(graph, attempt, nodeId);
     if ("refusal" in traversal) {
       if (attempt.usedEdgeIndices.length === 0) {
         set({ attempt: startAttemptAt(nodeId), rejection: null });
+
         return;
       }
 
       set({
         rejection: {
-          levelIndex: activeLevelIndex,
+          levelIndex: currentStationIndex,
           nodeId,
           reason: traversal.refusal,
         },
       });
+
       return;
     }
 
     if (!isAttemptComplete(graph, traversal.attempt)) {
       set({ attempt: traversal.attempt, rejection: null });
+
       return;
     }
 
@@ -96,18 +122,68 @@ export const useGameStore = create<GameState>()((set, get) => ({
       rejection: null,
       solvedAttempts: {
         ...state.solvedAttempts,
-        [activeLevelIndex]: traversal.attempt,
+        [currentStationIndex]: traversal.attempt,
       },
     }));
   },
 
   cutThread: () => {
-    if (get().puzzlePhase !== "drawing") return;
+    if (get().puzzlePhase !== "drawing") {
+      return;
+    }
 
     set({
       attempt: EMPTY_ATTEMPT,
       puzzlePhase: "ready",
       rejection: null,
     });
+  },
+
+  setNearStation: (isNearStation) => set({ isNearStation }),
+
+  beginApproach: () => {
+    const { mode, isNearStation } = get();
+
+    if (mode !== "walking" || !isNearStation) {
+      return;
+    }
+
+    set({ mode: "approaching", isNearStation: false });
+  },
+
+  arriveAtStation: () => {
+    if (get().mode !== "approaching") {
+      return;
+    }
+
+    set({ mode: "solving" });
+  },
+
+  advanceToNextStation: () => {
+    const { currentStationIndex } = get();
+    const isLastStation = currentStationIndex === levels.length - 1;
+
+    set({
+      mode: isLastStation ? "done" : "walking",
+      currentStationIndex: isLastStation
+        ? currentStationIndex
+        : currentStationIndex + 1,
+      attempt: EMPTY_ATTEMPT,
+      puzzlePhase: "ready",
+      rejection: null,
+    });
+  },
+
+  restartGame: () => {
+    set((state) => ({
+      mode: "walking",
+      runCount: state.runCount + 1,
+      currentStationIndex: 0,
+      isNearStation: false,
+      attempt: EMPTY_ATTEMPT,
+      puzzlePhase: "ready",
+      rejection: null,
+      solvedAttempts: {},
+    }));
   },
 }));
