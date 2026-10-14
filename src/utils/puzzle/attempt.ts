@@ -63,3 +63,7 @@ export function undoLastStep(attempt: Attempt): Attempt {
     usedEdgeIndices: attempt.usedEdgeIndices.slice(0, -1),
   };
 }
+
+export function isAttemptComplete(graph: Graph, attempt: Attempt) {
+  return attempt.usedEdgeIndices.length === graph.edges.length;
+}

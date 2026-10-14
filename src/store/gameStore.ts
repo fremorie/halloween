@@ -2,11 +2,12 @@ import { create } from "zustand";
 import { Vector3 } from "three";
 
 import { levels } from "@/data/levels";
-import type { Attempt } from "@/types/puzzle";
+import type { Attempt, PuzzlePhase } from "@/types/puzzle";
 import {
   EMPTY_ATTEMPT,
   getCurrentNodeId,
   getPreviousNodeId,
+  isAttemptComplete,
   startAttemptAt,
   traverseToNode,
   undoLastStep,
@@ -21,6 +22,8 @@ type GameState = {
   puzzleFeedback: PuzzleFeedback;
   activeLevelIndex: number | null;
   attempt: Attempt;
+  puzzlePhase: PuzzlePhase;
+  solvedAttempts: Partial<Record<number, Attempt>>;
   pressNode: (levelIndex: number, nodeId: number) => void;
   threadToNode: (nodeId: number) => void;
 };
@@ -32,16 +35,22 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
   activeLevelIndex: null,
   attempt: EMPTY_ATTEMPT,
+  puzzlePhase: "ready",
+  solvedAttempts: {},
 
   pressNode: (levelIndex, nodeId) => {
-    const { activeLevelIndex, attempt } = get();
+    const { activeLevelIndex, puzzlePhase } = get();
 
-    if (activeLevelIndex === levelIndex && attempt.path.length > 0) {
+    if (puzzlePhase === "drawing" && activeLevelIndex === levelIndex) {
       get().threadToNode(nodeId);
       return;
     }
 
-    set({ activeLevelIndex: levelIndex, attempt: startAttemptAt(nodeId) });
+    set({
+      activeLevelIndex: levelIndex,
+      attempt: startAttemptAt(nodeId),
+      puzzlePhase: "drawing",
+    });
   },
 
   threadToNode: (nodeId) => {
@@ -66,6 +75,18 @@ export const useGameStore = create<GameState>()((set, get) => ({
       return;
     }
 
-    set({ attempt: nextAttempt });
+    if (!isAttemptComplete(graph, nextAttempt)) {
+      set({ attempt: nextAttempt });
+      return;
+    }
+
+    set((state) => ({
+      attempt: nextAttempt,
+      puzzlePhase: "won",
+      solvedAttemps: {
+        ...state.solvedAttempts,
+        [activeLevelIndex]: nextAttempt,
+      },
+    }));
   },
 }));

@@ -24,10 +24,17 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
 
   const activeLevelIndex = useGameStore((state) => state.activeLevelIndex);
   const liveAttempt = useGameStore((state) => state.attempt);
+  const puzzlePhase = useGameStore((state) => state.puzzlePhase);
+  const solvedAttempt = useGameStore(
+    (state) => state.solvedAttempts[levelIndex],
+  );
 
   const isThisLevelLive = activeLevelIndex === levelIndex;
-  const attempt = isThisLevelLive ? liveAttempt : EMPTY_ATTEMPT;
-  const currentNodeId = isThisLevelLive ? getCurrentNodeId(attempt) : null;
+  const attempt = isThisLevelLive
+    ? liveAttempt
+    : (solvedAttempt ?? EMPTY_ATTEMPT);
+  const isDrawing = isThisLevelLive && puzzlePhase === "drawing";
+  const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
 
   const branchSegments = useMemo(
     () =>
@@ -68,7 +75,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
         edgeThreading={edgeThreading}
       />
 
-      {isThisLevelLive && <DragLine groupRef={groupRef} graph={graph} />}
+      {isDrawing && <DragLine groupRef={groupRef} graph={graph} />}
     </group>
   );
 }
