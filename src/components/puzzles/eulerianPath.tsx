@@ -1,20 +1,20 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import type { Group } from "three";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 import type { Graph } from "@/types/graph";
-import type { Vec3 } from "@/types/math";
 import { DragLine } from "./dragLine";
-
-const THREAD_TEST_POINT: Vec3 = [0, 2.5, 1];
 
 type Props = {
   graph: Graph;
 };
 
 export function EulerianPath({ graph }: Props) {
+  const groupRef = useRef<Group>(null);
+
   const yarnMaterials = useYarnMaterials();
 
   const branchSegments = useMemo(
@@ -27,7 +27,7 @@ export function EulerianPath({ graph }: Props) {
   );
 
   return (
-    <group>
+    <group ref={groupRef}>
       {graph.nodes.map((node) => {
         const materialIndex = node.id % yarnMaterials.length;
 
@@ -47,7 +47,7 @@ export function EulerianPath({ graph }: Props) {
         tuckDistance={NODE_RADIUS * 0.8}
       />
 
-      <DragLine graph={graph} currentNodeId={0} toPoint={THREAD_TEST_POINT} />
+      <DragLine groupRef={groupRef} graph={graph} currentNodeId={0} />
     </group>
   );
 }
