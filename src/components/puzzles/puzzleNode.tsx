@@ -34,10 +34,16 @@ export function PuzzleNode({
   isActive,
 }: Props) {
   const pressNode = useGameStore((store) => store.pressNode);
+  const enterNode = useGameStore((store) => store.enterNode);
 
   const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
     pressNode(levelIndex, node.id);
+  };
+
+  const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
+    enterNode(levelIndex, node.id);
   };
 
   return (
@@ -49,7 +55,11 @@ export function PuzzleNode({
       />
 
       {isActive && (
-        <mesh visible={false} onPointerDown={handlePointerDown}>
+        <mesh
+          visible={false}
+          onPointerDown={handlePointerDown}
+          onPointerEnter={handlePointerEnter}
+        >
           <sphereGeometry args={[HIT_SPHERE_RADIUS, 16, 12]} />
         </mesh>
       )}
