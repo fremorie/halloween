@@ -62,6 +62,7 @@ export function useBranchThreading({
   };
 
   useGSAP(() => {
+    paintBranches();
     gsap.to(edgeProgresses, {
       progress: (edgeIndex: number) => (edgeThreading[edgeIndex] ? 1 : 0),
       duration: BRANCH_THREAD_DURATION,
