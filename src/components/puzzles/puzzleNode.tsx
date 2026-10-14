@@ -21,6 +21,10 @@ import {
   REJECT_SHAKE_DURATION,
   REJECT_SHAKE_SPEED,
   VISITED_NODE_SCALE,
+  WIN_HOP_DURATION,
+  WIN_HOP_HEIGHT,
+  WIN_HOP_STAGGER,
+  WIN_NODE_SCALE,
 } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { GraphNode } from "@/types/graph";
@@ -32,7 +36,9 @@ type Props = {
   levelIndex: number;
   material: MeshStandardMaterial;
   state: NodeState;
+  pathOrder: number;
   isActive: boolean;
+  isCelebrating: boolean;
 };
 
 export function PuzzleNode({
@@ -40,7 +46,9 @@ export function PuzzleNode({
   levelIndex,
   material,
   state,
+  pathOrder,
   isActive,
+  isCelebrating,
 }: Props) {
   const groupRef = useRef<Group>(null);
   const animationRef = useRef({
@@ -61,7 +69,7 @@ export function PuzzleNode({
     }
 
     const animation = animationRef.current;
-    const { rejected } = useGameStore.getState().puzzleFeedback;
+    const { wonAt, rejected } = useGameStore.getState().puzzleFeedback;
     const time = getNowSeconds();
 
     let targetScale = 1;
@@ -71,6 +79,19 @@ export function PuzzleNode({
         CURRENT_NODE_PULSE_AMOUNT * Math.sin(time * CURRENT_NODE_PULSE_SPEED);
     } else if (state === "visited" || animation.isHovered) {
       targetScale = VISITED_NODE_SCALE;
+    }
+
+    let hop = 0;
+    if (isCelebrating && wonAt !== null) {
+      const sinceHopStart = time - wonAt - pathOrder * WIN_HOP_STAGGER;
+      if (sinceHopStart > 0 && sinceHopStart < WIN_HOP_DURATION) {
+        hop =
+          Math.sin((Math.PI * sinceHopStart) / WIN_HOP_DURATION) *
+          WIN_HOP_HEIGHT;
+        targetScale = WIN_NODE_SCALE;
+      } else {
+        targetScale = VISITED_NODE_SCALE;
+      }
     }
 
     let shake = 0;
@@ -122,7 +143,7 @@ export function PuzzleNode({
     group.scale.setScalar(animation.scale);
     group.position.set(
       node.position[0] + shake,
-      node.position[1],
+      node.position[1] + hop,
       node.position[2],
     );
   });

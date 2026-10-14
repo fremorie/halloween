@@ -34,6 +34,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
     ? liveAttempt
     : (solvedAttempt ?? EMPTY_ATTEMPT);
   const isDrawing = isThisLevelLive && puzzlePhase === "drawing";
+  const isCelebrating = isThisLevelLive && puzzlePhase === "won";
   const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
 
   const branchSegments = useMemo(
@@ -65,7 +66,9 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
           levelIndex={levelIndex}
           material={yarnMaterials[node.id % yarnMaterials.length]}
           state={getNodeState(node.id)}
+          pathOrder={Math.max(0, attempt.path.indexOf(node.id))}
           isActive={isActive}
+          isCelebrating={isCelebrating}
         />
       ))}
 
