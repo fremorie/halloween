@@ -8,6 +8,7 @@ import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
 import { EMPTY_ATTEMPT, getCurrentNodeId } from "@/utils/puzzle/attempt";
+import { getEdgeThreading } from "@/utils/puzzle/getEdgeThreading";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
 
@@ -37,6 +38,11 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
     [graph],
   );
 
+  const edgeThreading = useMemo(
+    () => getEdgeThreading(graph, attempt),
+    [graph, attempt],
+  );
+
   const getNodeState = (nodeId: number): NodeState => {
     if (nodeId === currentNodeId) return "current";
     if (attempt.path.includes(nodeId)) return "visited";
@@ -59,6 +65,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
       <InstancedBranches
         branchSegments={branchSegments}
         tuckDistance={NODE_RADIUS * 0.8}
+        edgeThreading={edgeThreading}
       />
 
       {isThisLevelLive && <DragLine groupRef={groupRef} graph={graph} />}
