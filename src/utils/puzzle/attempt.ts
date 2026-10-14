@@ -1,4 +1,4 @@
-import type { Attempt } from "@/types/puzzle";
+import type { Attempt, Traversal } from "@/types/puzzle";
 import type { Graph, GraphEdge } from "@/types/graph";
 
 export const EMPTY_ATTEMPT: Attempt = { path: [], usedEdgeIndices: [] };
@@ -11,6 +11,10 @@ export function getCurrentNodeId(attempt: Attempt): number | null {
   return attempt.path.at(-1) ?? null;
 }
 
+export function getPreviousNodeId(attempt: Attempt): number | null {
+  return attempt.path.at(-2) ?? null;
+}
+
 function edgeJoins(edge: GraphEdge, nodeA: number, nodeB: number) {
   return (
     (edge.a === nodeA && edge.b === nodeB) ||
@@ -18,43 +22,32 @@ function edgeJoins(edge: GraphEdge, nodeA: number, nodeB: number) {
   );
 }
 
-export function findUnusedEdgeIndex(
-  graph: Graph,
-  fromNodeId: number,
-  toNodeId: number,
-  usedEdgeIndices: readonly number[] = [],
-) {
-  return graph.edges.findIndex(
-    (edge, edgeIndex) =>
-      edgeJoins(edge, fromNodeId, toNodeId) &&
-      !usedEdgeIndices.includes(edgeIndex),
-  );
-}
-
 export function traverseToNode(
   graph: Graph,
   attempt: Attempt,
   toNodeId: number,
-): Attempt | null {
+): Traversal {
   const fromNodeId = getCurrentNodeId(attempt);
-  if (fromNodeId === null || fromNodeId === toNodeId) return null;
+  if (fromNodeId === null) return { refusal: "noBranch" };
 
-  const edgeIndex = findUnusedEdgeIndex(
-    graph,
-    fromNodeId,
-    toNodeId,
-    attempt.usedEdgeIndices,
+  const edgeIndex = graph.edges.findIndex(
+    (edge, candidateEdgeIndex) =>
+      edgeJoins(edge, fromNodeId, toNodeId) &&
+      !attempt.usedEdgeIndices.includes(candidateEdgeIndex),
   );
-  if (edgeIndex === -1) return null;
+  if (edgeIndex !== -1) {
+    return {
+      attempt: {
+        path: [...attempt.path, toNodeId],
+        usedEdgeIndices: [...attempt.usedEdgeIndices, edgeIndex],
+      },
+    };
+  }
 
-  return {
-    path: [...attempt.path, toNodeId],
-    usedEdgeIndices: [...attempt.usedEdgeIndices, edgeIndex],
-  };
-}
-
-export function getPreviousNodeId(attempt: Attempt): number | null {
-  return attempt.path.at(-2) ?? null;
+  const isJoined = graph.edges.some((edge) =>
+    edgeJoins(edge, fromNodeId, toNodeId),
+  );
+  return { refusal: isJoined ? "alreadyThreaded" : "noBranch" };
 }
 
 export function undoLastStep(attempt: Attempt): Attempt {

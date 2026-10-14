@@ -1,3 +1,5 @@
+import type { Refusal } from "@/types/puzzle";
+
 export const DRAG_LINE_COLOR = "#448c2e";
 export const DRAG_LINE_RADIUS = 0.05;
 export const DRAG_LINE_MIN_LENGTH = 0.05;
@@ -13,7 +15,7 @@ export const UNTHREADED_BRANCH_TINT = "#6e6e6e";
 export const REFUSAL_MESSAGES = {
   noBranch: "No branch joins those two",
   alreadyThreaded: "That branch is already threaded",
-};
+} satisfies Record<Refusal, string>;
 
 export const NODE_SCALE_SETTLE_DURATION = 0.5;
 

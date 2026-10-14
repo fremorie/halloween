@@ -6,7 +6,6 @@ import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import type { Attempt, PuzzlePhase } from "@/types/puzzle";
 import {
   EMPTY_ATTEMPT,
-  findUnusedEdgeIndex,
   getCurrentNodeId,
   getPreviousNodeId,
   isAttemptComplete,
@@ -62,46 +61,42 @@ export const useGameStore = create<GameState>()((set, get) => ({
 
   threadToNode: (nodeId) => {
     const { attempt, activeLevelIndex } = get();
-    if (activeLevelIndex === null) return;
-
-    const { graph } = levels[activeLevelIndex];
-    const fromNodeId = getCurrentNodeId(attempt);
-    if (fromNodeId === null || fromNodeId === nodeId) return;
+    if (activeLevelIndex === null || getCurrentNodeId(attempt) === nodeId) {
+      return;
+    }
 
     if (getPreviousNodeId(attempt) === nodeId) {
       set({ attempt: undoLastStep(attempt), puzzleMessage: null });
       return;
     }
 
-    const nextAttempt = traverseToNode(graph, attempt, nodeId);
-    if (nextAttempt === null) {
+    const { graph } = levels[activeLevelIndex];
+    const traversal = traverseToNode(graph, attempt, nodeId);
+    if ("refusal" in traversal) {
       if (attempt.usedEdgeIndices.length === 0) {
         set({ attempt: startAttemptAt(nodeId), puzzleMessage: null });
         return;
       }
 
-      const isJoined = findUnusedEdgeIndex(graph, fromNodeId, nodeId) !== -1;
       set({
         lastRejection: { levelIndex: activeLevelIndex, nodeId },
-        puzzleMessage: isJoined
-          ? REFUSAL_MESSAGES.alreadyThreaded
-          : REFUSAL_MESSAGES.noBranch,
+        puzzleMessage: REFUSAL_MESSAGES[traversal.refusal],
       });
       return;
     }
 
-    if (!isAttemptComplete(graph, nextAttempt)) {
-      set({ attempt: nextAttempt, puzzleMessage: null });
+    if (!isAttemptComplete(graph, traversal.attempt)) {
+      set({ attempt: traversal.attempt, puzzleMessage: null });
       return;
     }
 
     set((state) => ({
-      attempt: nextAttempt,
+      attempt: traversal.attempt,
       puzzlePhase: "won",
       puzzleMessage: null,
       solvedAttempts: {
         ...state.solvedAttempts,
-        [activeLevelIndex]: nextAttempt,
+        [activeLevelIndex]: traversal.attempt,
       },
     }));
   },
