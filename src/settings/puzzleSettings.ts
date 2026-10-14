@@ -15,21 +15,18 @@ export const REFUSAL_MESSAGES = {
   alreadyThreaded: "That branch is already threaded",
 };
 
-export const CURRENT_NODE_PULSE_AMOUNT = 0.05;
-export const CURRENT_NODE_PULSE_SPEED = 9;
-export const NODE_SCALE_EASING = 14;
+export const NODE_SCALE_SETTLE_DURATION = 0.5;
 
 export const HOVER_TURN = 0.6;
 export const HOVER_LEAN = 0.18;
-export const HOVER_EASING = 6;
+export const HOVER_SETTLE_DURATION = 1.2;
 export const HOVER_WOBBLE_ANGLE = 0.16;
 export const HOVER_WOBBLE_DURATION = 0.7;
-export const HOVER_WOBBLE_FREQUENCY = 22;
-export const HOVER_WOBBLE_DECAY = 6;
+export const HOVER_WOBBLE_WIGGLES = 5;
 
 export const REJECT_SHAKE_DISTANCE = 0.07;
-export const REJECT_SHAKE_SPEED = 50;
 export const REJECT_SHAKE_DURATION = 0.4;
+export const REJECT_SHAKE_WIGGLES = 6;
 
 export const WIN_HOP_HEIGHT = 0.45;
 export const WIN_HOP_DURATION = 0.55;
