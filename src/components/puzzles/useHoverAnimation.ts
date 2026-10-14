@@ -13,10 +13,10 @@ import {
 } from "@/settings/puzzleSettings";
 import { getWiggleEase } from "@/utils/animation/getWiggleEase";
 
-function leanTowardPointer(rotation: Euler, isHovered: boolean) {
+function leanTo(rotation: Euler, leanAngle: number, turnAngle: number) {
   gsap.to(rotation, {
-    x: isHovered ? HOVER_LEAN : 0,
-    y: isHovered ? HOVER_TURN : 0,
+    x: leanAngle,
+    y: turnAngle,
     duration: HOVER_SETTLE_DURATION,
     ease: "expo.out",
     overwrite: "auto",
@@ -43,9 +43,11 @@ export function useHoverAnimation(
     const group = groupRef.current;
     if (!group) return;
 
-    leanTowardPointer(group.rotation, isHovered);
     if (isHovered) {
+      leanTo(group.rotation, HOVER_LEAN, HOVER_TURN);
       wobble(group.rotation);
+    } else {
+      leanTo(group.rotation, 0, 0);
     }
   }, [isHovered]);
 }
