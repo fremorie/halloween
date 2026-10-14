@@ -8,24 +8,24 @@ import {
   DRAG_LINE_MIN_LENGTH,
   DRAG_LINE_RADIUS,
 } from "@/settings/puzzleSettings";
+import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
+import { getCurrentNodeId } from "@/utils/puzzle/attempt";
 
 const UP_DIRECTION = new Vector3(0, 1, 0);
 
 type Props = {
   groupRef: RefObject<Group | null>;
   graph: Graph;
-  currentNodeId: number;
 };
 
-export function DragLine({ groupRef, graph, currentNodeId }: Props) {
+export function DragLine({ groupRef, graph }: Props) {
   const meshRef = useRef<Mesh>(null);
   const [scratch] = useState(() => ({
     plane: new Plane(),
     planeNormal: new Vector3(),
     currentNodeWorldPosition: new Vector3(),
     hitPoint: new Vector3(),
-    dragPoint: new Vector3(),
     lineStart: new Vector3(),
     lineEnd: new Vector3(),
     lineDirection: new Vector3(),
@@ -36,12 +36,18 @@ export function DragLine({ groupRef, graph, currentNodeId }: Props) {
     const group = groupRef.current;
     if (!mesh || !group) return;
 
+    const { attempt, puzzleFeedback } = useGameStore.getState();
+    const currentNodeId = getCurrentNodeId(attempt);
+    if (currentNodeId === null) {
+      mesh.visible = false;
+      return;
+    }
+
     const {
       plane,
       planeNormal,
       currentNodeWorldPosition,
       hitPoint,
-      dragPoint,
       lineStart,
       lineEnd,
       lineDirection,
@@ -54,11 +60,11 @@ export function DragLine({ groupRef, graph, currentNodeId }: Props) {
     camera.getWorldDirection(planeNormal).negate();
     plane.setFromNormalAndCoplanarPoint(planeNormal, currentNodeWorldPosition);
     if (raycaster.ray.intersectPlane(plane, hitPoint)) {
-      dragPoint.copy(hitPoint);
+      puzzleFeedback.dragPoint.copy(hitPoint);
     }
 
     group.worldToLocal(lineStart.copy(currentNodeWorldPosition));
-    group.worldToLocal(lineEnd.copy(dragPoint));
+    group.worldToLocal(lineEnd.copy(puzzleFeedback.dragPoint));
     lineDirection.copy(lineEnd).sub(lineStart);
     const lineLength = lineDirection.length() - NODE_RADIUS;
     mesh.visible = lineLength > DRAG_LINE_MIN_LENGTH;

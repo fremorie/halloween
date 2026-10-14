@@ -1,21 +1,26 @@
 import { useMemo, useRef } from "react";
 import type { Group } from "three";
 
-import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
-import { useYarnMaterials } from "@/components/models/yarnBall/materials";
-import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
+import { useYarnMaterials } from "@/components/models/yarnBall/materials";
+import { NODE_RADIUS } from "@/settings/graphSettings";
+import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
 import { DragLine } from "./dragLine";
+import { PuzzleNode } from "./puzzleNode";
 
 type Props = {
   graph: Graph;
+  levelIndex: number;
+  isActive: boolean;
 };
 
-export function EulerianPath({ graph }: Props) {
+export function EulerianPath({ graph, levelIndex, isActive }: Props) {
+  const yarnMaterials = useYarnMaterials();
   const groupRef = useRef<Group>(null);
 
-  const yarnMaterials = useYarnMaterials();
+  const activeLevelIndex = useGameStore((state) => state.activeLevelIndex);
+  const isThisLevelLive = activeLevelIndex === levelIndex;
 
   const branchSegments = useMemo(
     () =>
@@ -28,26 +33,22 @@ export function EulerianPath({ graph }: Props) {
 
   return (
     <group ref={groupRef}>
-      {graph.nodes.map((node) => {
-        const materialIndex = node.id % yarnMaterials.length;
-
-        return (
-          <YarnBallModel
-            key={node.id}
-            position={node.position}
-            rotationY={node.id * 1.7}
-            material={yarnMaterials[materialIndex]}
-            scale={NODE_SCALE}
-          />
-        );
-      })}
+      {graph.nodes.map((node) => (
+        <PuzzleNode
+          key={node.id}
+          node={node}
+          levelIndex={levelIndex}
+          material={yarnMaterials[node.id % yarnMaterials.length]}
+          isActive={isActive}
+        />
+      ))}
 
       <InstancedBranches
         branchSegments={branchSegments}
         tuckDistance={NODE_RADIUS * 0.8}
       />
 
-      <DragLine groupRef={groupRef} graph={graph} currentNodeId={0} />
+      {isThisLevelLive && <DragLine groupRef={groupRef} graph={graph} />}
     </group>
   );
 }
