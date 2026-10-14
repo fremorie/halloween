@@ -15,3 +15,7 @@ export const ROAM_MARGIN = 14;
 // An ellipse around the puzzle
 export const ARRIVAL_RADIUS_X = 8;
 export const ARRIVAL_RADIUS_Z = 5;
+
+export const STAND_SPOT_INSET = 1;
+export const STAND_SPOT_AHEAD = 1.6;
+export const ROUTE_ARRIVAL_DISTANCE = 0.02;

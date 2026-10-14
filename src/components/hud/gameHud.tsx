@@ -10,14 +10,16 @@ export function GameHud() {
   const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
   const isNearStation = useGameStore((state) => state.isNearStation);
+  const beginApproach = useGameStore((state) => state.beginApproach);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === "Escape") cutThread();
+      if (event.code === "KeyE") beginApproach();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [cutThread]);
+  }, [cutThread, beginApproach]);
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
@@ -40,7 +42,13 @@ export function GameHud() {
       )}
 
       {isNearStation && (
-        <p className="text-xl text-orange-700">Press E to start</p>
+        <button
+          type="button"
+          onClick={beginApproach}
+          className="pointer-events-auto bg-white px-6 py-2 text-xl text-orange-700 transition-colors hover:text-orange-500"
+        >
+          Start (E)
+        </button>
       )}
     </div>
   );
