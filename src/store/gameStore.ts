@@ -21,7 +21,7 @@ type GameState = {
   attempt: Attempt;
   puzzlePhase: PuzzlePhase;
   puzzleMessage: string | null;
-  rejection: { levelIndex: number; nodeId: number } | null;
+  lastRejection: { levelIndex: number; nodeId: number } | null;
   solvedAttempts: Partial<Record<number, Attempt>>;
   pressNode: (levelIndex: number, nodeId: number) => void;
   enterNode: (levelIndex: number, nodeId: number) => void;
@@ -35,7 +35,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
   attempt: EMPTY_ATTEMPT,
   puzzlePhase: "ready",
   puzzleMessage: null,
-  rejection: null,
+  lastRejection: null,
   solvedAttempts: {},
 
   pressNode: (levelIndex, nodeId) => {
@@ -50,7 +50,6 @@ export const useGameStore = create<GameState>()((set, get) => ({
       attempt: startAttemptAt(nodeId),
       puzzlePhase: "drawing",
       puzzleMessage: null,
-      rejection: null,
     });
   },
 
@@ -83,7 +82,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
 
       const isJoined = findUnusedEdgeIndex(graph, fromNodeId, nodeId) !== -1;
       set({
-        rejection: { levelIndex: activeLevelIndex, nodeId },
+        lastRejection: { levelIndex: activeLevelIndex, nodeId },
         puzzleMessage: isJoined
           ? REFUSAL_MESSAGES.alreadyThreaded
           : REFUSAL_MESSAGES.noBranch,
@@ -114,7 +113,6 @@ export const useGameStore = create<GameState>()((set, get) => ({
       attempt: EMPTY_ATTEMPT,
       puzzlePhase: "ready",
       puzzleMessage: null,
-      rejection: null,
     });
   },
 }));

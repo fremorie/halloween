@@ -17,12 +17,13 @@ export function useRejectShake(
   nodeId: number,
   restingX: number,
 ) {
-  const rejection = useGameStore((store) => store.rejection);
+  const lastRejection = useGameStore((store) => store.lastRejection);
 
   useGSAP(() => {
     const group = groupRef.current;
     const isRejectedNode =
-      rejection?.levelIndex === levelIndex && rejection.nodeId === nodeId;
+      lastRejection?.levelIndex === levelIndex &&
+      lastRejection.nodeId === nodeId;
     if (!group || !isRejectedNode) return;
 
     gsap.fromTo(
@@ -34,5 +35,5 @@ export function useRejectShake(
         ease: getWiggleEase("puzzleNodeRejectShake", REJECT_SHAKE_WIGGLES),
       },
     );
-  }, [rejection]);
+  }, [lastRejection]);
 }

@@ -56,7 +56,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
           levelIndex={levelIndex}
           material={yarnMaterials[node.id % yarnMaterials.length]}
           state={getNodeState(node.id)}
-          pathOrder={Math.max(0, attempt.path.indexOf(node.id))}
+          pathOrder={attempt.path.indexOf(node.id)}
           isActive={isActive}
           isCelebrating={isCelebrating}
         />
