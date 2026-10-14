@@ -3,18 +3,36 @@ import type { MeshStandardMaterial } from "three";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { NODE_SCALE } from "@/settings/graphSettings";
-import { HIT_SPHERE_RADIUS } from "@/settings/puzzleSettings";
+import {
+  CURRENT_NODE_SCALE,
+  HIT_SPHERE_RADIUS,
+  VISITED_NODE_SCALE,
+} from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { GraphNode } from "@/types/graph";
+import type { NodeState } from "@/types/puzzle";
+
+const SCALE_BY_NODE_STATE: Record<NodeState, number> = {
+  idle: 1,
+  visited: VISITED_NODE_SCALE,
+  current: CURRENT_NODE_SCALE,
+};
 
 type Props = {
   node: GraphNode;
   levelIndex: number;
   material: MeshStandardMaterial;
+  state: NodeState;
   isActive: boolean;
 };
 
-export function PuzzleNode({ node, levelIndex, material, isActive }: Props) {
+export function PuzzleNode({
+  node,
+  levelIndex,
+  material,
+  state,
+  isActive,
+}: Props) {
   const pressNode = useGameStore((store) => store.pressNode);
 
   const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
@@ -23,7 +41,7 @@ export function PuzzleNode({ node, levelIndex, material, isActive }: Props) {
   };
 
   return (
-    <group position={node.position}>
+    <group position={node.position} scale={SCALE_BY_NODE_STATE[state]}>
       <YarnBallModel
         rotationY={node.id * 1.7}
         material={material}

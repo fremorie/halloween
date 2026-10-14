@@ -6,6 +6,8 @@ import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 import { NODE_RADIUS } from "@/settings/graphSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
+import type { NodeState } from "@/types/puzzle";
+import { EMPTY_ATTEMPT, getCurrentNodeId } from "@/utils/puzzle/attempt";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
 
@@ -20,7 +22,11 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const groupRef = useRef<Group>(null);
 
   const activeLevelIndex = useGameStore((state) => state.activeLevelIndex);
+  const liveAttempt = useGameStore((state) => state.attempt);
+
   const isThisLevelLive = activeLevelIndex === levelIndex;
+  const attempt = isThisLevelLive ? liveAttempt : EMPTY_ATTEMPT;
+  const currentNodeId = isThisLevelLive ? getCurrentNodeId(attempt) : null;
 
   const branchSegments = useMemo(
     () =>
@@ -31,6 +37,12 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
     [graph],
   );
 
+  const getNodeState = (nodeId: number): NodeState => {
+    if (nodeId === currentNodeId) return "current";
+    if (attempt.path.includes(nodeId)) return "visited";
+    return "idle";
+  };
+
   return (
     <group ref={groupRef}>
       {graph.nodes.map((node) => (
@@ -39,6 +51,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
           node={node}
           levelIndex={levelIndex}
           material={yarnMaterials[node.id % yarnMaterials.length]}
+          state={getNodeState(node.id)}
           isActive={isActive}
         />
       ))}
