@@ -13,13 +13,21 @@ import { paintInstanceColors } from "@/utils/instances/paintInstanceColors";
 const FULL_TINT = new Color("#ffffff");
 const UNTHREADED_TINT = new Color(UNTHREADED_BRANCH_TINT);
 
-export function useBranchThreading(
-  stemInstancesRef: RefObject<InstancedMesh | null>,
-  leafInstancesRef: RefObject<InstancedMesh | null>,
-  edgeThreading: boolean[],
-  leavesPerEdge: number,
-  threadedLeafColor: Color,
-) {
+type Options = {
+  stemInstancesRef: RefObject<InstancedMesh | null>;
+  leafInstancesRef: RefObject<InstancedMesh | null>;
+  edgeThreading: boolean[];
+  leavesPerEdge: number;
+  threadedLeafColor: Color;
+};
+
+export function useBranchThreading({
+  stemInstancesRef,
+  leafInstancesRef,
+  edgeThreading,
+  leavesPerEdge,
+  threadedLeafColor,
+}: Options) {
   const edgeCount = edgeThreading.length;
   const edgeProgresses = useMemo(
     () => Array.from({ length: edgeCount }, () => ({ progress: 0 })),

@@ -34,13 +34,13 @@ export function InstancedBranches({ graph, edgeThreading }: Props) {
   const stemInstancesRef = useInstanceMatrices(stemMatrices);
   const leafInstancesRef = useInstanceMatrices(leafMatrices);
   const leafMaterial = useLeafMaterial(materials.Leaf);
-  useBranchThreading(
+  useBranchThreading({
     stemInstancesRef,
     leafInstancesRef,
     edgeThreading,
-    leafNodes.length,
-    materials.Leaf.color,
-  );
+    leavesPerEdge: leafNodes.length,
+    threadedLeafColor: materials.Leaf.color,
+  });
 
   return (
     <>
