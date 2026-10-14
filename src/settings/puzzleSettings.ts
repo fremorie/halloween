@@ -18,3 +18,11 @@ export const REFUSAL_MESSAGES = {
 export const CURRENT_NODE_PULSE_AMOUNT = 0.05;
 export const CURRENT_NODE_PULSE_SPEED = 9;
 export const NODE_SCALE_EASING = 14;
+
+export const HOVER_TURN = 0.6;
+export const HOVER_LEAN = 0.18;
+export const HOVER_EASING = 6;
+export const HOVER_WOBBLE_ANGLE = 0.16;
+export const HOVER_WOBBLE_DURATION = 0.7;
+export const HOVER_WOBBLE_FREQUENCY = 22;
+export const HOVER_WOBBLE_DECAY = 6;

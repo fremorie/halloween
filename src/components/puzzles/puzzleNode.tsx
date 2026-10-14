@@ -1,6 +1,6 @@
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { MathUtils, type MeshStandardMaterial, type Group } from "three";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { NODE_SCALE } from "@/settings/graphSettings";
@@ -9,6 +9,13 @@ import {
   CURRENT_NODE_PULSE_SPEED,
   CURRENT_NODE_SCALE,
   HIT_SPHERE_RADIUS,
+  HOVER_EASING,
+  HOVER_LEAN,
+  HOVER_TURN,
+  HOVER_WOBBLE_ANGLE,
+  HOVER_WOBBLE_DECAY,
+  HOVER_WOBBLE_DURATION,
+  HOVER_WOBBLE_FREQUENCY,
   NODE_SCALE_EASING,
   VISITED_NODE_SCALE,
 } from "@/settings/puzzleSettings";
@@ -33,7 +40,14 @@ export function PuzzleNode({
   isActive,
 }: Props) {
   const groupRef = useRef<Group>(null);
-  const animationRef = useRef({ scale: 1 });
+  const animationRef = useRef({
+    isHovered: false,
+    hoveredAt: null as number | null,
+    scale: 1,
+    turn: 0,
+    lean: 0,
+  });
+
   const pressNode = useGameStore((store) => store.pressNode);
   const enterNode = useGameStore((store) => store.enterNode);
 
@@ -51,9 +65,37 @@ export function PuzzleNode({
       targetScale =
         CURRENT_NODE_SCALE +
         CURRENT_NODE_PULSE_AMOUNT * Math.sin(time * CURRENT_NODE_PULSE_SPEED);
-    } else if (state === "visited") {
+    } else if (state === "visited" || animation.isHovered) {
       targetScale = VISITED_NODE_SCALE;
     }
+
+    animation.turn = MathUtils.damp(
+      animation.turn,
+      animation.isHovered ? HOVER_TURN : 0,
+      HOVER_EASING,
+      delta,
+    );
+
+    animation.lean = MathUtils.damp(
+      animation.lean,
+      animation.isHovered ? HOVER_LEAN : 0,
+      HOVER_EASING,
+      delta,
+    );
+
+    let wobble = 0;
+
+    if (animation.hoveredAt !== null) {
+      const sinceHovered = time - animation.hoveredAt;
+      if (sinceHovered < HOVER_WOBBLE_DURATION) {
+        wobble =
+          Math.sin(sinceHovered * HOVER_WOBBLE_FREQUENCY) *
+          HOVER_WOBBLE_ANGLE *
+          Math.exp(-sinceHovered * HOVER_WOBBLE_DECAY);
+      }
+    }
+
+    group.rotation.set(animation.lean, animation.turn, wobble);
 
     animation.scale = MathUtils.damp(
       animation.scale,
@@ -65,6 +107,15 @@ export function PuzzleNode({
     group.scale.setScalar(animation.scale);
   });
 
+  useEffect(() => {
+    if (isActive) {
+      return;
+    }
+
+    animationRef.current.isHovered = false;
+    document.body.style.cursor = "";
+  }, [isActive]);
+
   const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
     pressNode(levelIndex, node.id);
@@ -72,7 +123,20 @@ export function PuzzleNode({
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
+
+    const animation = animationRef.current;
+    if (!animation.isHovered) {
+      animation.hoveredAt = getNowSeconds();
+    }
+    animation.isHovered = true;
+    document.body.style.cursor = "pointer";
+
     enterNode(levelIndex, node.id);
+  };
+
+  const handlePointerLeave = () => {
+    animationRef.current.isHovered = false;
+    document.body.style.cursor = "";
   };
 
   return (
@@ -88,6 +152,7 @@ export function PuzzleNode({
           visible={false}
           onPointerDown={handlePointerDown}
           onPointerEnter={handlePointerEnter}
+          onPointerLeave={handlePointerLeave}
         >
           <sphereGeometry args={[HIT_SPHERE_RADIUS, 16, 12]} />
         </mesh>
