@@ -1,5 +1,5 @@
-import { type RefObject, useRef, useState } from "react";
-import { type Group, type Mesh, Plane, Vector3 } from "three";
+import { useRef, useState } from "react";
+import { type Mesh, Plane, Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 
 import { NODE_RADIUS } from "@/settings/graphSettings";
@@ -8,23 +8,20 @@ import {
   DRAG_LINE_MIN_LENGTH,
   DRAG_LINE_RADIUS,
 } from "@/settings/puzzleSettings";
-import { useGameStore } from "@/store/gameStore";
-import type { Graph } from "@/types/graph";
-import { getCurrentNodeId } from "@/utils/puzzle/attempt";
+import type { Vec3 } from "@/types/math";
 
 const UP_DIRECTION = new Vector3(0, 1, 0);
 
 type Props = {
-  groupRef: RefObject<Group | null>;
-  graph: Graph;
+  startPosition: Vec3;
 };
 
-export function DragLine({ groupRef, graph }: Props) {
+export function DragLine({ startPosition }: Props) {
   const meshRef = useRef<Mesh>(null);
   const [scratch] = useState(() => ({
     plane: new Plane(),
     planeNormal: new Vector3(),
-    currentNodeWorldPosition: new Vector3(),
+    startWorldPosition: new Vector3(),
     hitPoint: new Vector3(),
     lineStart: new Vector3(),
     lineEnd: new Vector3(),
@@ -33,36 +30,29 @@ export function DragLine({ groupRef, graph }: Props) {
 
   useFrame(({ camera, pointer, raycaster }) => {
     const mesh = meshRef.current;
-    const group = groupRef.current;
-    if (!mesh || !group) return;
-
-    const { attempt } = useGameStore.getState();
-    const currentNodeId = getCurrentNodeId(attempt);
-    if (currentNodeId === null) {
-      mesh.visible = false;
-      return;
-    }
+    const puzzleGroup = mesh?.parent;
+    if (!mesh || !puzzleGroup) return;
 
     const {
       plane,
       planeNormal,
-      currentNodeWorldPosition,
+      startWorldPosition,
       hitPoint,
       lineStart,
       lineEnd,
       lineDirection,
     } = scratch;
 
-    currentNodeWorldPosition.set(...graph.nodes[currentNodeId].position);
-    group.localToWorld(currentNodeWorldPosition);
+    startWorldPosition.set(...startPosition);
+    puzzleGroup.localToWorld(startWorldPosition);
 
     raycaster.setFromCamera(pointer, camera);
     camera.getWorldDirection(planeNormal);
-    plane.setFromNormalAndCoplanarPoint(planeNormal, currentNodeWorldPosition);
+    plane.setFromNormalAndCoplanarPoint(planeNormal, startWorldPosition);
     raycaster.ray.intersectPlane(plane, hitPoint);
 
-    group.worldToLocal(lineStart.copy(currentNodeWorldPosition));
-    group.worldToLocal(lineEnd.copy(hitPoint));
+    puzzleGroup.worldToLocal(lineStart.copy(startWorldPosition));
+    puzzleGroup.worldToLocal(lineEnd.copy(hitPoint));
     lineDirection.copy(lineEnd).sub(lineStart);
     const lineLength = lineDirection.length() - NODE_RADIUS;
     mesh.visible = lineLength > DRAG_LINE_MIN_LENGTH;

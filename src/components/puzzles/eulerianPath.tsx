@@ -1,5 +1,4 @@
-import { useMemo, useRef } from "react";
-import type { Group } from "three";
+import { useMemo } from "react";
 
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 import { useYarnMaterials } from "@/components/models/yarnBall/materials";
@@ -19,7 +18,6 @@ type Props = {
 
 export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const yarnMaterials = useYarnMaterials();
-  const groupRef = useRef<Group>(null);
 
   const activeLevelIndex = useGameStore((state) => state.activeLevelIndex);
   const liveAttempt = useGameStore((state) => state.attempt);
@@ -48,7 +46,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   };
 
   return (
-    <group ref={groupRef}>
+    <group>
       {graph.nodes.map((node) => (
         <PuzzleNode
           key={node.id}
@@ -64,7 +62,9 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
 
       <InstancedBranches graph={graph} edgeThreading={edgeThreading} />
 
-      {isDrawing && <DragLine groupRef={groupRef} graph={graph} />}
+      {currentNodeId !== null && (
+        <DragLine startPosition={graph.nodes[currentNodeId].position} />
+      )}
     </group>
   );
 }
