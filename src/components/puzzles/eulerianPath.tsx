@@ -19,19 +19,17 @@ type Props = {
 export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const yarnMaterials = useYarnMaterials();
 
-  const activeLevelIndex = useGameStore((state) => state.activeLevelIndex);
-  const liveAttempt = useGameStore((state) => state.attempt);
-  const puzzlePhase = useGameStore((state) => state.puzzlePhase);
-  const solvedAttempt = useGameStore(
-    (state) => state.solvedAttempts[levelIndex],
+  const attempt = useGameStore((state) =>
+    state.activeLevelIndex === levelIndex
+      ? state.attempt
+      : (state.solvedAttempts[levelIndex] ?? EMPTY_ATTEMPT),
+  );
+  const puzzlePhase = useGameStore((state) =>
+    state.activeLevelIndex === levelIndex ? state.puzzlePhase : "ready",
   );
 
-  const isThisLevelLive = activeLevelIndex === levelIndex;
-  const attempt = isThisLevelLive
-    ? liveAttempt
-    : (solvedAttempt ?? EMPTY_ATTEMPT);
-  const isDrawing = isThisLevelLive && puzzlePhase === "drawing";
-  const isCelebrating = isThisLevelLive && puzzlePhase === "won";
+  const isDrawing = puzzlePhase === "drawing";
+  const isCelebrating = puzzlePhase === "won";
   const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
 
   const edgeThreading = useMemo(
