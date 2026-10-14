@@ -40,7 +40,7 @@ export function Station({ level, stationIndex }: Props) {
     <group position={getStationOrigin(stationIndex)}>
       <PedestalModel />
       <group position-y={PEDESTAL_TOP_HEIGHT}>
-        <EulerianPath graph={level.graph} />
+        <EulerianPath graph={level.graph} levelIndex={stationIndex} isActive />
       </group>
       <group
         position={[

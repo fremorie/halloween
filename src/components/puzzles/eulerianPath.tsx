@@ -1,47 +1,71 @@
 import { useMemo } from "react";
 
-import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
-import { useYarnMaterials } from "@/components/models/yarnBall/materials";
-import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
+import { useYarnMaterials } from "@/components/models/yarnBall/materials";
+import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
+import type { NodeState } from "@/types/puzzle";
+import { EMPTY_ATTEMPT, getCurrentNodeId } from "@/utils/puzzle/attempt";
+import { getEdgeThreading } from "@/utils/puzzle/getEdgeThreading";
+import { DragLine } from "./dragLine";
+import { PuzzleNode } from "./puzzleNode";
 
 type Props = {
   graph: Graph;
+  levelIndex: number;
+  isActive: boolean;
 };
 
-export function EulerianPath({ graph }: Props) {
+export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const yarnMaterials = useYarnMaterials();
 
-  const branchSegments = useMemo(
-    () =>
-      graph.edges.map((edge) => ({
-        from: graph.nodes[edge.a].position,
-        to: graph.nodes[edge.b].position,
-      })),
-    [graph],
+  const attempt = useGameStore((state) =>
+    state.activeLevelIndex === levelIndex
+      ? state.attempt
+      : (state.solvedAttempts[levelIndex] ?? EMPTY_ATTEMPT),
   );
+  const puzzlePhase = useGameStore((state) =>
+    state.activeLevelIndex === levelIndex ? state.puzzlePhase : "ready",
+  );
+
+  const isDrawing = puzzlePhase === "drawing";
+  const isCelebrating = puzzlePhase === "won";
+  const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
+
+  const edgeThreading = useMemo(
+    () => getEdgeThreading(graph, attempt),
+    [graph, attempt],
+  );
+
+  const getNodeState = (nodeId: number, pathOrder: number): NodeState => {
+    if (nodeId === currentNodeId) return "current";
+    if (pathOrder !== -1) return "visited";
+    return "idle";
+  };
 
   return (
     <group>
       {graph.nodes.map((node) => {
-        const materialIndex = node.id % yarnMaterials.length;
-
+        const pathOrder = attempt.path.indexOf(node.id);
         return (
-          <YarnBallModel
+          <PuzzleNode
             key={node.id}
-            position={node.position}
-            rotationY={node.id * 1.7}
-            material={yarnMaterials[materialIndex]}
-            scale={NODE_SCALE}
+            node={node}
+            levelIndex={levelIndex}
+            material={yarnMaterials[node.id % yarnMaterials.length]}
+            state={getNodeState(node.id, pathOrder)}
+            pathOrder={pathOrder}
+            isActive={isActive}
+            isCelebrating={isCelebrating}
           />
         );
       })}
 
-      <InstancedBranches
-        branchSegments={branchSegments}
-        tuckDistance={NODE_RADIUS * 0.8}
-      />
+      <InstancedBranches graph={graph} edgeThreading={edgeThreading} />
+
+      {currentNodeId !== null && (
+        <DragLine startPosition={graph.nodes[currentNodeId].position} />
+      )}
     </group>
   );
 }

@@ -1,35 +1,47 @@
-import { useLayoutEffect, useMemo, useRef } from "react";
-import { FrontSide, type InstancedMesh } from "three";
+import { useMemo } from "react";
+import { FrontSide } from "three";
 
-import type { BranchSegment } from "@/utils/graph/getBranchInstanceMatrices";
+import { BRANCH_TUCK_DISTANCE } from "@/settings/graphSettings";
+import type { Graph } from "@/types/graph";
 import { getBranchInstanceMatrices } from "@/utils/graph/getBranchInstanceMatrices";
+import { getBranchSegments } from "@/utils/graph/getBranchSegments";
 import { useBranchGLTF } from "./useBranchGLTF";
-import { applyInstanceMatrices } from "@/utils/instances/applyInstanceMatrices";
+import { useBranchThreading } from "./useBranchThreading";
+import { useInstanceMatrices } from "./useInstanceMatrices";
+import { useLeafMaterial } from "./useLeafMaterial";
 
 type Props = {
-  branchSegments: BranchSegment[];
-  tuckDistance: number;
+  graph: Graph;
+  edgeThreading: boolean[];
 };
 
-export function InstancedBranches({ branchSegments, tuckDistance }: Props) {
+export function InstancedBranches({ graph, edgeThreading }: Props) {
   const { nodes, materials } = useBranchGLTF();
-  const stemInstancesRef = useRef<InstancedMesh>(null);
-  const leafInstancesRef = useRef<InstancedMesh>(null);
-
   const leafNodes = useMemo(
     () => [nodes.Leaf001, nodes.Leaf002, nodes.Leaf003, nodes.Leaf004],
     [nodes],
   );
-
   const { stemMatrices, leafMatrices } = useMemo(
-    () => getBranchInstanceMatrices(branchSegments, tuckDistance, leafNodes),
-    [branchSegments, tuckDistance, leafNodes],
+    () =>
+      getBranchInstanceMatrices(
+        getBranchSegments(graph),
+        BRANCH_TUCK_DISTANCE,
+        leafNodes,
+      ),
+    [graph, leafNodes],
   );
 
-  useLayoutEffect(() => {
-    applyInstanceMatrices(stemInstancesRef.current, stemMatrices);
-    applyInstanceMatrices(leafInstancesRef.current, leafMatrices);
-  }, [stemMatrices, leafMatrices]);
+  const stemInstancesRef = useInstanceMatrices(stemMatrices);
+  const leafInstancesRef = useInstanceMatrices(leafMatrices);
+  const leafMaterial = useLeafMaterial(materials.Leaf);
+  useBranchThreading({
+    stemInstancesRef,
+    leafInstancesRef,
+    edgeThreading,
+    leavesPerEdge: leafNodes.length,
+    threadedStemColor: materials["branch.001"].color,
+    threadedLeafColor: materials.Leaf.color,
+  });
 
   return (
     <>
@@ -48,7 +60,7 @@ export function InstancedBranches({ branchSegments, tuckDistance }: Props) {
       <instancedMesh
         key={`leaves-${leafMatrices.length}`}
         ref={leafInstancesRef}
-        args={[leafNodes[0].geometry, materials.Leaf, leafMatrices.length]}
+        args={[leafNodes[0].geometry, leafMaterial, leafMatrices.length]}
         castShadow
         receiveShadow
         material-shadowSide={FrontSide}
