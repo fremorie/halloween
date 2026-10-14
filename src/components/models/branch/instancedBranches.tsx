@@ -39,6 +39,7 @@ export function InstancedBranches({ graph, edgeThreading }: Props) {
     leafInstancesRef,
     edgeThreading,
     leavesPerEdge: leafNodes.length,
+    threadedStemColor: materials["branch.001"].color,
     threadedLeafColor: materials.Leaf.color,
   });
 

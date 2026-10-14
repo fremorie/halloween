@@ -10,14 +10,18 @@ import {
 import { toGrayscale } from "@/utils/color/toGrayscale";
 import { paintInstanceColors } from "@/utils/instances/paintInstanceColors";
 
-const FULL_TINT = new Color("#ffffff");
 const UNTHREADED_TINT = new Color(UNTHREADED_BRANCH_TINT);
+
+function getUnthreadedColor(threadedColor: Color) {
+  return toGrayscale(threadedColor).multiply(UNTHREADED_TINT);
+}
 
 type Options = {
   stemInstancesRef: RefObject<InstancedMesh | null>;
   leafInstancesRef: RefObject<InstancedMesh | null>;
   edgeThreading: boolean[];
   leavesPerEdge: number;
+  threadedStemColor: Color;
   threadedLeafColor: Color;
 };
 
@@ -26,6 +30,7 @@ export function useBranchThreading({
   leafInstancesRef,
   edgeThreading,
   leavesPerEdge,
+  threadedStemColor,
   threadedLeafColor,
 }: Options) {
   const edgeCount = edgeThreading.length;
@@ -34,30 +39,42 @@ export function useBranchThreading({
     [edgeCount],
   );
   const [colors] = useState(() => ({
-    unthreadedLeaf: toGrayscale(threadedLeafColor),
-    stem: new Color(),
-    leaf: new Color(),
+    unthreadedStem: getUnthreadedColor(threadedStemColor),
+    unthreadedLeaf: getUnthreadedColor(threadedLeafColor),
+    scratch: new Color(),
   }));
+
+  const paintThreading = (
+    instances: InstancedMesh,
+    unthreadedColor: Color,
+    threadedColor: Color,
+    edgeOfInstance: (instanceIndex: number) => number,
+  ) =>
+    paintInstanceColors(instances, (instanceIndex) =>
+      colors.scratch
+        .copy(unthreadedColor)
+        .lerp(
+          threadedColor,
+          edgeProgresses[edgeOfInstance(instanceIndex)].progress,
+        ),
+    );
 
   const paintBranches = () => {
     const stems = stemInstancesRef.current;
     const leaves = leafInstancesRef.current;
     if (!stems || !leaves) return;
 
-    const progressOfEdge = (edgeIndex: number) =>
-      edgeProgresses[edgeIndex].progress;
-    const edgeOfLeaf = (leafIndex: number) =>
-      Math.floor(leafIndex / leavesPerEdge);
-
-    paintInstanceColors(stems, (edgeIndex) =>
-      colors.stem
-        .copy(UNTHREADED_TINT)
-        .lerp(FULL_TINT, progressOfEdge(edgeIndex)),
+    paintThreading(
+      stems,
+      colors.unthreadedStem,
+      threadedStemColor,
+      (edgeIndex) => edgeIndex,
     );
-    paintInstanceColors(leaves, (leafIndex) =>
-      colors.leaf
-        .copy(colors.unthreadedLeaf)
-        .lerp(threadedLeafColor, progressOfEdge(edgeOfLeaf(leafIndex))),
+    paintThreading(
+      leaves,
+      colors.unthreadedLeaf,
+      threadedLeafColor,
+      (leafIndex) => Math.floor(leafIndex / leavesPerEdge),
     );
   };
 
