@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "checks": "prettier --write . && eslint && prettier --check . && npx tsc",
     "start": "next start",
     "lint": "eslint && prettier --check .",
     "format": "prettier --write .",

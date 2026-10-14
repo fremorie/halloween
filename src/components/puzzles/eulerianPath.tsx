@@ -5,6 +5,10 @@ import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 import type { Graph } from "@/types/graph";
+import type { Vec3 } from "@/types/math";
+import { DragLine } from "./dragLine";
+
+const THREAD_TEST_POINT: Vec3 = [0, 2.5, 1];
 
 type Props = {
   graph: Graph;
@@ -42,6 +46,8 @@ export function EulerianPath({ graph }: Props) {
         branchSegments={branchSegments}
         tuckDistance={NODE_RADIUS * 0.8}
       />
+
+      <DragLine graph={graph} currentNodeId={0} toPoint={THREAD_TEST_POINT} />
     </group>
   );
 }
