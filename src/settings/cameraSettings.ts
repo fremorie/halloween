@@ -21,3 +21,5 @@ export const CAMERA_SETTINGS: CameraProps = {
 };
 
 export const CAMERA_TARGET: Vec3 = [0, 2.5, 0];
+
+export const CAMERA_ZOOM_SPEED = 2;

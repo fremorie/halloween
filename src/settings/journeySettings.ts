@@ -19,3 +19,5 @@ export const ARRIVAL_RADIUS_Z = 5;
 export const STAND_SPOT_INSET = 1;
 export const STAND_SPOT_AHEAD = 1.6;
 export const ROUTE_ARRIVAL_DISTANCE = 0.02;
+
+export const SOLVING_CAMERA_SHIFT = 2;
