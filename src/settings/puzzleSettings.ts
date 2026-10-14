@@ -9,3 +9,8 @@ export const VISITED_NODE_SCALE = 1.08;
 
 export const BRANCH_THREAD_DURATION = 0.25;
 export const UNTHREADED_BRANCH_TINT = "#6e6e6e";
+
+export const REFUSAL_MESSAGES = {
+  noBranch: "No branch joins those two",
+  alreadyThreaded: "That branch is already threaded",
+};
