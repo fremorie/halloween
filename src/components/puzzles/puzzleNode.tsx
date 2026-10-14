@@ -1,22 +1,21 @@
-import type { ThreeEvent } from "@react-three/fiber";
-import type { MeshStandardMaterial } from "three";
+import { useFrame, type ThreeEvent } from "@react-three/fiber";
+import { MathUtils, type MeshStandardMaterial, type Group } from "three";
+import { useRef } from "react";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { NODE_SCALE } from "@/settings/graphSettings";
 import {
+  CURRENT_NODE_PULSE_AMOUNT,
+  CURRENT_NODE_PULSE_SPEED,
   CURRENT_NODE_SCALE,
   HIT_SPHERE_RADIUS,
+  NODE_SCALE_EASING,
   VISITED_NODE_SCALE,
 } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { GraphNode } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
-
-const SCALE_BY_NODE_STATE: Record<NodeState, number> = {
-  idle: 1,
-  visited: VISITED_NODE_SCALE,
-  current: CURRENT_NODE_SCALE,
-};
+import { getNowSeconds } from "@/utils/time/getNowSeconds";
 
 type Props = {
   node: GraphNode;
@@ -33,8 +32,38 @@ export function PuzzleNode({
   state,
   isActive,
 }: Props) {
+  const groupRef = useRef<Group>(null);
+  const animationRef = useRef({ scale: 1 });
   const pressNode = useGameStore((store) => store.pressNode);
   const enterNode = useGameStore((store) => store.enterNode);
+
+  useFrame((_, delta) => {
+    const group = groupRef.current;
+    if (!group) {
+      return;
+    }
+
+    const animation = animationRef.current;
+    const time = getNowSeconds();
+
+    let targetScale = 1;
+    if (state === "current") {
+      targetScale =
+        CURRENT_NODE_SCALE +
+        CURRENT_NODE_PULSE_AMOUNT * Math.sin(time * CURRENT_NODE_PULSE_SPEED);
+    } else if (state === "visited") {
+      targetScale = VISITED_NODE_SCALE;
+    }
+
+    animation.scale = MathUtils.damp(
+      animation.scale,
+      targetScale,
+      NODE_SCALE_EASING,
+      delta,
+    );
+
+    group.scale.setScalar(animation.scale);
+  });
 
   const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
@@ -47,7 +76,7 @@ export function PuzzleNode({
   };
 
   return (
-    <group position={node.position} scale={SCALE_BY_NODE_STATE[state]}>
+    <group ref={groupRef} position={node.position}>
       <YarnBallModel
         rotationY={node.id * 1.7}
         material={material}

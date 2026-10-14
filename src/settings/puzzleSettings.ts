@@ -14,3 +14,7 @@ export const REFUSAL_MESSAGES = {
   noBranch: "No branch joins those two",
   alreadyThreaded: "That branch is already threaded",
 };
+
+export const CURRENT_NODE_PULSE_AMOUNT = 0.05;
+export const CURRENT_NODE_PULSE_SPEED = 9;
+export const NODE_SCALE_EASING = 14;
