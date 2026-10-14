@@ -29,6 +29,7 @@ type GameState = {
   enterNode: (levelIndex: number, nodeId: number) => void;
   threadToNode: (nodeId: number) => void;
   releasePointer: () => void;
+  cutThread: () => void;
 };
 
 export const useGameStore = create<GameState>()((set, get) => ({
@@ -111,5 +112,11 @@ export const useGameStore = create<GameState>()((set, get) => ({
 
   releasePointer: () => {
     get().puzzleFeedback.isPointerDown = false;
+  },
+
+  cutThread: () => {
+    if (get().puzzlePhase !== "drawing") return;
+
+    set({ attempt: EMPTY_ATTEMPT, puzzlePhase: "ready" });
   },
 }));
