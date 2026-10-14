@@ -14,8 +14,10 @@ import {
   undoLastStep,
 } from "@/utils/puzzle/attempt";
 import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
+import { getNowSeconds } from "@/utils/time/getNowSeconds";
 
 export type PuzzleFeedback = {
+  rejected: { nodeId: number; at: number } | null;
   isPointerDown: boolean;
   dragPoint: Vector3;
 };
@@ -38,6 +40,7 @@ type GameState = {
 export const useGameStore = create<GameState>()((set, get) => ({
   catPosition: new Vector3(),
   puzzleFeedback: {
+    rejected: null,
     isPointerDown: false,
     dragPoint: new Vector3(),
   },
@@ -79,7 +82,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
 
   threadToNode: (nodeId) => {
-    const { attempt, activeLevelIndex } = get();
+    const { attempt, activeLevelIndex, puzzleFeedback } = get();
     if (activeLevelIndex === null) return;
 
     const { graph } = levels[activeLevelIndex];
@@ -99,12 +102,15 @@ export const useGameStore = create<GameState>()((set, get) => ({
         return;
       }
 
+      puzzleFeedback.rejected = { nodeId, at: getNowSeconds() };
       const isJoined = findUnusedEdgeIndex(graph, fromNodeId, nodeId) !== -1;
+
       set({
         puzzleMessage: isJoined
           ? REFUSAL_MESSAGES.alreadyThreaded
           : REFUSAL_MESSAGES.noBranch,
       });
+
       return;
     }
 
@@ -129,8 +135,11 @@ export const useGameStore = create<GameState>()((set, get) => ({
   },
 
   cutThread: () => {
-    if (get().puzzlePhase !== "drawing") return;
+    const { puzzlePhase, puzzleFeedback } = get();
 
+    if (puzzlePhase !== "drawing") return;
+
+    puzzleFeedback.rejected = null;
     set({ attempt: EMPTY_ATTEMPT, puzzlePhase: "ready", puzzleMessage: null });
   },
 }));

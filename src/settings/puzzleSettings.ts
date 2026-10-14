@@ -26,3 +26,7 @@ export const HOVER_WOBBLE_ANGLE = 0.16;
 export const HOVER_WOBBLE_DURATION = 0.7;
 export const HOVER_WOBBLE_FREQUENCY = 22;
 export const HOVER_WOBBLE_DECAY = 6;
+
+export const REJECT_SHAKE_DISTANCE = 0.07;
+export const REJECT_SHAKE_SPEED = 50;
+export const REJECT_SHAKE_DURATION = 0.4;

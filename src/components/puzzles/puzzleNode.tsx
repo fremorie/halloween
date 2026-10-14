@@ -17,6 +17,9 @@ import {
   HOVER_WOBBLE_DURATION,
   HOVER_WOBBLE_FREQUENCY,
   NODE_SCALE_EASING,
+  REJECT_SHAKE_DISTANCE,
+  REJECT_SHAKE_DURATION,
+  REJECT_SHAKE_SPEED,
   VISITED_NODE_SCALE,
 } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
@@ -58,6 +61,7 @@ export function PuzzleNode({
     }
 
     const animation = animationRef.current;
+    const { rejected } = useGameStore.getState().puzzleFeedback;
     const time = getNowSeconds();
 
     let targetScale = 1;
@@ -67,6 +71,17 @@ export function PuzzleNode({
         CURRENT_NODE_PULSE_AMOUNT * Math.sin(time * CURRENT_NODE_PULSE_SPEED);
     } else if (state === "visited" || animation.isHovered) {
       targetScale = VISITED_NODE_SCALE;
+    }
+
+    let shake = 0;
+    if (isActive && rejected?.nodeId === node.id) {
+      const sinceRejected = time - rejected.at;
+      if (sinceRejected < REJECT_SHAKE_DURATION) {
+        shake =
+          Math.sin(sinceRejected * REJECT_SHAKE_SPEED) *
+          REJECT_SHAKE_DISTANCE *
+          (1 - sinceRejected / REJECT_SHAKE_DURATION);
+      }
     }
 
     animation.turn = MathUtils.damp(
@@ -105,6 +120,11 @@ export function PuzzleNode({
     );
 
     group.scale.setScalar(animation.scale);
+    group.position.set(
+      node.position[0] + shake,
+      node.position[1],
+      node.position[2],
+    );
   });
 
   useEffect(() => {
