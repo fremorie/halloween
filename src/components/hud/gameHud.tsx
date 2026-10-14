@@ -2,11 +2,12 @@
 
 import { useEffect } from "react";
 
+import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 
 export function GameHud() {
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
-  const puzzleMessage = useGameStore((state) => state.puzzleMessage);
+  const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
 
   useEffect(() => {
@@ -23,8 +24,8 @@ export function GameHud() {
         <p className="text-4xl text-orange-700">Hooray!</p>
       )}
 
-      {puzzlePhase === "drawing" && puzzleMessage && (
-        <p className="opacity-70">{puzzleMessage}</p>
+      {puzzlePhase === "drawing" && rejection && (
+        <p className="opacity-70">{REFUSAL_MESSAGES[rejection.reason]}</p>
       )}
 
       {puzzlePhase === "drawing" && (

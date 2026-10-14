@@ -2,8 +2,7 @@ import { create } from "zustand";
 import { Vector3 } from "three";
 
 import { levels } from "@/data/levels";
-import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
-import type { Attempt, PuzzlePhase } from "@/types/puzzle";
+import type { Attempt, PuzzlePhase, Rejection } from "@/types/puzzle";
 import {
   EMPTY_ATTEMPT,
   getCurrentNodeId,
@@ -19,8 +18,7 @@ type GameState = {
   activeLevelIndex: number | null;
   attempt: Attempt;
   puzzlePhase: PuzzlePhase;
-  puzzleMessage: string | null;
-  lastRejection: { levelIndex: number; nodeId: number } | null;
+  rejection: Rejection | null;
   solvedAttempts: Partial<Record<number, Attempt>>;
   pressNode: (levelIndex: number, nodeId: number) => void;
   enterNode: (levelIndex: number, nodeId: number) => void;
@@ -33,8 +31,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
   activeLevelIndex: null,
   attempt: EMPTY_ATTEMPT,
   puzzlePhase: "ready",
-  puzzleMessage: null,
-  lastRejection: null,
+  rejection: null,
   solvedAttempts: {},
 
   pressNode: (levelIndex, nodeId) => {
@@ -48,7 +45,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
       activeLevelIndex: levelIndex,
       attempt: startAttemptAt(nodeId),
       puzzlePhase: "drawing",
-      puzzleMessage: null,
+      rejection: null,
     });
   },
 
@@ -66,7 +63,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
     }
 
     if (getPreviousNodeId(attempt) === nodeId) {
-      set({ attempt: undoLastStep(attempt), puzzleMessage: null });
+      set({ attempt: undoLastStep(attempt), rejection: null });
       return;
     }
 
@@ -74,26 +71,29 @@ export const useGameStore = create<GameState>()((set, get) => ({
     const traversal = traverseToNode(graph, attempt, nodeId);
     if ("refusal" in traversal) {
       if (attempt.usedEdgeIndices.length === 0) {
-        set({ attempt: startAttemptAt(nodeId), puzzleMessage: null });
+        set({ attempt: startAttemptAt(nodeId), rejection: null });
         return;
       }
 
       set({
-        lastRejection: { levelIndex: activeLevelIndex, nodeId },
-        puzzleMessage: REFUSAL_MESSAGES[traversal.refusal],
+        rejection: {
+          levelIndex: activeLevelIndex,
+          nodeId,
+          reason: traversal.refusal,
+        },
       });
       return;
     }
 
     if (!isAttemptComplete(graph, traversal.attempt)) {
-      set({ attempt: traversal.attempt, puzzleMessage: null });
+      set({ attempt: traversal.attempt, rejection: null });
       return;
     }
 
     set((state) => ({
       attempt: traversal.attempt,
       puzzlePhase: "won",
-      puzzleMessage: null,
+      rejection: null,
       solvedAttempts: {
         ...state.solvedAttempts,
         [activeLevelIndex]: traversal.attempt,
@@ -107,7 +107,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
     set({
       attempt: EMPTY_ATTEMPT,
       puzzlePhase: "ready",
-      puzzleMessage: null,
+      rejection: null,
     });
   },
 }));
