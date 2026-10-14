@@ -5,8 +5,11 @@ import { levels } from "@/data/levels";
 import type { Attempt } from "@/types/puzzle";
 import {
   EMPTY_ATTEMPT,
+  getCurrentNodeId,
+  getPreviousNodeId,
   startAttemptAt,
   traverseToNode,
+  undoLastStep,
 } from "@/utils/puzzle/attempt";
 
 export type PuzzleFeedback = {
@@ -46,8 +49,22 @@ export const useGameStore = create<GameState>()((set, get) => ({
     if (activeLevelIndex === null) return;
 
     const { graph } = levels[activeLevelIndex];
+    const fromNodeId = getCurrentNodeId(attempt);
+    if (fromNodeId === null || fromNodeId === nodeId) return;
+
+    if (getPreviousNodeId(attempt) === nodeId) {
+      set({ attempt: undoLastStep(attempt) });
+      return;
+    }
+
     const nextAttempt = traverseToNode(graph, attempt, nodeId);
-    if (nextAttempt === null) return;
+
+    if (nextAttempt === null) {
+      if (attempt.usedEdgeIndices.length === 0) {
+        set({ attempt: startAttemptAt(nodeId) });
+      }
+      return;
+    }
 
     set({ attempt: nextAttempt });
   },

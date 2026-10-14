@@ -52,3 +52,14 @@ export function traverseToNode(
     usedEdgeIndices: [...attempt.usedEdgeIndices, edgeIndex],
   };
 }
+
+export function getPreviousNodeId(attempt: Attempt): number | null {
+  return attempt.path.at(-2) ?? null;
+}
+
+export function undoLastStep(attempt: Attempt): Attempt {
+  return {
+    path: attempt.path.slice(0, -1),
+    usedEdgeIndices: attempt.usedEdgeIndices.slice(0, -1),
+  };
+}
