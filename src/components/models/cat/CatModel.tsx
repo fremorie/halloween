@@ -7,8 +7,8 @@ import {
   CAT_TOP_LID_OPEN_ROTATION_X,
 } from "./constants";
 import { useCatGLTF } from "./useCatGLTF";
-import { useCatBlink } from "./useCatBlink";
-import { useCatEyeGlances } from "./useCatEyeGlances";
+import { useCatBlink } from "@/utils/cat/useCatBlink";
+import { useCatEyeGlances } from "@/utils/cat/useCatEyeGlances";
 
 type CatModelProps = JSX.IntrinsicElements["group"] & {
   eyeParams?: EyeParams;
