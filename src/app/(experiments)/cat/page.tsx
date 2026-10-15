@@ -9,7 +9,7 @@ import { Perf } from "r3f-perf";
 
 import { Lights } from "@/components/lighting/experiments/lights";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
-import { CatV1Model } from "@/components/models/catV1/CatV1Model";
+import { CatModel } from "@/components/models/cat/CatModel";
 
 export default function Page() {
   const { kuwahara } = useControls({
@@ -50,7 +50,7 @@ export default function Page() {
 
         <Lights />
 
-        <CatV1Model position-y={1.1} rotation-y={-2} />
+        <CatModel position-y={1.1} rotation-y={-2} />
 
         {/* Ground */}
         <mesh

@@ -5,12 +5,12 @@ import {
   CAT_BOTTOM_LID_OPEN_ROTATION_X,
   CAT_TOP_LID_OPEN_ROTATION_X,
 } from "./constants";
-import { useCatV1GLTF } from "./useCatV1GLTF";
+import { useCatGLTF } from "./useCatGLTF";
 import { useCatBlink } from "./useCatBlink";
 import { useCatEyeGlances } from "./useCatEyeGlances";
 
-export function CatV1Model(props: JSX.IntrinsicElements["group"]) {
-  const { nodes, materials } = useCatV1GLTF();
+export function CatModel(props: JSX.IntrinsicElements["group"]) {
+  const { nodes, materials } = useCatGLTF();
   const eyeMaterial = useEyeMaterial(materials.Eye.map);
   const { topLidsRef, bottomLidsRef } = useCatBlink();
   useCatEyeGlances(eyeMaterial);

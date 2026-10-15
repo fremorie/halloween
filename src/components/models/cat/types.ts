@@ -1,7 +1,7 @@
 import type { GLTF } from "three-stdlib";
 import * as THREE from "three";
 
-export type CatV1GLTFResult = GLTF & {
+export type CatGLTFResult = GLTF & {
   nodes: {
     BottomLids: THREE.Mesh;
     Cat: THREE.Mesh;
