@@ -10,11 +10,13 @@ import { Perf } from "r3f-perf";
 import { Lights } from "@/components/lighting/experiments/lights";
 import { Kuwahara } from "@/components/postprocessing/kuwahara";
 import { CatModel } from "@/components/models/cat/CatModel";
+import { useEyeControls } from "./useEyeControls";
 
 export default function Page() {
   const { kuwahara } = useControls({
     kuwahara: { value: true, label: "Kuwahara filter" },
   });
+  const eyeParams = useEyeControls();
 
   return (
     <>
@@ -50,7 +52,7 @@ export default function Page() {
 
         <Lights />
 
-        <CatModel position-y={1.1} rotation-y={-2} />
+        <CatModel position-y={1.1} rotation-y={-2} eyeParams={eyeParams} />
 
         {/* Ground */}
         <mesh

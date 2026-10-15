@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 
 import { useEyeMaterial } from "@/components/materials/useEyeMaterial";
+import type { EyeParams } from "@/types/eye";
 import {
   CAT_BOTTOM_LID_OPEN_ROTATION_X,
   CAT_TOP_LID_OPEN_ROTATION_X,
@@ -9,9 +10,13 @@ import { useCatGLTF } from "./useCatGLTF";
 import { useCatBlink } from "./useCatBlink";
 import { useCatEyeGlances } from "./useCatEyeGlances";
 
-export function CatModel(props: JSX.IntrinsicElements["group"]) {
+type CatModelProps = JSX.IntrinsicElements["group"] & {
+  eyeParams?: EyeParams;
+};
+
+export function CatModel({ eyeParams, ...props }: CatModelProps) {
   const { nodes, materials } = useCatGLTF();
-  const eyeMaterial = useEyeMaterial(materials.Eye.map);
+  const eyeMaterial = useEyeMaterial(materials.Eye.map, eyeParams);
   const { topLidsRef, bottomLidsRef } = useCatBlink();
   useCatEyeGlances(eyeMaterial);
 
