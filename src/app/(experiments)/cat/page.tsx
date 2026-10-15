@@ -36,7 +36,7 @@ export default function Page() {
           fov: 45,
           near: 0.1,
           far: 1000,
-          position: [4, 1.5, 8],
+          position: [5, 1.5, 4],
         }}
       >
         <color args={["#ffffff"]} attach="background" />
