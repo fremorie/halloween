@@ -11,6 +11,7 @@ const experiments = [
   "jack-o-lantern-2",
   "jack-o-lantern-3",
   "pedestal",
+  "cat-v1",
 ] as const;
 
 export default function Page() {
