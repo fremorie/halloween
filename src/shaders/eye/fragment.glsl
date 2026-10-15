@@ -6,6 +6,7 @@ uniform float uHighlightSize;
 varying vec3 vPositionFacingPositiveZ;
 varying vec3 vGazePosition;
 
+const float IRIS_PLANE_SCALE = 2.0;
 const float PUPIL_EDGE_SOFTNESS = 0.09;
 const float PUPIL_SHADOW_REACH = 0.8;
 const float PUPIL_SHADOW_DEPTH = 0.4;
@@ -22,31 +23,20 @@ vec2 equirectangularUvOf(vec3 direction) {
 
 void main() {
     vec3 gazeDirection = normalize(vGazePosition);
-    vec3 gazePositionFacingPositiveZ = vec3(-gazeDirection.x, gazeDirection.y, -gazeDirection.z);
-    vec2 irisPlanePosition = gazePositionFacingPositiveZ.xy / 0.5;
-    bool isFrontHemisphere = gazePositionFacingPositiveZ.z >= 0.0;
-
-    vec2 pupilSpacePosition = irisPlanePosition / vec2(PUPIL_WIDTH_TO_HEIGHT, 1.0);
-    float radius = length(pupilSpacePosition);
-    radius = isFrontHemisphere ? radius : 4.0 - radius;
-
     vec3 color = texture2D(uIrisTexture, equirectangularUvOf(gazeDirection)).rgb;
 
+    vec2 pupilSpacePosition =
+        gazeDirection.xy * IRIS_PLANE_SCALE / vec2(PUPIL_WIDTH_TO_HEIGHT, 1.0);
+    float pupilDistance = length(pupilSpacePosition);
     float pupilShadowMask =
-        1.0 - smoothstep(uPupilRadius, uPupilRadius * (1.0 + PUPIL_SHADOW_REACH), radius);
-    color *= 1.0 - PUPIL_SHADOW_DEPTH * pupilShadowMask;
+        1.0 - smoothstep(uPupilRadius, uPupilRadius * (1.0 + PUPIL_SHADOW_REACH), pupilDistance);
+    float outsidePupilMask =
+        smoothstep(uPupilRadius, uPupilRadius + PUPIL_EDGE_SOFTNESS, pupilDistance);
+    color *= (1.0 - PUPIL_SHADOW_DEPTH * pupilShadowMask) * outsidePupilMask;
 
-    float outsidePupilMask = smoothstep(uPupilRadius, uPupilRadius + PUPIL_EDGE_SOFTNESS, radius);
-    color *= outsidePupilMask;
-
-    vec3 fixedPositionFacingPositiveZ = normalize(vPositionFacingPositiveZ);
-    vec2 fixedIrisPlanePosition = fixedPositionFacingPositiveZ.xy / 0.5;
-    bool isFixedFrontHemisphere = fixedPositionFacingPositiveZ.z >= 0.0;
-
-    float highlightDistance = length(fixedIrisPlanePosition - HIGHLIGHT_CENTER);
-    float highlightMask = isFixedFrontHemisphere
-        ? 1.0 - smoothstep(0.0, uHighlightSize, highlightDistance)
-        : 0.0;
+    vec2 highlightPlanePosition = normalize(vPositionFacingPositiveZ).xy * IRIS_PLANE_SCALE;
+    float highlightDistance = length(highlightPlanePosition - HIGHLIGHT_CENTER);
+    float highlightMask = 1.0 - smoothstep(0.0, uHighlightSize, highlightDistance);
     color += uHighlightColor * HIGHLIGHT_STRENGTH * highlightMask;
 
     gl_FragColor = vec4(color, 1.0);
