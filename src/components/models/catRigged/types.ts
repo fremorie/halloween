@@ -4,9 +4,11 @@ import * as THREE from "three";
 export type CatGLTFResult = GLTF & {
   nodes: {
     BottomLids: THREE.Mesh;
-    Cat: THREE.Mesh;
+    Cat: THREE.SkinnedMesh;
+    Eyes: THREE.Object3D;
     LeftEye: THREE.Mesh;
     RightEye: THREE.Mesh;
+    Root: THREE.Bone;
     TopLids: THREE.Mesh;
   };
   materials: {
