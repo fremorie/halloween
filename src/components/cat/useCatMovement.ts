@@ -19,6 +19,7 @@ import { getStandSpot } from "@/utils/journey/getStandSpot";
 import { isInsideGroundEllipse } from "@/utils/journey/isInsideGroundEllipse";
 import { dampAngle } from "@/utils/animation/dampAngle";
 import { getHeading } from "@/utils/cat/getHeading";
+import { getStationOrigin } from "@/utils/journey/getStationOrigin";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
@@ -27,6 +28,7 @@ export function useCatMovement(
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
   const [standSpot] = useState(() => new Vector3());
+  const [stationOrigin] = useState(() => new Vector3());
   const [previousPosition] = useState(() => new Vector3());
   const walkPaceRef = useRef(0);
 
@@ -67,6 +69,11 @@ export function useCatMovement(
           Math.min(distanceToSpot, CAT_WALK_SPEED * stepDuration),
         );
       }
+    }
+
+    if (mode === "solving") {
+      stationOrigin.set(...getStationOrigin(currentStationIndex));
+      direction.copy(stationOrigin).sub(root.position).setY(0).normalize();
     }
 
     const movedDistance = root.position.distanceTo(previousPosition);
