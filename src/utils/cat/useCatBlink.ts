@@ -10,9 +10,12 @@ import {
   CAT_LID_CLOSED_ROTATION_X,
 } from "./constants";
 
-export function useCatBlink() {
-  const topLidsRef = useRef<Mesh>(null);
-  const bottomLidsRef = useRef<Mesh>(null);
+export function useCatBlink(
+  existingTopLids: Mesh | null = null,
+  existingBottomLids: Mesh | null = null,
+) {
+  const topLidsRef = useRef<Mesh>(existingTopLids);
+  const bottomLidsRef = useRef<Mesh>(existingBottomLids);
 
   useGSAP(() => {
     const topLids = topLidsRef.current;
