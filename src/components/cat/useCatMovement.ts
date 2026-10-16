@@ -4,7 +4,11 @@ import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
 import type { ControlName } from "@/settings/controlsSettings";
-import { CAT_WALK_SPEED, MAX_STEP_DURATION } from "@/settings/catSettings";
+import {
+  CAT_TURN_SPEED,
+  CAT_WALK_SPEED,
+  MAX_STEP_DURATION,
+} from "@/settings/catSettings";
 import { ROUTE_ARRIVAL_DISTANCE } from "@/settings/journeySettings";
 import { useGameStore } from "@/store/gameStore";
 import { clampToRoamingArea } from "@/utils/journey/clampToRoamingArea";
@@ -12,6 +16,8 @@ import { getMoveDirection } from "@/utils/cat/getMoveDirection";
 import { getArrivalArea } from "@/utils/journey/getArrivalArea";
 import { getStandSpot } from "@/utils/journey/getStandSpot";
 import { isInsideGroundEllipse } from "@/utils/journey/isInsideGroundEllipse";
+import { dampAngle } from "@/utils/animation/dampAngle";
+import { getHeading } from "@/utils/cat/getHeading";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
@@ -56,6 +62,15 @@ export function useCatMovement(
           Math.min(distanceToSpot, CAT_WALK_SPEED * stepDuration),
         );
       }
+    }
+
+    if (direction.lengthSq() > 0) {
+      root.rotation.y = dampAngle(
+        root.rotation.y,
+        getHeading(direction),
+        CAT_TURN_SPEED,
+        stepDuration,
+      );
     }
 
     catPosition.copy(root.position);
