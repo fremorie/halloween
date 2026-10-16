@@ -3,8 +3,7 @@ import { FrontSide } from "three";
 
 import { BRANCH_TUCK_DISTANCE } from "@/settings/graphSettings";
 import type { Graph } from "@/types/graph";
-import { getBranchInstanceMatrices } from "@/utils/graph/getBranchInstanceMatrices";
-import { getBranchSegments } from "@/utils/graph/getBranchSegments";
+import { getBranchInstanceMatrices, getBranchSegments } from "@/utils/graph";
 import { useBranchGLTF } from "./useBranchGLTF";
 import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";

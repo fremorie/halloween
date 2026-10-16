@@ -1,7 +1,7 @@
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 import { NODE_SCALE } from "@/settings/graphSettings";
-import { getGroundedGraph } from "@/utils/graph/getGroundedGraph";
+import { getGroundedGraph } from "@/utils/graph";
 import { hat } from "@/data/levels";
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 

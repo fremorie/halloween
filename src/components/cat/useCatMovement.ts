@@ -12,14 +12,15 @@ import {
 } from "@/settings/catSettings";
 import { ROUTE_ARRIVAL_DISTANCE } from "@/settings/journeySettings";
 import { useGameStore } from "@/store/gameStore";
-import { clampToRoamingArea } from "@/utils/journey/clampToRoamingArea";
-import { getMoveDirection } from "@/utils/cat/getMoveDirection";
-import { getArrivalArea } from "@/utils/journey/getArrivalArea";
-import { getStandSpot } from "@/utils/journey/getStandSpot";
-import { isInsideGroundEllipse } from "@/utils/journey/isInsideGroundEllipse";
-import { dampAngle } from "@/utils/animation/dampAngle";
-import { getHeading } from "@/utils/cat/getHeading";
-import { getStationOrigin } from "@/utils/journey/getStationOrigin";
+import {
+  clampToRoamingArea,
+  getArrivalArea,
+  getStandSpot,
+  isInsideGroundEllipse,
+  getStationOrigin,
+} from "@/utils/journey";
+import { getMoveDirection, getHeading } from "@/utils/cat";
+import { dampAngle } from "@/utils/animation";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,

@@ -9,7 +9,7 @@ import {
   REJECT_SHAKE_WIGGLES,
 } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
-import { getWiggleEase } from "@/utils/animation/getWiggleEase";
+import { getWiggleEase } from "@/utils/animation";
 
 export function useRejectShake(
   groupRef: RefObject<Group | null>,

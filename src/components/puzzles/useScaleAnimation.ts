@@ -9,7 +9,7 @@ import {
   VISITED_NODE_SCALE,
 } from "@/settings/puzzleSettings";
 import type { NodeState } from "@/types/puzzle";
-import { uniformScale } from "@/utils/animation/uniformScale";
+import { uniformScale } from "@/utils/animation";
 
 function getRestingScale(state: NodeState, isHovered: boolean) {
   if (state === "current") return CURRENT_NODE_SCALE;

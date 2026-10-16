@@ -1,6 +1,6 @@
 import type { Graph } from "@/types/graph";
 import type { Level } from "@/types/level";
-import { getGroundedGraph } from "@/utils/graph/getGroundedGraph";
+import { getGroundedGraph } from "@/utils/graph";
 
 export const hat: Graph = {
   nodes: [

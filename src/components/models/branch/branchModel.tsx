@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import type { Vec3 } from "@/types/math";
 import { useBranchGLTF } from "./useBranchGLTF";
-import { getEdgePlacement } from "@/utils/graph/getEdgePlacement";
+import { getEdgePlacement } from "@/utils/graph";
 
 type Props = {
   from: Vec3;

@@ -11,7 +11,7 @@ import {
   HOVER_WOBBLE_DURATION,
   HOVER_WOBBLE_WIGGLES,
 } from "@/settings/puzzleSettings";
-import { getWiggleEase } from "@/utils/animation/getWiggleEase";
+import { getWiggleEase } from "@/utils/animation";
 
 function leanTo(rotation: Euler, leanAngle: number, turnAngle: number) {
   gsap.to(rotation, {

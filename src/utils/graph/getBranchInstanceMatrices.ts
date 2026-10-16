@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import { Vec3 } from "@/types/math";
-import { getEdgePlacement } from "@/utils/graph/getEdgePlacement";
+import { getEdgePlacement } from "@/utils/graph";
 
 export type BranchSegment = { from: Vec3; to: Vec3 };
 
