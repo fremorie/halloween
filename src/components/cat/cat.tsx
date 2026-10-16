@@ -8,11 +8,11 @@ import { CAT_MODEL_SCALE } from "@/settings/catSettings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
-  useCatMovement(rootRef, stationCount);
+  const walkPaceRef = useCatMovement(rootRef, stationCount);
 
   return (
     <group ref={rootRef} position={CAT_START}>
-      <CatRiggedModel scale={CAT_MODEL_SCALE} />
+      <CatRiggedModel scale={CAT_MODEL_SCALE} walkPaceRef={walkPaceRef} />
     </group>
   );
 }

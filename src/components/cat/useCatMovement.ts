@@ -1,4 +1,4 @@
-import { type RefObject, useState } from "react";
+import { type RefObject, useRef, useState } from "react";
 import { type Group, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -6,6 +6,7 @@ import { useFrame } from "@react-three/fiber";
 import type { ControlName } from "@/settings/controlsSettings";
 import {
   CAT_TURN_SPEED,
+  CAT_WALK_NATURAL_SPEED,
   CAT_WALK_SPEED,
   MAX_STEP_DURATION,
 } from "@/settings/catSettings";
@@ -26,6 +27,8 @@ export function useCatMovement(
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
   const [standSpot] = useState(() => new Vector3());
+  const [previousPosition] = useState(() => new Vector3());
+  const walkPaceRef = useRef(0);
 
   useFrame((_, delta) => {
     const root = rootRef.current;
@@ -40,6 +43,8 @@ export function useCatMovement(
       setNearStation,
       arriveAtStation,
     } = useGameStore.getState();
+
+    previousPosition.copy(root.position);
 
     if (mode === "walking" || mode === "done") {
       getMoveDirection(getKeys(), direction);
@@ -64,6 +69,12 @@ export function useCatMovement(
       }
     }
 
+    const movedDistance = root.position.distanceTo(previousPosition);
+    walkPaceRef.current =
+      stepDuration > 0
+        ? movedDistance / stepDuration / CAT_WALK_NATURAL_SPEED
+        : 0;
+
     if (direction.lengthSq() > 0) {
       root.rotation.y = dampAngle(
         root.rotation.y,
@@ -78,6 +89,11 @@ export function useCatMovement(
     const isNearStationNow =
       mode === "walking" &&
       isInsideGroundEllipse(root.position, getArrivalArea(currentStationIndex));
-    if (isNearStationNow !== isNearStation) setNearStation(isNearStationNow);
+
+    if (isNearStationNow !== isNearStation) {
+      setNearStation(isNearStationNow);
+    }
   });
+
+  return walkPaceRef;
 }
