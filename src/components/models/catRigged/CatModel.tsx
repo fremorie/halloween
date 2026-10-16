@@ -1,6 +1,13 @@
 import { useAnimations } from "@react-three/drei";
-import { type JSX, useEffect, useLayoutEffect, useRef } from "react";
-import type { Group, Material, Mesh } from "three";
+import {
+  type JSX,
+  type RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
+import { type Group, type Material, type Mesh, MathUtils } from "three";
+import { useFrame } from "@react-three/fiber";
 
 import { useEyeMaterial } from "@/components/materials/useEyeMaterial";
 import type { EyeParams } from "@/types/eye";
@@ -11,9 +18,11 @@ import {
   CAT_TOP_LID_OPEN_ROTATION_X,
 } from "./constants";
 import { useCatGLTF } from "./useCatGLTF";
+import { CAT_STILL_PACE, CAT_WALK_BLEND_SPEED } from "@/settings/catSettings";
 
-type CatModelProps = JSX.IntrinsicElements["group"] & {
+type Props = JSX.IntrinsicElements["group"] & {
   eyeParams?: EyeParams;
+  walkPaceRef?: RefObject<number>;
 };
 
 function applyMaterialToMeshes(meshes: Mesh[], material: Material) {
@@ -27,7 +36,11 @@ function openLids(topLids: Mesh, bottomLids: Mesh) {
   bottomLids.rotation.x = CAT_BOTTOM_LID_OPEN_ROTATION_X;
 }
 
-export function CatRiggedModel({ eyeParams, ...props }: CatModelProps) {
+export function CatRiggedModel({
+  eyeParams,
+  walkPaceRef,
+  ...groupProps
+}: Props) {
   const groupRef = useRef<Group>(null);
 
   const { nodes, materials, animations } = useCatGLTF();
@@ -47,11 +60,32 @@ export function CatRiggedModel({ eyeParams, ...props }: CatModelProps) {
   const { actions } = useAnimations(animations, groupRef);
 
   useEffect(() => {
-    actions.Walk?.play();
-  }, [actions]);
+    actions.Walk?.setEffectiveWeight(walkPaceRef ? 0 : 1).play();
+  }, [actions, walkPaceRef]);
+
+  useFrame((_, delta) => {
+    const walk = actions.Walk;
+
+    if (!walk || !walkPaceRef) {
+      return;
+    }
+
+    const pace = walkPaceRef.current;
+    const isWalking = pace > CAT_STILL_PACE;
+
+    walk.setEffectiveTimeScale(pace);
+    walk.setEffectiveWeight(
+      MathUtils.damp(
+        walk.getEffectiveWeight(),
+        isWalking ? 1 : 0,
+        CAT_WALK_BLEND_SPEED,
+        delta,
+      ),
+    );
+  });
 
   return (
-    <group ref={groupRef} {...props} dispose={null}>
+    <group ref={groupRef} {...groupProps} dispose={null}>
       <group name="Scene">
         <group name="CatRig">
           <skinnedMesh

@@ -1,10 +1,15 @@
-import { type RefObject, useState } from "react";
+import { type RefObject, useRef, useState } from "react";
 import { type Group, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
 import type { ControlName } from "@/settings/controlsSettings";
-import { CAT_WALK_SPEED, MAX_STEP_DURATION } from "@/settings/catSettings";
+import {
+  CAT_TURN_SPEED,
+  CAT_WALK_NATURAL_SPEED,
+  CAT_WALK_SPEED,
+  MAX_STEP_DURATION,
+} from "@/settings/catSettings";
 import { ROUTE_ARRIVAL_DISTANCE } from "@/settings/journeySettings";
 import { useGameStore } from "@/store/gameStore";
 import { clampToRoamingArea } from "@/utils/journey/clampToRoamingArea";
@@ -12,6 +17,9 @@ import { getMoveDirection } from "@/utils/cat/getMoveDirection";
 import { getArrivalArea } from "@/utils/journey/getArrivalArea";
 import { getStandSpot } from "@/utils/journey/getStandSpot";
 import { isInsideGroundEllipse } from "@/utils/journey/isInsideGroundEllipse";
+import { dampAngle } from "@/utils/animation/dampAngle";
+import { getHeading } from "@/utils/cat/getHeading";
+import { getStationOrigin } from "@/utils/journey/getStationOrigin";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
@@ -20,6 +28,9 @@ export function useCatMovement(
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
   const [standSpot] = useState(() => new Vector3());
+  const [stationOrigin] = useState(() => new Vector3());
+  const [previousPosition] = useState(() => new Vector3());
+  const walkPaceRef = useRef(0);
 
   useFrame((_, delta) => {
     const root = rootRef.current;
@@ -34,6 +45,8 @@ export function useCatMovement(
       setNearStation,
       arriveAtStation,
     } = useGameStore.getState();
+
+    previousPosition.copy(root.position);
 
     if (mode === "walking" || mode === "done") {
       getMoveDirection(getKeys(), direction);
@@ -58,11 +71,36 @@ export function useCatMovement(
       }
     }
 
+    if (mode === "solving") {
+      stationOrigin.set(...getStationOrigin(currentStationIndex));
+      direction.copy(stationOrigin).sub(root.position).setY(0).normalize();
+    }
+
+    const movedDistance = root.position.distanceTo(previousPosition);
+    walkPaceRef.current =
+      stepDuration > 0
+        ? movedDistance / stepDuration / CAT_WALK_NATURAL_SPEED
+        : 0;
+
+    if (direction.lengthSq() > 0) {
+      root.rotation.y = dampAngle(
+        root.rotation.y,
+        getHeading(direction),
+        CAT_TURN_SPEED,
+        stepDuration,
+      );
+    }
+
     catPosition.copy(root.position);
 
     const isNearStationNow =
       mode === "walking" &&
       isInsideGroundEllipse(root.position, getArrivalArea(currentStationIndex));
-    if (isNearStationNow !== isNearStation) setNearStation(isNearStationNow);
+
+    if (isNearStationNow !== isNearStation) {
+      setNearStation(isNearStationNow);
+    }
   });
+
+  return walkPaceRef;
 }
