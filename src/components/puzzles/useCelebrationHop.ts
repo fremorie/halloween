@@ -10,7 +10,7 @@ import {
   WIN_HOP_STAGGER,
   WIN_NODE_SCALE,
 } from "@/settings/puzzleSettings";
-import { uniformScale } from "@/utils/animation/uniformScale";
+import { uniformScale } from "@/utils/animation";
 
 const WIN_HOP_HALF_DURATION = WIN_HOP_DURATION / 2;
 

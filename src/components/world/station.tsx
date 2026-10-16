@@ -12,10 +12,7 @@ import {
   PUMPKIN_FORWARD_OFFSET,
   PUMPKIN_TURN_TOWARDS_PATH,
 } from "@/settings/journeySettings";
-import {
-  getStationOrigin,
-  getStationSide,
-} from "@/utils/journey/getStationOrigin";
+import { getStationOrigin, getStationSide } from "@/utils/journey";
 import { EulerianPath } from "@/components/puzzles/eulerianPath";
 import { useGameStore } from "@/store/gameStore";
 

@@ -16,7 +16,7 @@ import {
   WALKING_ZOOM,
 } from "@/settings/cameraSettings";
 import { useGameStore } from "@/store/gameStore";
-import { getSolvingFocus } from "@/utils/journey/getSolvingFocus";
+import { getSolvingFocus } from "@/utils/journey";
 
 export function CameraRig() {
   const aspect = useThree((state) => state.size.width / state.size.height);

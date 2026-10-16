@@ -5,8 +5,11 @@ import { useYarnMaterials } from "@/components/models/yarnBall/materials";
 import { useGameStore } from "@/store/gameStore";
 import type { Graph } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
-import { EMPTY_ATTEMPT, getCurrentNodeId } from "@/utils/puzzle/attempt";
-import { getEdgeThreading } from "@/utils/puzzle/getEdgeThreading";
+import {
+  EMPTY_ATTEMPT,
+  getCurrentNodeId,
+  getEdgeThreading,
+} from "@/utils/puzzle";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
 

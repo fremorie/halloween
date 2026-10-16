@@ -7,8 +7,8 @@ import {
   BRANCH_THREAD_DURATION,
   UNTHREADED_BRANCH_TINT,
 } from "@/settings/puzzleSettings";
-import { toGrayscale } from "@/utils/color/toGrayscale";
-import { paintInstanceColors } from "@/utils/instances/paintInstanceColors";
+import { toGrayscale } from "@/utils/color";
+import { paintInstanceColors } from "@/utils/instances";
 
 const UNTHREADED_TINT = new Color(UNTHREADED_BRANCH_TINT);
 

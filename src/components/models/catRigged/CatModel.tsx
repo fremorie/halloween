@@ -11,8 +11,7 @@ import { useFrame } from "@react-three/fiber";
 
 import { useEyeMaterial } from "@/components/materials/useEyeMaterial";
 import type { EyeParams } from "@/types/eye";
-import { useCatBlink } from "@/utils/cat/useCatBlink";
-import { useCatEyeGlances } from "@/utils/cat/useCatEyeGlances";
+import { useCatBlink, useCatEyeGlances } from "@/utils/cat";
 import {
   CAT_BOTTOM_LID_OPEN_ROTATION_X,
   CAT_TOP_LID_OPEN_ROTATION_X,

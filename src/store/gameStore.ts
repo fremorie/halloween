@@ -11,7 +11,7 @@ import {
   startAttemptAt,
   traverseToNode,
   undoLastStep,
-} from "@/utils/puzzle/attempt";
+} from "@/utils/puzzle";
 import type { GameMode } from "@/types/game";
 
 type GameState = {
