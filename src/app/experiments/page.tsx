@@ -13,6 +13,7 @@ const experiments = [
   "pedestal",
   "cat",
   "cat-rigged",
+  "ui",
 ] as const;
 
 export default function Page() {
