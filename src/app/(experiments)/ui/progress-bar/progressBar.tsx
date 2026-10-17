@@ -1,20 +1,27 @@
 "use client";
 
 import { Progress } from "radix-ui";
+import { type Ref, useRef } from "react";
+import { useProgressFill } from "@/app/(experiments)/ui/progress-bar/useProgressFill";
 
 type Props = {
   value: number;
+  onFilled: () => void;
+  ref?: Ref<HTMLDivElement>;
 };
 
-export function ProgressBar({ value }: Props) {
+export function ProgressBar({ value, onFilled, ref }: Props) {
+  const indicatorRef = useRef<HTMLDivElement>(null);
+
+  useProgressFill({ value, indicatorRef, onFilled });
+
   return (
-    <Progress.Root value={value} className="h-8 w-64 border-2 border-black p-1">
-      <div className="h-full overflow-hidden">
-        <Progress.Indicator
-          className="h-full bg-black transition-transform"
-          style={{ transform: `translateX(-${100 - value}%)` }}
-        />
-      </div>
+    <Progress.Root
+      ref={ref}
+      value={value}
+      className="h-5 w-64 border-2 border-black p-1"
+    >
+      <Progress.Indicator ref={indicatorRef} className="h-full w-0 bg-black" />
     </Progress.Root>
   );
 }
