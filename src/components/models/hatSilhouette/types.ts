@@ -5,7 +5,4 @@ export type HatGLTFResult = GLTF & {
   nodes: {
     Hat: THREE.Mesh;
   };
-  materials: {
-    Hat: THREE.MeshStandardMaterial;
-  };
 };
