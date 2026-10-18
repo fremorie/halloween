@@ -16,6 +16,7 @@ export function GameHud() {
     (state) => state.currentStationIndex,
   );
   const restartGame = useGameStore((state) => state.restartGame);
+  const rewardBeat = useGameStore((state) => state.rewardBeat);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -38,6 +39,7 @@ export function GameHud() {
         </div>
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
+        {rewardBeat && <p className="text-xl">{rewardBeat}</p>}
         {puzzlePhase === "won" && (
           <p className="text-4xl text-orange-700">Hooray!</p>
         )}

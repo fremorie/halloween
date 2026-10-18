@@ -7,6 +7,7 @@ import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
 import { HatSilhouetteModel } from "@/components/models/hatSilhouette/hatSilhouetteModel";
+import { useRewardBeatTimer } from "./useRewardBeatTimer";
 
 const HAT_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "hat");
 
@@ -17,6 +18,7 @@ export function World() {
   );
 
   useCelebrationTimer();
+  useRewardBeatTimer();
 
   return (
     <>
