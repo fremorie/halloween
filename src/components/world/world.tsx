@@ -6,6 +6,7 @@ import { useGameStore } from "@/store/gameStore";
 import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
+import { HatSilhouetteModel } from "@/components/models/hatSilhouette/hatSilhouetteModel";
 
 export function World() {
   const runCount = useGameStore((state) => state.runCount);
@@ -21,6 +22,7 @@ export function World() {
       <Cat key={runCount} stationCount={levels.length} />
       <LanternFaceClock />
       <Ground />
+      <HatSilhouetteModel />
     </>
   );
 }

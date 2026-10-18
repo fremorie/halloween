@@ -5,10 +5,10 @@ import { getGroundedGraph } from "@/utils/graph";
 export const hat: Graph = {
   nodes: [
     { id: 0, position: [0.5, 2.6, 0] },
-    { id: 1, position: [-0.6, 0.6, 0] },
-    { id: 2, position: [0.7, 0.6, 0] },
-    { id: 3, position: [-2.2, -1.0, 0] },
-    { id: 4, position: [2.2, -1.0, 0] },
+    { id: 1, position: [-0.8, 0.2, 0] },
+    { id: 2, position: [0.9, 0.2, 0] },
+    { id: 3, position: [-2.5, -1.0, 0] },
+    { id: 4, position: [2.5, -1.0, 0] },
     { id: 5, position: [0, -1.6, 0] },
   ],
   edges: [
