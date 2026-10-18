@@ -9,6 +9,8 @@ import {
   CAMERA_FOV,
   CAMERA_HEIGHT,
   CAMERA_ZOOM_SPEED,
+  CAT_CLOSE_UP_LOOK_AT_HEIGHT,
+  CAT_CLOSE_UP_ZOOM,
   LOOK_AT_HEIGHT,
   SOLVING_HALF_WIDTH,
   WALKING_DROP,
@@ -17,6 +19,13 @@ import {
 } from "@/settings/cameraSettings";
 import { useGameStore } from "@/store/gameStore";
 import { getSolvingFocus } from "@/utils/journey";
+import type { GameMode } from "@/types/game";
+
+function getGoalZoom(mode: GameMode) {
+  if (mode === "rewarding") return CAT_CLOSE_UP_ZOOM;
+  if (mode === "approaching" || mode === "solving") return 1;
+  return WALKING_ZOOM;
+}
 
 export function CameraRig() {
   const aspect = useThree((state) => state.size.width / state.size.height);
@@ -36,9 +45,12 @@ export function CameraRig() {
 
   useFrame(({ camera }, delta) => {
     const { catPosition, mode, currentStationIndex } = useGameStore.getState();
+    const isFramingCatCloseUp = mode === "rewarding";
     const isFramingPuzzle = mode === "approaching" || mode === "solving";
 
-    if (isFramingPuzzle) {
+    if (isFramingCatCloseUp) {
+      rig.goal.set(catPosition.x, CAT_CLOSE_UP_LOOK_AT_HEIGHT, catPosition.z);
+    } else if (isFramingPuzzle) {
       const [focusX, focusZ] = getSolvingFocus(currentStationIndex);
       rig.goal.set(focusX, LOOK_AT_HEIGHT, focusZ);
     } else {
@@ -48,7 +60,7 @@ export function CameraRig() {
         catPosition.z - WALKING_LEAD,
       );
     }
-    const goalZoom = isFramingPuzzle ? 1 : WALKING_ZOOM;
+    const goalZoom = getGoalZoom(mode);
 
     if (placedRef.current) {
       rig.target.lerp(rig.goal, 1 - Math.exp(-CAMERA_FOLLOW_SPEED * delta));
