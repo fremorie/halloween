@@ -9,6 +9,7 @@ import {
   CAT_WALK_NATURAL_SPEED,
   CAT_WALK_SPEED,
   MAX_STEP_DURATION,
+  CAT_SOLVING_TURN_TOWARDS_STATION,
 } from "@/settings/catSettings";
 import { ROUTE_ARRIVAL_DISTANCE } from "@/settings/journeySettings";
 import { useGameStore } from "@/store/gameStore";
@@ -29,11 +30,12 @@ export function useCatMovement(
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
   const [standSpot] = useState(() => new Vector3());
-  const [stationOrigin] = useState(() => new Vector3());
   const [previousPosition] = useState(() => new Vector3());
   const walkPaceRef = useRef(0);
+  const [directionToCamera] = useState(() => new Vector3());
+  const [directionToStation] = useState(() => new Vector3());
 
-  useFrame((_, delta) => {
+  useFrame(({ camera }, delta) => {
     const root = rootRef.current;
     if (!root) return;
 
@@ -73,8 +75,23 @@ export function useCatMovement(
     }
 
     if (mode === "solving") {
-      stationOrigin.set(...getStationOrigin(currentStationIndex));
-      direction.copy(stationOrigin).sub(root.position).setY(0).normalize();
+      directionToCamera
+        .copy(camera.position)
+        .sub(root.position)
+        .setY(0)
+        .normalize();
+      directionToStation
+        .set(...getStationOrigin(currentStationIndex))
+        .sub(root.position)
+        .setY(0)
+        .normalize();
+      direction
+        .lerpVectors(
+          directionToCamera,
+          directionToStation,
+          CAT_SOLVING_TURN_TOWARDS_STATION,
+        )
+        .normalize();
     }
 
     const movedDistance = root.position.distanceTo(previousPosition);
