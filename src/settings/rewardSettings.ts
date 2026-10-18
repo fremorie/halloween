@@ -10,3 +10,6 @@ export const REWARD_BEAT_DURATIONS: Record<RewardBeat, number> = {
   hatDrop: 0.8,
   speech: 2,
 };
+
+export const HAT_DROP_HEIGHT = 1.5;
+export const HAT_DROP_DURATION = 0.6;
