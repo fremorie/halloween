@@ -3,6 +3,7 @@
 import { Leva, useControls } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, OrbitControls } from "@react-three/drei";
+import { Physics } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
 
 import { Effects } from "@/components/postprocessing/effects";
@@ -15,8 +16,9 @@ import { useGameStore } from "@/store/gameStore";
 
 export function Experience() {
   const runCount = useGameStore((state) => state.runCount);
-  const { freeCamera } = useControls({
+  const { freeCamera, physicsDebug } = useControls({
     freeCamera: { value: false, label: "Free camera" },
+    physicsDebug: { value: false, label: "Physics debug" },
   });
 
   return (
@@ -42,7 +44,9 @@ export function Experience() {
 
           <Effects />
 
-          <World />
+          <Physics debug={physicsDebug}>
+            <World />
+          </Physics>
 
           {freeCamera ? (
             <OrbitControls makeDefault target={CAMERA_TARGET} />
