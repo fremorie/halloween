@@ -8,8 +8,13 @@ import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
 import { HatSilhouetteModel } from "@/components/models/hatSilhouette/hatSilhouetteModel";
 
+const HAT_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "hat");
+
 export function World() {
   const runCount = useGameStore((state) => state.runCount);
+  const isHatPuzzleSolved = useGameStore(
+    (state) => state.solvedAttempts[HAT_LEVEL_INDEX] !== undefined,
+  );
 
   useCelebrationTimer();
 
@@ -22,7 +27,8 @@ export function World() {
       <Cat key={runCount} stationCount={levels.length} />
       <LanternFaceClock />
       <Ground />
-      <HatSilhouetteModel />
+
+      <HatSilhouetteModel isRevealed={isHatPuzzleSolved} />
     </>
   );
 }
