@@ -17,7 +17,6 @@ import {
   getArrivalArea,
   getStandSpot,
   isInsideGroundEllipse,
-  getStationOrigin,
 } from "@/utils/journey";
 import { getMoveDirection, getHeading } from "@/utils/cat";
 import { dampAngle } from "@/utils/animation";
@@ -29,11 +28,10 @@ export function useCatMovement(
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
   const [standSpot] = useState(() => new Vector3());
-  const [stationOrigin] = useState(() => new Vector3());
   const [previousPosition] = useState(() => new Vector3());
   const walkPaceRef = useRef(0);
 
-  useFrame((_, delta) => {
+  useFrame(({ camera }, delta) => {
     const root = rootRef.current;
     if (!root) return;
 
@@ -72,9 +70,8 @@ export function useCatMovement(
       }
     }
 
-    if (mode === "solving") {
-      stationOrigin.set(...getStationOrigin(currentStationIndex));
-      direction.copy(stationOrigin).sub(root.position).setY(0).normalize();
+    if (mode === "solving" || mode === "rewarding") {
+      direction.copy(camera.position).sub(root.position).setY(0).normalize();
     }
 
     const movedDistance = root.position.distanceTo(previousPosition);

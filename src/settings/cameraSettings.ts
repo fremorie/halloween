@@ -23,3 +23,6 @@ export const CAMERA_SETTINGS: CameraProps = {
 export const CAMERA_TARGET: Vec3 = [0, 2.5, 0];
 
 export const CAMERA_ZOOM_SPEED = 2;
+
+export const CAT_CLOSE_UP_LOOK_AT_HEIGHT = 1.2;
+export const CAT_CLOSE_UP_ZOOM = 0.4;

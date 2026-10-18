@@ -2,10 +2,12 @@ import { create } from "zustand";
 
 import { createJourneySlice, type JourneySlice } from "@/store/journeySlice";
 import { createPuzzleSlice, type PuzzleSlice } from "@/store/puzzleSlice";
+import { createRewardSlice, type RewardSlice } from "@/store/rewardSlice";
 
-export type GameState = JourneySlice & PuzzleSlice;
+export type GameState = JourneySlice & PuzzleSlice & RewardSlice;
 
 export const useGameStore = create<GameState>()((...storeApi) => ({
   ...createJourneySlice(...storeApi),
   ...createPuzzleSlice(...storeApi),
+  ...createRewardSlice(...storeApi),
 }));

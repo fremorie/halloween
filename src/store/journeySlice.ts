@@ -65,6 +65,7 @@ export const createJourneySlice: StateCreator<
 
   restartGame: () => {
     get().resetAllPuzzles();
+    get().resetRewards();
     set((state) => ({
       mode: "walking",
       runCount: state.runCount + 1,
