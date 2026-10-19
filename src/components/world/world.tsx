@@ -5,6 +5,7 @@ import { LanternFaceClock } from "@/components/materials/lanternFaceClock";
 import { useGameStore } from "@/store/gameStore";
 import { HatSilhouetteModel } from "@/components/models/hatSilhouette/hatSilhouetteModel";
 import { CapeSilhouetteModel } from "@/components/models/capeSilhouette/capeSilhouetteModel";
+import { WingsSilhouetteModel } from "@/components/models/wingsSilhouette/wingsSilhouetteModel";
 import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
@@ -12,6 +13,7 @@ import { useRewardBeatTimer } from "./useRewardBeatTimer";
 
 const HAT_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "hat");
 const CAPE_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "cape");
+const WINGS_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "wings");
 
 export function World() {
   const runCount = useGameStore((state) => state.runCount);
@@ -20,6 +22,9 @@ export function World() {
   );
   const isCapePuzzleSolved = useGameStore(
     (state) => state.solvedAttempts[CAPE_LEVEL_INDEX] !== undefined,
+  );
+  const isWingsPuzzleSolved = useGameStore(
+    (state) => state.solvedAttempts[WINGS_LEVEL_INDEX] !== undefined,
   );
 
   useCelebrationTimer();
@@ -37,6 +42,7 @@ export function World() {
 
       <HatSilhouetteModel isRevealed={isHatPuzzleSolved} />
       <CapeSilhouetteModel isRevealed={isCapePuzzleSolved} />
+      <WingsSilhouetteModel isRevealed={isWingsPuzzleSolved} />
     </>
   );
 }

@@ -7,6 +7,7 @@ import { useGameStore } from "@/store/gameStore";
 import { useCatMovement } from "./useCatMovement";
 import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
+import { CatWings } from "./catWings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
@@ -17,12 +18,16 @@ export function Cat({ stationCount }: { stationCount: number }) {
   const isWearingCape = useGameStore((state) =>
     state.wornCostumePieces.includes("cape"),
   );
+  const isWearingWings = useGameStore((state) =>
+    state.wornCostumePieces.includes("wings"),
+  );
 
   return (
     <group ref={rootRef} position={CAT_START}>
       <CatRiggedModel walkPaceRef={walkPaceRef} />
       {isWearingHat && <CatHat />}
       {isWearingCape && <CatCape />}
+      {isWearingWings && <CatWings />}
     </group>
   );
 }
