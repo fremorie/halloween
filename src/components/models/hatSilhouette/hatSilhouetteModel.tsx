@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { useTexture } from "@react-three/drei";
 import type { MeshBasicMaterial } from "three";
 
+import { useSilhouetteFade } from "@/utils/animation/useSilhouetteFade";
 import { useHatGLTF } from "./useHatGLTF";
-import { useSilhouetteFade } from "./useSilhouetteFade";
 
 type Props = {
   isRevealed: boolean;
