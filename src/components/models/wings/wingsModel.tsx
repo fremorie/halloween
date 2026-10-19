@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useAnimations } from "@react-three/drei";
 import type { Group } from "three";
 
 import { useWingsGLTF } from "@/components/models/wings/useWingsGLTF";
@@ -32,5 +32,3 @@ export function WingsModel() {
     </group>
   );
 }
-
-useGLTF.preload("/Wings.glb");
