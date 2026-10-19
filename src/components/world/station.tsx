@@ -1,9 +1,5 @@
 import type { ComponentType } from "react";
-import {
-  CuboidCollider,
-  CylinderCollider,
-  RigidBody,
-} from "@react-three/rapier";
+import { CylinderCollider, RigidBody } from "@react-three/rapier";
 
 import type { Level, PumpkinVariant } from "@/types/level";
 import type { LanternFaceParams } from "@/types/lantern";
@@ -18,8 +14,6 @@ import {
   PUMPKIN_TURN_TOWARDS_PATH,
 } from "@/settings/journeySettings";
 import {
-  PEDESTAL_COLLIDER_CENTRE,
-  PEDESTAL_COLLIDER_HALF_EXTENTS,
   PUMPKIN_ANGULAR_DAMPING,
   PUMPKIN_COLLIDER_HALF_HEIGHT,
   PUMPKIN_COLLIDER_RADIUS,
@@ -28,6 +22,7 @@ import {
 import { getStationOrigin, getStationSide } from "@/utils/journey";
 import { EulerianPath } from "@/components/puzzles/eulerianPath";
 import { useGameStore } from "@/store/gameStore";
+import { PedestalCollider } from "@/components/models/pedestal/collider";
 
 const PUMPKIN_MODEL_BY_VARIANT = {
   classic: JackOLanternModel,
@@ -53,11 +48,10 @@ export function Station({ level, stationIndex }: Props) {
 
   return (
     <group position={getStationOrigin(stationIndex)}>
-      <PedestalModel />
-      <CuboidCollider
-        args={PEDESTAL_COLLIDER_HALF_EXTENTS}
-        position={PEDESTAL_COLLIDER_CENTRE}
-      />
+      <RigidBody type="fixed" colliders={false}>
+        <PedestalModel />
+        <PedestalCollider />
+      </RigidBody>
       <group position-y={PEDESTAL_TOP_HEIGHT}>
         <EulerianPath
           graph={level.graph}

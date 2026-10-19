@@ -3,9 +3,6 @@ import type { Vec3 } from "@/types/math";
 export const GROUND_COLLIDER_HALF_EXTENTS: Vec3 = [200, 0.1, 200];
 export const GROUND_COLLIDER_CENTRE: Vec3 = [0, -0.1, 0];
 
-export const PEDESTAL_COLLIDER_HALF_EXTENTS: Vec3 = [3.55, 0.4, 2.1];
-export const PEDESTAL_COLLIDER_CENTRE: Vec3 = [0.05, 0.4, 0.05];
-
 export const PUMPKIN_COLLIDER_RADIUS = 0.9;
 export const PUMPKIN_COLLIDER_HALF_HEIGHT = 0.75;
 export const PUMPKIN_LINEAR_DAMPING = 1;
