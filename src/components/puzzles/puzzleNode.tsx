@@ -41,11 +41,13 @@ export function PuzzleNode({
   const enterNode = useGameStore((store) => store.enterNode);
   const { isHovered, startHover, endHover } = usePointerHover(isActive);
 
+  const [horizontalOffsetFromPuzzleCenter] = node.position;
+
   useHoverAnimation(groupRef, isHovered);
   useScaleAnimation(groupRef, state, isHovered);
   useRejectShake(groupRef, levelIndex, node.id);
   useRewardWiggle(groupRef, levelIndex);
-  useBallScatter(ballBodyRef, levelIndex);
+  useBallScatter(ballBodyRef, levelIndex, horizontalOffsetFromPuzzleCenter);
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
