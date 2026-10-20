@@ -14,7 +14,9 @@ import { ROUTE_ARRIVAL_DISTANCE } from "@/settings/journeySettings";
 import { useGameStore } from "@/store/gameStore";
 import {
   clampToRoamingArea,
+  getApproachDirection,
   getArrivalArea,
+  getPedestalDetourArea,
   getStandSpot,
   isInsideGroundEllipse,
 } from "@/utils/journey";
@@ -59,14 +61,18 @@ export function useCatMovement(
 
     if (mode === "approaching") {
       standSpot.set(...getStandSpot(currentStationIndex));
-      direction.copy(standSpot).sub(root.position);
-      const distanceToSpot = direction.length();
+      const distanceToSpot = standSpot.distanceTo(root.position);
 
       if (distanceToSpot <= ROUTE_ARRIVAL_DISTANCE) {
         root.position.copy(standSpot);
         arriveAtStation();
       } else {
-        direction.normalize();
+        getApproachDirection(
+          root.position,
+          standSpot,
+          getPedestalDetourArea(currentStationIndex),
+          direction,
+        );
         walkStep
           .copy(direction)
           .multiplyScalar(

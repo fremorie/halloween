@@ -8,6 +8,10 @@ export const PUMPKIN_FORWARD_OFFSET = 0.6;
 export const PUMPKIN_TURN_TOWARDS_PATH = 0.4;
 
 export const PEDESTAL_TOP_HEIGHT = 0.8;
+export const PEDESTAL_DETOUR_RADIUS_X = 5;
+export const PEDESTAL_DETOUR_RADIUS_Z = 3.8;
+export const PEDESTAL_DETOUR_TRIGGER_FRACTION = 0.85;
+export const PEDESTAL_DETOUR_INSIDE_LEAD_ANGLE = 0.6;
 
 export const CAT_START: Vec3 = [0, 0, 9];
 export const ROAM_MARGIN = 14;
