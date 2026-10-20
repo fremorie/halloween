@@ -10,6 +10,10 @@ export const PUMPKIN_LINEAR_DAMPING = 1;
 export const PUMPKIN_ANGULAR_DAMPING = 2;
 
 export const YARN_BALL_COLLIDER_RADIUS = NODE_RADIUS * 1.1;
+export const YARN_BALL_LINEAR_DAMPING = 0.3;
+export const YARN_BALL_ANGULAR_DAMPING = 0.5;
+export const YARN_BALL_FRICTION = 1;
+export const YARN_BALL_RESTITUTION = 0.4;
 
 export const SCATTER_UPWARD_SPEED = 5;
 export const SCATTER_OUTWARD_SPEED_PER_UNIT = 1.4;

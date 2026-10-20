@@ -7,7 +7,13 @@ import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { NODE_SCALE } from "@/settings/graphSettings";
 import { HIT_SPHERE_RADIUS } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
-import { YARN_BALL_COLLIDER_RADIUS } from "@/settings/physicsSettings";
+import {
+  YARN_BALL_COLLIDER_RADIUS,
+  YARN_BALL_ANGULAR_DAMPING,
+  YARN_BALL_FRICTION,
+  YARN_BALL_LINEAR_DAMPING,
+  YARN_BALL_RESTITUTION,
+} from "@/settings/physicsSettings";
 import type { GraphNode } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
 import { useHoverAnimation } from "./useHoverAnimation";
@@ -62,9 +68,15 @@ export function PuzzleNode({
       ref={ballBodyRef}
       type="fixed"
       colliders={false}
+      linearDamping={YARN_BALL_LINEAR_DAMPING}
+      angularDamping={YARN_BALL_ANGULAR_DAMPING}
       position={node.position}
     >
-      <BallCollider args={[YARN_BALL_COLLIDER_RADIUS]} />
+      <BallCollider
+        args={[YARN_BALL_COLLIDER_RADIUS]}
+        friction={YARN_BALL_FRICTION}
+        restitution={YARN_BALL_RESTITUTION}
+      />
       <group ref={groupRef}>
         <YarnBallModel
           rotationY={node.id * 1.7}
