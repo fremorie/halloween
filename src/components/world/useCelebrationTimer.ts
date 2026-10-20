@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 
 import { useGameStore } from "@/store/gameStore";
-import {
-  CELEBRATION_DURATION,
-  COSTUME_SILHOUETTE_FADE_DURATION,
-} from "@/settings/journeySettings";
+import { CELEBRATION_DURATION } from "@/settings/journeySettings";
 import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
 import { levels } from "@/data/levels";
 
@@ -21,15 +18,16 @@ export function useCelebrationTimer() {
       levels[currentStationIndex].piece,
     );
 
-    const timer = isRewardedLevel
-      ? setTimeout(
-          () => useGameStore.getState().startReward(),
-          COSTUME_SILHOUETTE_FADE_DURATION * 1000,
-        )
-      : setTimeout(
-          () => useGameStore.getState().advanceToNextStation(),
-          CELEBRATION_DURATION * 1000,
-        );
+    if (isRewardedLevel) {
+      useGameStore.getState().startReward();
+
+      return;
+    }
+
+    const timer = setTimeout(
+      () => useGameStore.getState().advanceToNextStation(),
+      CELEBRATION_DURATION * 1000,
+    );
 
     return () => clearTimeout(timer);
   }, [puzzlePhase]);
