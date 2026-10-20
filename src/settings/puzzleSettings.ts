@@ -30,7 +30,5 @@ export const REJECT_SHAKE_DISTANCE = 0.07;
 export const REJECT_SHAKE_DURATION = 0.4;
 export const REJECT_SHAKE_WIGGLES = 6;
 
-export const WIN_HOP_HEIGHT = 0.45;
-export const WIN_HOP_DURATION = 0.55;
-export const WIN_HOP_STAGGER = 0.09;
-export const WIN_NODE_SCALE = 1.3;
+export const REWARD_WIGGLE_DISTANCE = 0.006;
+export const REWARD_WIGGLE_WIGGLES = 14;

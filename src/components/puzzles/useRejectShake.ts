@@ -15,7 +15,6 @@ export function useRejectShake(
   groupRef: RefObject<Group | null>,
   levelIndex: number,
   nodeId: number,
-  restingX: number,
 ) {
   const rejection = useGameStore((store) => store.rejection);
 
@@ -27,9 +26,9 @@ export function useRejectShake(
 
     gsap.fromTo(
       group.position,
-      { x: restingX },
+      { x: 0 },
       {
-        x: restingX + REJECT_SHAKE_DISTANCE,
+        x: REJECT_SHAKE_DISTANCE,
         duration: REJECT_SHAKE_DURATION,
         ease: getWiggleEase("puzzleNodeRejectShake", REJECT_SHAKE_WIGGLES),
       },

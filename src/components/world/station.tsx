@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { CylinderCollider, RigidBody } from "@react-three/rapier";
 
 import type { Level, PumpkinVariant } from "@/types/level";
 import type { LanternFaceParams } from "@/types/lantern";
@@ -12,9 +13,16 @@ import {
   PUMPKIN_FORWARD_OFFSET,
   PUMPKIN_TURN_TOWARDS_PATH,
 } from "@/settings/journeySettings";
+import {
+  PUMPKIN_ANGULAR_DAMPING,
+  PUMPKIN_COLLIDER_HALF_HEIGHT,
+  PUMPKIN_COLLIDER_RADIUS,
+  PUMPKIN_LINEAR_DAMPING,
+} from "@/settings/physicsSettings";
 import { getStationOrigin, getStationSide } from "@/utils/journey";
 import { EulerianPath } from "@/components/puzzles/eulerianPath";
 import { useGameStore } from "@/store/gameStore";
+import { PedestalCollider } from "@/components/models/pedestal/collider";
 
 const PUMPKIN_MODEL_BY_VARIANT = {
   classic: JackOLanternModel,
@@ -40,7 +48,10 @@ export function Station({ level, stationIndex }: Props) {
 
   return (
     <group position={getStationOrigin(stationIndex)}>
-      <PedestalModel />
+      <RigidBody type="fixed" colliders={false}>
+        <PedestalModel />
+        <PedestalCollider />
+      </RigidBody>
       <group position-y={PEDESTAL_TOP_HEIGHT}>
         <EulerianPath
           graph={level.graph}
@@ -48,16 +59,23 @@ export function Station({ level, stationIndex }: Props) {
           isActive={isActive}
         />
       </group>
-      <group
+      <RigidBody
+        colliders={false}
         position={[
           outerSide * PUMPKIN_DISTANCE_FROM_STATION_CENTRE,
           0,
           PUMPKIN_FORWARD_OFFSET,
         ]}
-        rotation-y={-outerSide * PUMPKIN_TURN_TOWARDS_PATH}
+        rotation={[0, -outerSide * PUMPKIN_TURN_TOWARDS_PATH, 0]}
+        linearDamping={PUMPKIN_LINEAR_DAMPING}
+        angularDamping={PUMPKIN_ANGULAR_DAMPING}
       >
         <PumpkinModel faceParams={level.pumpkin.faceParams} />
-      </group>
+        <CylinderCollider
+          args={[PUMPKIN_COLLIDER_HALF_HEIGHT, PUMPKIN_COLLIDER_RADIUS]}
+          position={[0, PUMPKIN_COLLIDER_HALF_HEIGHT, 0]}
+        />
+      </RigidBody>
     </group>
   );
 }
