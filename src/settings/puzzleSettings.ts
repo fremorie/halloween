@@ -30,5 +30,5 @@ export const REJECT_SHAKE_DISTANCE = 0.07;
 export const REJECT_SHAKE_DURATION = 0.4;
 export const REJECT_SHAKE_WIGGLES = 6;
 
-export const REWARD_WIGGLE_DISTANCE = 0.06;
+export const REWARD_WIGGLE_DISTANCE = 0.006;
 export const REWARD_WIGGLE_WIGGLES = 14;
