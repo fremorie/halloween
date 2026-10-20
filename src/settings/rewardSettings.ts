@@ -12,6 +12,8 @@ export const REWARD_BEAT_ORDER: RewardBeat[] = [
   "speech",
 ];
 
+export const CAT_CLOSE_UP_BEATS: RewardBeat[] = ["zoomIn", "hatDrop", "speech"];
+
 export const REWARD_BEAT_DURATIONS: Record<RewardBeat, number> = {
   wiggle: COSTUME_SILHOUETTE_FADE_DURATION,
   scatter: 1.5,

@@ -19,11 +19,11 @@ import {
 } from "@/settings/cameraSettings";
 import { useGameStore } from "@/store/gameStore";
 import { getSolvingFocus } from "@/utils/journey";
-import type { GameMode } from "@/types/game";
+import { CAT_CLOSE_UP_BEATS } from "@/settings/rewardSettings";
 
-function getGoalZoom(mode: GameMode) {
-  if (mode === "rewarding") return CAT_CLOSE_UP_ZOOM;
-  if (mode === "approaching" || mode === "solving") return 1;
+function getGoalZoom(isFramingCatCloseUp: boolean, isFramingPuzzle: boolean) {
+  if (isFramingCatCloseUp) return CAT_CLOSE_UP_ZOOM;
+  if (isFramingPuzzle) return 1;
   return WALKING_ZOOM;
 }
 
@@ -44,9 +44,12 @@ export function CameraRig() {
     ) * CAMERA_FIT_MARGIN;
 
   useFrame(({ camera }, delta) => {
-    const { catPosition, mode, currentStationIndex } = useGameStore.getState();
-    const isFramingCatCloseUp = mode === "rewarding";
-    const isFramingPuzzle = mode === "approaching" || mode === "solving";
+    const { catPosition, mode, currentStationIndex, rewardBeat } =
+      useGameStore.getState();
+    const isFramingCatCloseUp =
+      rewardBeat !== null && CAT_CLOSE_UP_BEATS.includes(rewardBeat);
+    const isFramingPuzzle =
+      mode === "approaching" || mode === "solving" || mode === "rewarding";
 
     if (isFramingCatCloseUp) {
       rig.goal.set(catPosition.x, CAT_CLOSE_UP_LOOK_AT_HEIGHT, catPosition.z);
@@ -60,7 +63,7 @@ export function CameraRig() {
         catPosition.z - WALKING_LEAD,
       );
     }
-    const goalZoom = getGoalZoom(mode);
+    const goalZoom = getGoalZoom(isFramingCatCloseUp, isFramingPuzzle);
 
     if (placedRef.current) {
       rig.target.lerp(rig.goal, 1 - Math.exp(-CAMERA_FOLLOW_SPEED * delta));
