@@ -8,7 +8,6 @@ import { HIT_SPHERE_RADIUS } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { GraphNode } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
-import { useCelebrationHop } from "./useCelebrationHop";
 import { useHoverAnimation } from "./useHoverAnimation";
 import { usePointerHover } from "./usePointerHover";
 import { useRejectShake } from "./useRejectShake";
@@ -22,9 +21,7 @@ type Props = {
   levelIndex: number;
   material: MeshStandardMaterial;
   state: NodeState;
-  pathOrder: number;
   isActive: boolean;
-  isCelebrating: boolean;
 };
 
 export function PuzzleNode({
@@ -32,20 +29,17 @@ export function PuzzleNode({
   levelIndex,
   material,
   state,
-  pathOrder,
   isActive,
-  isCelebrating,
 }: Props) {
   const groupRef = useRef<Group>(null);
   const pressNode = useGameStore((store) => store.pressNode);
   const enterNode = useGameStore((store) => store.enterNode);
   const { isHovered, startHover, endHover } = usePointerHover(isActive);
 
-  const [restingX, restingY] = node.position;
+  const [restingX] = node.position;
 
   useHoverAnimation(groupRef, isHovered);
   useScaleAnimation(groupRef, state, isHovered);
-  useCelebrationHop(groupRef, isCelebrating, pathOrder, restingY);
   useRejectShake(groupRef, levelIndex, node.id, restingX);
   useRewardWiggle(groupRef, levelIndex, restingX);
 

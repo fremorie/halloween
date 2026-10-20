@@ -34,7 +34,6 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   );
 
   const isDrawing = puzzlePhase === "drawing";
-  const isCelebrating = puzzlePhase === "won";
   const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
 
   const edgeThreading = useMemo(
@@ -59,9 +58,7 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
             levelIndex={levelIndex}
             material={yarnMaterials[node.id % yarnMaterials.length]}
             state={getNodeState(node.id, pathOrder)}
-            pathOrder={pathOrder}
             isActive={isActive}
-            isCelebrating={isCelebrating}
           />
         );
       })}
