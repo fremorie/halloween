@@ -35,7 +35,11 @@ export function World() {
       <Lights />
       <Ground />
       {levels.map((level, stationIndex) => (
-        <Station key={level.piece} level={level} stationIndex={stationIndex} />
+        <Station
+          key={`${level.piece}-${runCount}`}
+          level={level}
+          stationIndex={stationIndex}
+        />
       ))}
       <Cat key={runCount} stationCount={levels.length} />
       <LanternFaceClock />
