@@ -1,9 +1,10 @@
 import type { ThreeEvent } from "@react-three/fiber";
 import { useRef } from "react";
 import { type Group, type MeshStandardMaterial, SphereGeometry } from "three";
+import { BallCollider, RigidBody } from "@react-three/rapier";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
-import { NODE_SCALE } from "@/settings/graphSettings";
+import { NODE_RADIUS, NODE_SCALE } from "@/settings/graphSettings";
 import { HIT_SPHERE_RADIUS } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import type { GraphNode } from "@/types/graph";
@@ -36,12 +37,10 @@ export function PuzzleNode({
   const enterNode = useGameStore((store) => store.enterNode);
   const { isHovered, startHover, endHover } = usePointerHover(isActive);
 
-  const [restingX] = node.position;
-
   useHoverAnimation(groupRef, isHovered);
   useScaleAnimation(groupRef, state, isHovered);
-  useRejectShake(groupRef, levelIndex, node.id, restingX);
-  useRewardWiggle(groupRef, levelIndex, restingX);
+  useRejectShake(groupRef, levelIndex, node.id);
+  useRewardWiggle(groupRef, levelIndex);
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
@@ -52,22 +51,25 @@ export function PuzzleNode({
   };
 
   return (
-    <group ref={groupRef} position={node.position}>
-      <YarnBallModel
-        rotationY={node.id * 1.7}
-        material={material}
-        scale={NODE_SCALE}
-      />
-
-      {isActive && (
-        <mesh
-          geometry={HIT_SPHERE_GEOMETRY}
-          visible={false}
-          onPointerDown={() => pressNode(levelIndex, node.id)}
-          onPointerEnter={handlePointerEnter}
-          onPointerLeave={endHover}
+    <RigidBody type="fixed" colliders={false} position={node.position}>
+      <BallCollider args={[NODE_RADIUS * 1.1]} />
+      <group ref={groupRef}>
+        <YarnBallModel
+          rotationY={node.id * 1.7}
+          material={material}
+          scale={NODE_SCALE}
         />
-      )}
-    </group>
+
+        {isActive && (
+          <mesh
+            geometry={HIT_SPHERE_GEOMETRY}
+            visible={false}
+            onPointerDown={() => pressNode(levelIndex, node.id)}
+            onPointerEnter={handlePointerEnter}
+            onPointerLeave={endHover}
+          />
+        )}
+      </group>
+    </RigidBody>
   );
 }

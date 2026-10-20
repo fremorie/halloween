@@ -14,7 +14,6 @@ import { getWiggleEase } from "@/utils/animation";
 export function useRewardWiggle(
   groupRef: RefObject<Group | null>,
   levelIndex: number,
-  restingX: number,
 ) {
   const isWiggling = useGameStore(
     (store) =>
@@ -27,9 +26,9 @@ export function useRewardWiggle(
 
     gsap.fromTo(
       group.position,
-      { x: restingX },
+      { x: 0 },
       {
-        x: restingX + REWARD_WIGGLE_DISTANCE,
+        x: REWARD_WIGGLE_DISTANCE,
         duration: REWARD_BEAT_DURATIONS.wiggle,
         ease: getWiggleEase(
           "puzzleNodeRewardWiggle",
