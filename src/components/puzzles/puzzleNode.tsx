@@ -13,6 +13,7 @@ import { useHoverAnimation } from "./useHoverAnimation";
 import { usePointerHover } from "./usePointerHover";
 import { useRejectShake } from "./useRejectShake";
 import { useScaleAnimation } from "./useScaleAnimation";
+import { useRewardWiggle } from "./useRewardWiggle";
 
 const HIT_SPHERE_GEOMETRY = new SphereGeometry(HIT_SPHERE_RADIUS, 8, 6);
 
@@ -46,6 +47,7 @@ export function PuzzleNode({
   useScaleAnimation(groupRef, state, isHovered);
   useCelebrationHop(groupRef, isCelebrating, pathOrder, restingY);
   useRejectShake(groupRef, levelIndex, node.id, restingX);
+  useRewardWiggle(groupRef, levelIndex, restingX);
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
