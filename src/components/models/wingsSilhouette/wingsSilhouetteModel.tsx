@@ -24,7 +24,7 @@ export function WingsSilhouetteModel({ isRevealed }: Props) {
 
   return (
     <group dispose={null}>
-      <mesh geometry={nodes.Cube.geometry} position={[-5.8, 0, -36]}>
+      <mesh geometry={nodes.Cube.geometry} position={[-5.8, -0.197, -36]}>
         <meshBasicMaterial
           ref={materialRef}
           map={wingsSilhouetteTexture}
