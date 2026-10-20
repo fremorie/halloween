@@ -20,15 +20,18 @@ import {
 } from "@/utils/journey";
 import { getMoveDirection, getHeading } from "@/utils/cat";
 import { dampAngle } from "@/utils/animation";
+import type { LimitStepByObstacles } from "./useCatObstacleBlocking";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
   stationCount: number,
+  limitStepByObstacles: LimitStepByObstacles,
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
   const [standSpot] = useState(() => new Vector3());
   const [previousPosition] = useState(() => new Vector3());
+  const [walkStep] = useState(() => new Vector3());
   const walkPaceRef = useRef(0);
 
   useFrame(({ camera }, delta) => {
@@ -49,7 +52,8 @@ export function useCatMovement(
 
     if (mode === "walking" || mode === "done") {
       getMoveDirection(getKeys(), direction);
-      root.position.addScaledVector(direction, CAT_WALK_SPEED * stepDuration);
+      walkStep.copy(direction).multiplyScalar(CAT_WALK_SPEED * stepDuration);
+      root.position.add(limitStepByObstacles(root, walkStep));
       clampToRoamingArea(root.position, stationCount);
     }
 
@@ -63,10 +67,12 @@ export function useCatMovement(
         arriveAtStation();
       } else {
         direction.normalize();
-        root.position.addScaledVector(
-          direction,
-          Math.min(distanceToSpot, CAT_WALK_SPEED * stepDuration),
-        );
+        walkStep
+          .copy(direction)
+          .multiplyScalar(
+            Math.min(distanceToSpot, CAT_WALK_SPEED * stepDuration),
+          );
+        root.position.add(limitStepByObstacles(root, walkStep));
       }
     }
 

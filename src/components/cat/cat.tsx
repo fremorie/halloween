@@ -10,11 +10,13 @@ import { CAT_START } from "@/settings/journeySettings";
 import { CatRiggedModel } from "@/components/models/catRigged/CatModel";
 import { useGameStore } from "@/store/gameStore";
 import {
+  CAT_BLOCKING_HALF_EXTENTS,
   CAT_COLLIDER_CENTER,
   CAT_COLLIDER_HALF_EXTENTS,
 } from "@/settings/catSettings";
 import { useCatMovement } from "./useCatMovement";
 import { useCatBodyFollow } from "./useCatBodyFollow";
+import { useCatObstacleBlocking } from "./useCatObstacleBlocking";
 import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
@@ -22,7 +24,14 @@ import { CatWings } from "./catWings";
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
   const catBodyRef = useRef<RapierRigidBody>(null);
-  const walkPaceRef = useCatMovement(rootRef, stationCount);
+
+  const { blockingColliderRef, limitStepByObstacles } =
+    useCatObstacleBlocking();
+  const walkPaceRef = useCatMovement(
+    rootRef,
+    stationCount,
+    limitStepByObstacles,
+  );
   useCatBodyFollow(rootRef, catBodyRef);
 
   const isWearingHat = useGameStore((state) =>
@@ -54,6 +63,11 @@ export function Cat({ stationCount }: { stationCount: number }) {
           position={CAT_COLLIDER_CENTER}
         />
       </RigidBody>
+      <CuboidCollider
+        ref={blockingColliderRef}
+        sensor
+        args={CAT_BLOCKING_HALF_EXTENTS}
+      />
     </>
   );
 }

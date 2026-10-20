@@ -10,3 +10,20 @@ export const CAT_WALK_BLEND_SPEED = 12;
 
 export const CAT_COLLIDER_HALF_EXTENTS: Vec3 = [0.6, 0.7, 1.1];
 export const CAT_COLLIDER_CENTER: Vec3 = [0, 0.7, 0.25];
+
+export const CAT_CONTROLLER_OFFSET = 0.02;
+export const CAT_BLOCKING_LIFT = 0.1;
+
+const [catHalfWidth, catHalfHeight, catHalfLength] = CAT_COLLIDER_HALF_EXTENTS;
+const [catCentreX, catCentreY, catCentreZ] = CAT_COLLIDER_CENTER;
+
+export const CAT_BLOCKING_HALF_EXTENTS: Vec3 = [
+  catHalfWidth,
+  catHalfHeight - CAT_BLOCKING_LIFT / 2,
+  catHalfLength,
+];
+export const CAT_BLOCKING_CENTER: Vec3 = [
+  catCentreX,
+  catCentreY + CAT_BLOCKING_LIFT / 2,
+  catCentreZ,
+];
