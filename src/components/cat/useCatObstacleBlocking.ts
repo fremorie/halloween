@@ -26,6 +26,7 @@ export function useCatObstacleBlocking() {
     const characterController = world.createCharacterController(
       CAT_CONTROLLER_OFFSET,
     );
+    characterController.setMaxSlopeClimbAngle(0);
     characterControllerRef.current = characterController;
 
     return () => {
@@ -57,7 +58,7 @@ export function useCatObstacleBlocking() {
     );
     const allowedStep = characterController.computedMovement();
 
-    return walkStep.set(allowedStep.x, allowedStep.y, allowedStep.z);
+    return walkStep.set(allowedStep.x, 0, allowedStep.z);
   };
 
   return { blockingColliderRef, limitStepByObstacles };
