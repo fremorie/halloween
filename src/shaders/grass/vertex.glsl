@@ -4,6 +4,8 @@ uniform vec3 uTipColor;
 uniform vec3 uBaseColor;
 uniform vec3 uTipColor2;
 uniform vec3 uBaseColor2;
+uniform sampler2D uGrassMap;
+uniform float uGrassMapWorldSize;
 
 uniform float uGridSize;
 
@@ -52,6 +54,9 @@ void main() {
         tileOrigin
     );
     vec3 grassBladeWorldPos = (modelMatrix * vec4(grassOffset, 1.0)).xyz;
+    vec2 grassMapUv = vec2(grassBladeWorldPos.x, -grassBladeWorldPos.z) / uGrassMapWorldSize + 0.5;
+    float grassMask = textureLod(uGrassMap, grassMapUv, 0.0).r;
+
     vec3 hashVal = hash(grassBladeWorldPos);
 
     const float PI = 3.1415926535;
@@ -68,8 +73,9 @@ void main() {
     float zSide = float(zTest);
     float heightPercent = float(vertID - xTest) / (float(GRASS_SEGMENTS) * 2.0);
 
-    float width = GRASS_WIDTH * easeOut(1.0 - heightPercent, 4.0);
-    float height = GRASS_HEIGHT;
+    float grassMaskScale = smoothstep(0.5, 0.9, grassMask);
+    float width = GRASS_WIDTH * easeOut(1.0 - heightPercent, 4.0) * grassMaskScale;
+    float height = GRASS_HEIGHT * grassMaskScale;
 
     float x = (xSide - 0.5) * width;
     float y = heightPercent * height;
@@ -115,12 +121,14 @@ void main() {
     mvPosition.x += viewSpaceThickenFactor * (xSide - 0.5) * width * 0.5 * (-zSide);
 
     gl_Position = projectionMatrix * mvPosition;
+    gl_Position.w = grassMaskScale <= 0.0 ? 0.0 : gl_Position.w;
 
     vec3 c1 = mix(uBaseColor, uTipColor, heightPercent);
     vec3 c2 = mix(uBaseColor2, uTipColor2, heightPercent);
     float noiseValue = noise(grassBladeWorldPos * 0.1);
 
     vColor = mix(c1, c2, smoothstep(-1.0, 1.0, noiseValue));
+    // vColor = vec3(grassMask);
     vColor = mix(c1, vColor, stiffness);
     vGrassData = vec4(x, heightPercent, 0.0, 0.0);
     vNormal = normalize((modelMatrix * vec4(grassLocalNormal, 0.0)).xyz);
