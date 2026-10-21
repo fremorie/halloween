@@ -29,6 +29,10 @@ void main() {
 
     finalColor *= vec3(gradient, 1.0, 1.0);
 
+    // Z for 3 trees: -5, -25, -40.
+    float saturation = remap(vPosition.z, -5.0, -40.0, 1.0, 0.3);
+    finalColor.r *= saturation;
+
     gl_FragColor = vec4(finalColor, 1.0);
 
     #include <colorspace_fragment>
