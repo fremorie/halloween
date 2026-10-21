@@ -8,6 +8,7 @@ varying vec2 vUv;
 #include <fog_pars_fragment>
 
 #include "../includes/utils.glsl"
+#include "../includes/lights.glsl"
 
 void main() {
     vec3 baseColor = texture2D(uLeavesTexture, vUv).rgb;
@@ -32,6 +33,13 @@ void main() {
     // Z for 3 trees: -5, -25, -40.
     float saturation = remap(vPosition.z, -5.0, -40.0, 0.8, 0.3);
     finalColor.r *= saturation;
+
+    vec3 ambientLighting = hemiLight(normal, vec3(0.22, 0.26, 0.13), vec3(1.0, 1.0, 1.0));
+
+    float ao = remap(pow(vPosition.y, 0.25), 0.0, 1.0, 0.125, 1.0);
+
+    finalColor = finalColor * ambientLighting;
+    finalColor *= ao;
 
     gl_FragColor = vec4(finalColor, 1.0);
 
