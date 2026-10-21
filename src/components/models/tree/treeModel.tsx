@@ -43,16 +43,7 @@ export function TreeModel(props: Props) {
   return (
     <group {...props} dispose={null}>
       <mesh
-        geometry={nodes.Leaves1001.geometry}
-        material={leavesMaterial}
-        position={[-2.707, 5.443, -0.721]}
-      />
-      <mesh
-        geometry={nodes.Leaves2001.geometry}
-        material={leavesMaterial}
-        position={[0.35, 8.225, -0.165]}
-      />
-      <mesh
+        castShadow
         geometry={nodes.Leaves3001.geometry}
         material={leavesMaterial}
         position={[2.86, 5.676, -1.135]}
