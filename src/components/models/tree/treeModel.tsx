@@ -1,10 +1,6 @@
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
-
-import { createLeavesMaterial, leavesTimeUniform } from "./leavesMaterial";
-import { useMemo } from "react";
 
 export const TREE_MODEL_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/models/Tree.glb`;
 
@@ -20,31 +16,18 @@ type GLTFResult = GLTF & {
 
 type Props = {
   scale?: number;
+  leavesMaterial: THREE.ShaderMaterial;
 };
 
 export function TreeModel(props: Props) {
+  const { leavesMaterial, ...groupProps } = props;
+
   const { nodes, materials } = useGLTF(
     TREE_MODEL_PATH,
   ) as unknown as GLTFResult;
 
-  const leavesTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/LeavesBaseColor.jpg`,
-    (loadedLeavesTexture) => {
-      loadedLeavesTexture.flipY = false;
-    },
-  );
-
-  const leavesMaterial = useMemo(
-    () => createLeavesMaterial(leavesTexture),
-    [leavesTexture],
-  );
-
-  useFrame(({ clock }) => {
-    leavesTimeUniform.value = clock.elapsedTime;
-  });
-
   return (
-    <group {...props} dispose={null}>
+    <group {...groupProps} dispose={null}>
       <mesh
         castShadow
         geometry={nodes.Leaves.geometry}
