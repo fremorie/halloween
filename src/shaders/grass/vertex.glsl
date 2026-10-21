@@ -115,7 +115,7 @@ void main() {
     mvPosition.x += viewSpaceThickenFactor * (xSide - 0.5) * width * 0.5 * (-zSide);
 
     gl_Position = projectionMatrix * mvPosition;
-    gl_Position.w = grassMaskScale <= 0.0 ? 0.0 : gl_Position.w;
+    gl_Position.w = grassMaskScale <= 0.5 ? 0.0 : gl_Position.w;
 
     vec3 c1 = mix(uBaseColor, uTipColor, heightPercent);
     vec3 c2 = mix(uBaseColor2, uTipColor2, heightPercent);
