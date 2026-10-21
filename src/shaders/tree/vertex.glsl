@@ -26,7 +26,7 @@ float noise(in vec2 x) {
 
 void main() {
     vec3 localSpacePosition = position;
-    float n = noise(localSpacePosition.xy * 2.0 + 0.5 * uTime);
+    float n = noise(localSpacePosition.xy * 2.0 + 0.25 * uTime);
     localSpacePosition += normal * n * 0.55;
     localSpacePosition.y *= 0.9;
 
