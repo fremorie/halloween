@@ -3,7 +3,7 @@ import type { GLTF } from "three-stdlib";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
-import { createLeavesMaterial } from "./leavesMaterial";
+import { createLeavesMaterial, leavesTimeUniform } from "./leavesMaterial";
 import { useMemo } from "react";
 
 export const TREE_MODEL_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/models/Tree.glb`;
@@ -40,7 +40,7 @@ export function TreeModel(props: Props) {
   );
 
   useFrame(({ clock }) => {
-    leavesMaterial.uniforms.uTime.value = clock.elapsedTime;
+    leavesTimeUniform.value = clock.elapsedTime;
   });
 
   return (
