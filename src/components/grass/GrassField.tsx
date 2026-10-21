@@ -1,25 +1,38 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
+import { InstancedBufferAttribute } from "three";
 
 import { createGrassMaterial, grassTimeUniform } from "./grassMaterial";
-import { createGrassGeometry, GRASS_FIELD_CENTRE_Z } from "./utils";
+import {
+  readGrassMapPixels,
+  scatterBladesInsideGrassMap,
+} from "./grassMapScatter";
+import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
 
-const GRASS_SEGMENTS = 2;
-const GRASS_BLADE_COUNT = 40000;
+const GRASS_SEGMENTS = 3;
+const GRASS_BLADE_COUNT = 3500;
 
 export function GrassField() {
   const grassMapTexture = useTexture(
     `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap.jpg`,
   );
 
-  const grassGeometry = useMemo(
-    () => createGrassGeometry(GRASS_SEGMENTS, GRASS_BLADE_COUNT),
-    [],
-  );
+  const grassGeometry = useMemo(() => {
+    const geometry = createGrassGeometry(GRASS_SEGMENTS, GRASS_BLADE_COUNT);
+    const bladeWorldPositions = scatterBladesInsideGrassMap(
+      readGrassMapPixels(grassMapTexture.image as HTMLImageElement),
+      GRASS_BLADE_COUNT,
+      GRASS_MAP_WORLD_SIZE,
+    );
+    geometry.setAttribute(
+      "aBladeWorldPosition",
+      new InstancedBufferAttribute(bladeWorldPositions, 2),
+    );
+    return geometry;
+  }, [grassMapTexture]);
   const grassMaterial = useMemo(
-    () =>
-      createGrassMaterial(GRASS_SEGMENTS, GRASS_BLADE_COUNT, grassMapTexture),
+    () => createGrassMaterial(GRASS_SEGMENTS, grassMapTexture),
     [grassMapTexture],
   );
 
@@ -27,11 +40,5 @@ export function GrassField() {
     grassTimeUniform.value = clock.elapsedTime;
   });
 
-  return (
-    <mesh
-      geometry={grassGeometry}
-      material={grassMaterial}
-      position-z={GRASS_FIELD_CENTRE_Z}
-    />
-  );
+  return <mesh geometry={grassGeometry} material={grassMaterial} />;
 }

@@ -7,52 +7,23 @@ uniform vec3 uBaseColor2;
 uniform sampler2D uGrassMap;
 uniform float uGrassMapWorldSize;
 
-uniform float uGridSize;
+attribute vec2 aBladeWorldPosition;
 
 varying vec3 vColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
-varying vec3 vWorldPosition;
 
 #include "../includes/utils.glsl"
 #include "../includes/hash.glsl"
 #include "../includes/noise.glsl"
 
-vec3 getGrassBladePosition(
-    int instanceID,
-    float gridSize,
-    float grassPatchSize,
-    vec2 tileOrigin
-) {
-    float cell = grassPatchSize / gridSize;
-
-    float x = mod(float(instanceID), gridSize);
-    float z = floor(float(instanceID) / gridSize);
-
-    vec2 cellCenter = (vec2(x, z) + 0.5) * cell - grassPatchSize * 0.5;
-    vec2 worldCellCenter = cellCenter + tileOrigin;
-
-    vec2 randomOffset = hash(vec3(worldCellCenter.x, 0.0, worldCellCenter.y)).xy * 0.5;
-
-    vec2 position = cellCenter + randomOffset * cell * 4.0;
-
-    return vec3(position.x, 0.0, position.y);
-}
-
 void main() {
     int GRASS_SEGMENTS = int(grassParams.x);
     int GRASS_VERTICES = (GRASS_SEGMENTS + 1) * 2;
-    float GRASS_PATCH_SIZE = grassParams.y;
     float GRASS_WIDTH = grassParams.z;
     float GRASS_HEIGHT = grassParams.w;
 
-    vec2 tileOrigin = (modelMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xz;
-    vec3 grassOffset = getGrassBladePosition(
-        gl_InstanceID,
-        uGridSize,
-        GRASS_PATCH_SIZE,
-        tileOrigin
-    );
+    vec3 grassOffset = vec3(aBladeWorldPosition.x, 0.0, aBladeWorldPosition.y);
     vec3 grassBladeWorldPos = (modelMatrix * vec4(grassOffset, 1.0)).xyz;
     vec2 grassMapUv = vec2(grassBladeWorldPos.x, -grassBladeWorldPos.z) / uGrassMapWorldSize + 0.5;
     float grassMask = textureLod(uGrassMap, grassMapUv, 0.0).r;
@@ -61,8 +32,6 @@ void main() {
 
     const float PI = 3.1415926535;
     float angle = remap(hashVal.x, -1.0, 1.0, -PI, PI);
-
-    float stiffness = 1.0;
 
     int vertFB_ID = gl_VertexID % (GRASS_VERTICES * 2);
     int vertID = vertFB_ID % GRASS_VERTICES;
@@ -73,18 +42,15 @@ void main() {
     float zSide = float(zTest);
     float heightPercent = float(vertID - xTest) / (float(GRASS_SEGMENTS) * 2.0);
 
-    float grassMaskScale = smoothstep(0.5, 0.9, grassMask);
+    float grassMaskScale = smoothstep(0.2, 0.9, grassMask);
     float width = GRASS_WIDTH * easeOut(1.0 - heightPercent, 4.0) * grassMaskScale;
     float height = GRASS_HEIGHT * grassMaskScale;
 
     float x = (xSide - 0.5) * width;
-    float y = heightPercent * height;
-    float z = 0.0;
 
     float windStrength = noise(vec3(grassBladeWorldPos.xz * 0.05, 0.0) + uTime);
-    float windAngle = 0.0;
-    vec3 windAxis = vec3(cos(windAngle), 0.0, sin(windAngle));
-    float windLeanAngle = windStrength * 0.25 * heightPercent * stiffness;
+    vec3 windAxis = vec3(1.0, 0.0, 0.0);
+    float windLeanAngle = windStrength * 0.25 * heightPercent;
 
     float randomLeanAnimation = noise(vec3(grassBladeWorldPos.xz, uTime * 4.0)) * (windStrength * 0.5 + 0.125);
     float leanFactor = remap(hashVal.y, -1.0, 1.0, -0.5, 0.5) + randomLeanAnimation;
@@ -98,8 +64,8 @@ void main() {
     vec3 curveGrad = bezierGrad(p1, p2, p3, p4, heightPercent);
     mat2 curveRot90 = mat2(0.0, 1.0, -1.0, 0.0) * (-zSide);
 
-    y = curve.y * height;
-    z = curve.z * height;
+    float y = curve.y * height;
+    float z = curve.z * height;
 
     mat3 grassMat = rotateAxis(windAxis, windLeanAngle) * rotateY(angle);
 
@@ -128,9 +94,6 @@ void main() {
     float noiseValue = noise(grassBladeWorldPos * 0.1);
 
     vColor = mix(c1, c2, smoothstep(-1.0, 1.0, noiseValue));
-    // vColor = vec3(grassMask);
-    vColor = mix(c1, vColor, stiffness);
     vGrassData = vec4(x, heightPercent, 0.0, 0.0);
     vNormal = normalize((modelMatrix * vec4(grassLocalNormal, 0.0)).xyz);
-    vWorldPosition = worldPosition.xyz;
 }

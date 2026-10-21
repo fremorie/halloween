@@ -1,14 +1,6 @@
 import * as THREE from "three";
 
-import { levels } from "@/data/levels";
-import { CAT_START, ROAM_MARGIN } from "@/settings/journeySettings";
-import { getStationOrigin } from "@/utils/journey/getStationOrigin";
-
-const CAT_START_Z = CAT_START[2];
-const LAST_STATION_Z = getStationOrigin(levels.length - 1)[2];
-
-export const GRASS_PATCH_SIZE = CAT_START_Z - LAST_STATION_Z + ROAM_MARGIN * 2;
-export const GRASS_FIELD_CENTRE_Z = (CAT_START_Z + LAST_STATION_Z) / 2;
+export const GRASS_MAP_WORLD_SIZE = 100;
 
 export function createGrassGeometry(segments: number, grassBladeCount: number) {
   const VERTICES = (segments + 1) * 2;
@@ -40,7 +32,7 @@ export function createGrassGeometry(segments: number, grassBladeCount: number) {
   geo.setIndex(indices);
   geo.boundingSphere = new THREE.Sphere(
     new THREE.Vector3(0, 0, 0),
-    1 + GRASS_PATCH_SIZE * 2,
+    1 + GRASS_MAP_WORLD_SIZE,
   );
 
   return geo;
