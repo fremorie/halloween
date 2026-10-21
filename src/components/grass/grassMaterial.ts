@@ -19,7 +19,7 @@ import vertexShader from "@/shaders/grass/vertex.glsl";
 
 import { GRASS_MAP_WORLD_SIZE } from "./utils";
 
-const GRASS_WIDTH = 0.05;
+const GRASS_WIDTH = 0.1;
 const GRASS_HEIGHT = 0.6;
 
 export const grassTimeUniform = new Uniform(0);
