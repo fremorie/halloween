@@ -5,6 +5,8 @@ varying vec3 vNormal;
 varying vec3 vPosition;
 varying vec2 vUv;
 
+#include <fog_pars_fragment>
+
 #include "../includes/utils.glsl"
 
 void main() {
@@ -28,4 +30,7 @@ void main() {
     finalColor *= vec3(gradient, 1.0, 1.0);
 
     gl_FragColor = vec4(finalColor, 1.0);
+
+    #include <colorspace_fragment>
+    #include <fog_fragment>
 }

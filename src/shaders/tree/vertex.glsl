@@ -4,6 +4,8 @@ varying vec3 vNormal;
 varying vec3 vPosition;
 varying vec2 vUv;
 
+#include <fog_pars_vertex>
+
 #include "../includes/utils.glsl"
 
 float hash(float n) {
@@ -27,6 +29,11 @@ void main() {
     float n = noise(localSpacePosition.xy * 2.0 + 0.5 * uTime);
     localSpacePosition += normal * n * 0.55;
     localSpacePosition.y *= 0.9;
+
+    // just because the fog gragment needs mvPosition
+    vec4 mvPosition = modelViewMatrix * vec4(localSpacePosition, 1.0);
+
+    #include <fog_vertex>
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(localSpacePosition, 1.0);
 
