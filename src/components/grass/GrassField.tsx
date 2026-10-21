@@ -45,5 +45,18 @@ export function GrassField() {
     grassTimeUniform.value = clock.elapsedTime;
   });
 
-  return <mesh geometry={grassGeometry} material={grassMaterial} />;
+  return (
+    <>
+      <mesh rotation-x={-Math.PI / 2} renderOrder={-1}>
+        <planeGeometry args={[GRASS_MAP_WORLD_SIZE, GRASS_MAP_WORLD_SIZE]} />
+        <meshBasicMaterial
+          color="#84661d"
+          alphaMap={grassMapTexture}
+          transparent
+          depthWrite={false}
+        />
+      </mesh>
+      <mesh geometry={grassGeometry} material={grassMaterial} />
+    </>
+  );
 }
