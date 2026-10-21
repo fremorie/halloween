@@ -13,17 +13,14 @@ export const CAT_COLLIDER_CENTER: Vec3 = [0, 0.7, 0.25];
 
 export const CAT_CONTROLLER_OFFSET = 0.02;
 export const CAT_BLOCKING_LIFT = 0.1;
+export const CAT_BLOCKING_RADIUS = 0.9;
 
-const [catHalfWidth, catHalfHeight, catHalfLength] = CAT_COLLIDER_HALF_EXTENTS;
-const [catCentreX, catCentreY, catCentreZ] = CAT_COLLIDER_CENTER;
+const [, catHalfHeight] = CAT_COLLIDER_HALF_EXTENTS;
+const [, catCentreY] = CAT_COLLIDER_CENTER;
 
-export const CAT_BLOCKING_HALF_EXTENTS: Vec3 = [
-  catHalfWidth,
-  catHalfHeight - CAT_BLOCKING_LIFT / 2,
-  catHalfLength,
-];
+export const CAT_BLOCKING_HALF_HEIGHT = catHalfHeight - CAT_BLOCKING_LIFT / 2;
 export const CAT_BLOCKING_CENTER: Vec3 = [
-  catCentreX,
+  0,
   catCentreY + CAT_BLOCKING_LIFT / 2,
-  catCentreZ,
+  0,
 ];

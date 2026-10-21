@@ -42,13 +42,9 @@ export function useCatObstacleBlocking() {
       return walkStep;
     }
 
-    blockingCenter
-      .set(...CAT_BLOCKING_CENTER)
-      .applyQuaternion(catRoot.quaternion)
-      .add(catRoot.position);
+    blockingCenter.set(...CAT_BLOCKING_CENTER).add(catRoot.position);
 
     blockingCollider.setTranslation(blockingCenter);
-    blockingCollider.setRotation(catRoot.quaternion);
 
     characterController.computeColliderMovement(
       blockingCollider,
