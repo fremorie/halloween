@@ -5,6 +5,8 @@ varying vec3 vColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
 
+#include <fog_pars_fragment>
+
 #include "../includes/utils.glsl"
 #include "../includes/lights.glsl"
 
@@ -30,4 +32,5 @@ void main() {
     gl_FragColor = vec4(color, 1.0);
 
     #include <colorspace_fragment>
+    #include <fog_fragment>
 }

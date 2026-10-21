@@ -19,6 +19,8 @@ varying vec3 vColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
 
+#include <fog_pars_vertex>
+
 #include "../includes/utils.glsl"
 #include "../includes/hash.glsl"
 #include "../includes/noise.glsl"
@@ -113,6 +115,8 @@ void main() {
     float viewSpaceThickenFactor = easeOut(1.0 - viewDotNormal, 4.0) * smoothstep(0.0, 0.2, viewDotNormal);
 
     mvPosition.x += viewSpaceThickenFactor * (xSide - 0.5) * width * 0.5 * (-zSide);
+
+    #include <fog_vertex>
 
     gl_Position = projectionMatrix * mvPosition;
     gl_Position.w = grassMaskScale <= 0.5 ? 0.0 : gl_Position.w;

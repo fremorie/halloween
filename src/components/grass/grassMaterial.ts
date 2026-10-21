@@ -1,5 +1,13 @@
 import { shaderMaterial } from "@react-three/drei";
-import { Color, Texture, Uniform, Vector2, Vector4 } from "three";
+import {
+  Color,
+  Texture,
+  Uniform,
+  UniformsLib,
+  UniformsUtils,
+  Vector2,
+  Vector4,
+} from "three";
 
 import {
   TRAIL_AREA_SIZE,
@@ -43,6 +51,8 @@ export function createGrassMaterial(
   grassMapTexture: Texture | null,
 ) {
   const material = new GrassMaterial();
+  Object.assign(material.uniforms, UniformsUtils.clone(UniformsLib.fog));
+  material.fog = true;
   material.uniforms.uTime = grassTimeUniform;
   material.uniforms.uTrailMap = grassTrailMapUniform;
   material.uniforms.uTrailCenter = grassTrailCenterUniform;
