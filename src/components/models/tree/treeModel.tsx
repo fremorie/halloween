@@ -2,6 +2,8 @@ import { useGLTF } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
 import * as THREE from "three";
 
+import type { Vec3 } from "@/types/math";
+
 export const TREE_MODEL_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/models/Tree.glb`;
 
 type GLTFResult = GLTF & {
@@ -17,6 +19,8 @@ type GLTFResult = GLTF & {
 type Props = {
   scale?: number;
   leavesMaterial: THREE.ShaderMaterial;
+  position?: Vec3;
+  "rotation-y"?: number;
 };
 
 export function TreeModel(props: Props) {
