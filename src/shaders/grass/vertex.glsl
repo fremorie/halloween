@@ -7,6 +7,12 @@ uniform vec3 uBaseColor2;
 uniform sampler2D uGrassMap;
 uniform float uGrassMapWorldSize;
 
+uniform sampler2D uTrailMap;
+uniform vec2 uTrailCenter;
+uniform float uTrailSize;
+uniform float uTrailPush;
+uniform float uTrailFlatten;
+
 attribute vec2 aBladeWorldPosition;
 
 varying vec3 vColor;
@@ -69,11 +75,33 @@ void main() {
 
     mat3 grassMat = rotateAxis(windAxis, windLeanAngle) * rotateY(angle);
 
-    vec3 grassLocalPosition = grassMat * vec3(x, y, z) + grassOffset;
+    vec2 trailUv = (grassBladeWorldPos.xz - uTrailCenter) / uTrailSize + 0.5;
+    bool inTrailMap = all(greaterThanEqual(trailUv, vec2(0.0)))
+        && all(lessThanEqual(trailUv, vec2(1.0)));
+    vec4 trailSample = inTrailMap
+        ? textureLod(uTrailMap, trailUv, 0.0)
+        : vec4(0.5, 0.5, 0.0, 1.0);
+
+    float trailStrength = trailSample.b;
+    vec2 trailDirection = trailSample.rg * 2.0 - 1.0;
+    trailDirection = dot(trailDirection, trailDirection) > 1e-6
+        ? normalize(trailDirection)
+        : vec2(0.0);
+
+    vec3 bladeVertex = grassMat * vec3(x, y, z);
+    bladeVertex.xz += trailDirection
+        * trailStrength
+        * uTrailPush
+        * heightPercent
+        * heightPercent;
+    bladeVertex.y *= 1.0 - trailStrength * uTrailFlatten;
+
+    vec3 grassLocalPosition = bladeVertex + grassOffset;
     vec3 grassLocalNormal = grassMat * vec3(0.0, curveRot90 * curveGrad.yz);
 
     float distanceBlend = smoothstep(0.0, 10.0, distance(cameraPosition, grassBladeWorldPos));
     grassLocalNormal = mix(grassLocalNormal, vec3(0.0, 1.0, 0.0), distanceBlend * 0.5);
+    grassLocalNormal = mix(grassLocalNormal, vec3(0.0, 1.0, 0.0), trailStrength * 0.7);
     grassLocalNormal = normalize(grassLocalNormal);
 
     vec4 worldPosition = modelMatrix * vec4(grassLocalPosition, 1.0);

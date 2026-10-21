@@ -1,0 +1,8 @@
+export const TRAIL_RESOLUTION = 256;
+export const TRAIL_AREA_SIZE = 30;
+export const TRAIL_TEXEL_SIZE = TRAIL_AREA_SIZE / TRAIL_RESOLUTION;
+export const TRAIL_BRUSH_RADIUS = 0.8;
+export const TRAIL_RECOVERY_TIME = 4;
+export const TRAIL_PUSH = 0.3;
+export const TRAIL_FLATTEN = 0.6;
+export const TRAIL_MAX_STAMP_DISTANCE = 1;
