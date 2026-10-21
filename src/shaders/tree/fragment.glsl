@@ -19,7 +19,7 @@ void main() {
     // Fresnel
     vec3 viewDirection = normalize(vPosition - cameraPosition);
     float fresnel = dot(viewDirection, normal) + 1.0;
-    fresnel = remap(fresnel, 0.0, 2.0, 0.6, 1.0);
+    fresnel = remap(fresnel, 0.0, 2.0, 0.2, 1.0);
 
     finalColor *= fresnel;
 
