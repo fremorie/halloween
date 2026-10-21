@@ -10,10 +10,11 @@ export const TREE_MODEL_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/models/Tree
 
 type GLTFResult = GLTF & {
   nodes: {
-    Leaves1001: THREE.Mesh;
-    Leaves2001: THREE.Mesh;
-    Leaves3001: THREE.Mesh;
-    Tree1001: THREE.Mesh;
+    Leaves: THREE.Mesh;
+    Tree: THREE.Mesh;
+  };
+  materials: {
+    Tree: THREE.MeshStandardMaterial;
   };
 };
 
@@ -22,7 +23,9 @@ type Props = {
 };
 
 export function TreeModel(props: Props) {
-  const { nodes } = useGLTF(TREE_MODEL_PATH) as unknown as GLTFResult;
+  const { nodes, materials } = useGLTF(
+    TREE_MODEL_PATH,
+  ) as unknown as GLTFResult;
 
   const leavesTexture = useTexture(
     `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/LeavesBaseColor.jpg`,
@@ -44,17 +47,15 @@ export function TreeModel(props: Props) {
     <group {...props} dispose={null}>
       <mesh
         castShadow
-        geometry={nodes.Leaves3001.geometry}
+        geometry={nodes.Leaves.geometry}
         material={leavesMaterial}
-        position={[2.86, 5.676, -1.135]}
+        position={[0.168, 6.448, -0.674]}
       />
       <mesh
         castShadow
-        geometry={nodes.Tree1001.geometry}
-        position={[0.809, 0, 0.092]}
-      >
-        <meshStandardMaterial color="#84661d" />
-      </mesh>
+        geometry={nodes.Tree.geometry}
+        material={materials.Tree}
+      />
     </group>
   );
 }
