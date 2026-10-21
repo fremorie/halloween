@@ -19,6 +19,7 @@ export function createLeavesMaterial() {
   const material = new LeavesMaterial();
   material.uniforms.uTime = leavesTimeUniform;
   material.transparent = true;
+  material.depthWrite = false;
 
   return material;
 }

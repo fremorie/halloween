@@ -1,6 +1,7 @@
 import { useGLTF } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
 import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 
 import { createLeavesMaterial } from "./leavesMaterial";
 
@@ -24,6 +25,10 @@ type Props = {
 export function TreeModel(props: Props) {
   const { nodes } = useGLTF(TREE_MODEL_PATH) as unknown as GLTFResult;
 
+  useFrame(({ clock }) => {
+    leavesMaterial.uniforms.uTime.value = clock.elapsedTime;
+  });
+
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -46,7 +51,7 @@ export function TreeModel(props: Props) {
         geometry={nodes.Tree1001.geometry}
         position={[0.809, 0, 0.092]}
       >
-        <meshStandardMaterial color={"#ffffff"} />
+        <meshStandardMaterial color="#84661d" />
       </mesh>
     </group>
   );

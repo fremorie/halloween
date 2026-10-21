@@ -10,7 +10,7 @@ void main() {
     // Fresnel
     vec3 viewDirection = normalize(vPosition - cameraPosition);
     float fresnel = dot(viewDirection, normal) + 1.0;
-    fresnel = pow(fresnel, 0.5);
+    fresnel = pow(fresnel, 0.25);
 
     gl_FragColor = vec4(uLeavesColor, fresnel);
 }
