@@ -11,6 +11,7 @@ import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
 import { useRewardBeatTimer } from "./useRewardBeatTimer";
+import { Trees } from "@/components/trees/trees";
 
 const HAT_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "hat");
 const CAPE_LEVEL_INDEX = levels.findIndex(({ piece }) => piece === "cape");
@@ -36,6 +37,7 @@ export function World() {
       <fog attach="fog" args={["#ffffff", 25, 75]} />
       <Lights />
       <Ground />
+      <Trees />
       <GrassField />
       {levels.map((level, stationIndex) => (
         <Station

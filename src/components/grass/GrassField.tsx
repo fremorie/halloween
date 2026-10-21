@@ -13,7 +13,7 @@ import { useGrassTrail } from "./useGrassTrail";
 import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
 
 const GRASS_SEGMENTS = 3;
-const GRASS_BLADE_COUNT = 3500;
+const GRASS_BLADE_COUNT = 10000;
 
 export function GrassField() {
   const grassMapTexture = useTexture(
