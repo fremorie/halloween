@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { type Group } from "three";
 import {
   CuboidCollider,
+  CylinderCollider,
   type RapierRigidBody,
   RigidBody,
 } from "@react-three/rapier";
@@ -10,7 +11,8 @@ import { CAT_START } from "@/settings/journeySettings";
 import { CatRiggedModel } from "@/components/models/catRigged/CatModel";
 import { useGameStore } from "@/store/gameStore";
 import {
-  CAT_BLOCKING_HALF_EXTENTS,
+  CAT_BLOCKING_HALF_HEIGHT,
+  CAT_BLOCKING_RADIUS,
   CAT_COLLIDER_CENTER,
   CAT_COLLIDER_HALF_EXTENTS,
 } from "@/settings/catSettings";
@@ -63,10 +65,10 @@ export function Cat({ stationCount }: { stationCount: number }) {
           position={CAT_COLLIDER_CENTER}
         />
       </RigidBody>
-      <CuboidCollider
+      <CylinderCollider
         ref={blockingColliderRef}
         sensor
-        args={CAT_BLOCKING_HALF_EXTENTS}
+        args={[CAT_BLOCKING_HALF_HEIGHT, CAT_BLOCKING_RADIUS]}
       />
     </>
   );
