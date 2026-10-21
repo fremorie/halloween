@@ -8,6 +8,7 @@ import {
   readGrassMapPixels,
   scatterBladesInsideGrassMap,
 } from "./grassMapScatter";
+import { useGrassColorControls } from "./useGrassColorControls";
 import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
 
 const GRASS_SEGMENTS = 3;
@@ -35,6 +36,8 @@ export function GrassField() {
     () => createGrassMaterial(GRASS_SEGMENTS, grassMapTexture),
     [grassMapTexture],
   );
+
+  useGrassColorControls(grassMaterial);
 
   useFrame(({ clock }) => {
     grassTimeUniform.value = clock.elapsedTime;

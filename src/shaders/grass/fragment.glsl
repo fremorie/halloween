@@ -1,3 +1,6 @@
+uniform vec3 uHemiSkyColor;
+uniform vec3 uHemiGroundColor;
+
 varying vec3 vColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
@@ -17,10 +20,7 @@ void main() {
         smoothstep(0.125, 0.0, abs(grassX))
     );
 
-    vec3 c1 = vec3(0.9, 0.68, 0.27);
-    vec3 c2 = vec3(0.25, 0.34, 0.13);
-
-    vec3 ambientLighting = hemiLight(normal, c2, c1);
+    vec3 ambientLighting = hemiLight(normal, uHemiGroundColor, uHemiSkyColor);
 
     float ao = remap(pow(grassY, 2.0), 0.0, 1.0, 0.125, 1.0);
 
