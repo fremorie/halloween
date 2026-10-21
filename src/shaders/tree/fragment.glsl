@@ -1,5 +1,16 @@
 uniform vec3 uLeavesColor;
 
+varying vec3 vNormal;
+varying vec3 vPosition;
+
 void main() {
-    gl_FragColor = vec4(uLeavesColor, 0.5);
+    // Normal
+    vec3 normal = normalize(vNormal);
+
+    // Fresnel
+    vec3 viewDirection = normalize(vPosition - cameraPosition);
+    float fresnel = dot(viewDirection, normal) + 1.0;
+    fresnel = pow(fresnel, 0.5);
+
+    gl_FragColor = vec4(uLeavesColor, fresnel);
 }
