@@ -2,6 +2,7 @@ uniform float uTime;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
+varying vec2 vUv;
 
 #include "../includes/utils.glsl"
 
@@ -31,4 +32,5 @@ void main() {
 
     vNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
     vPosition = (modelMatrix * vec4(localSpacePosition, 1.0)).xyz;
+    vUv = uv;
 }
