@@ -6,6 +6,7 @@ import { useGameStore } from "@/store/gameStore";
 import { HatSilhouetteModel } from "@/components/models/hatSilhouette/hatSilhouetteModel";
 import { CapeSilhouetteModel } from "@/components/models/capeSilhouette/capeSilhouetteModel";
 import { WingsSilhouetteModel } from "@/components/models/wingsSilhouette/wingsSilhouetteModel";
+import { GrassField } from "@/components/grass/GrassField";
 import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
@@ -34,6 +35,7 @@ export function World() {
     <>
       <Lights />
       <Ground />
+      <GrassField />
       {levels.map((level, stationIndex) => (
         <Station
           key={`${level.piece}-${runCount}`}
