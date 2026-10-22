@@ -1,5 +1,9 @@
 import { useTexture } from "@react-three/drei";
+import { useMemo } from "react";
+import { SRGBColorSpace } from "three";
 
+import { createPatchworkMaterial } from "@/components/materials/patchworkMaterial";
+import { usePatchworkControls } from "@/components/materials/usePatchworkControls";
 import { useHatPatchworkGLTF } from "./useHatPatchworkGLTF";
 
 export function HatPatchworkModel() {
@@ -8,22 +12,28 @@ export function HatPatchworkModel() {
     `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/HatPatchwork.png`,
     (loadedHatPatchworkTexture) => {
       loadedHatPatchworkTexture.flipY = false;
+      loadedHatPatchworkTexture.colorSpace = SRGBColorSpace;
     },
   );
 
-  const patchMeshes = [
-    nodes.Patch_bottom_left,
-    nodes.Patch_bottom_right,
-    nodes.Patch_top,
-  ];
+  const patchworkMaterial = useMemo(
+    () => createPatchworkMaterial(hatPatchworkTexture),
+    [hatPatchworkTexture],
+  );
+
+  usePatchworkControls();
 
   return (
     <group dispose={null}>
-      {patchMeshes.map((patchMesh) => (
-        <mesh key={patchMesh.name} geometry={patchMesh.geometry} receiveShadow>
-          <meshStandardMaterial map={hatPatchworkTexture} roughness={1} />
-        </mesh>
-      ))}
+      <mesh
+        geometry={nodes.Patch_bottom_left.geometry}
+        material={patchworkMaterial}
+      />
+      <mesh
+        geometry={nodes.Patch_bottom_right.geometry}
+        material={patchworkMaterial}
+      />
+      <mesh geometry={nodes.Patch_top.geometry} material={patchworkMaterial} />
     </group>
   );
 }
