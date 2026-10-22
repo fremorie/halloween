@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
 
 import { createLeavesMaterial, leavesTimeUniform } from "./leavesMaterial";
+import { createLeavesShadowMaterial } from "./leavesShadowMaterial";
 import { useFrame } from "@react-three/fiber";
 
 export function useLeavesMaterial() {
@@ -22,4 +23,8 @@ export function useLeavesMaterial() {
   });
 
   return leavesMaterial;
+}
+
+export function useLeavesShadowMaterial() {
+  return useMemo(() => createLeavesShadowMaterial(), []);
 }

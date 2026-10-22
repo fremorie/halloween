@@ -4,6 +4,8 @@ import * as THREE from "three";
 
 import type { Vec3 } from "@/types/math";
 
+import { useLeavesShadowMaterial } from "./useLeavesMaterial";
+
 export const TREE_MODEL_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/models/Tree.glb`;
 
 type GLTFResult = GLTF & {
@@ -26,6 +28,8 @@ type Props = {
 export function TreeModel(props: Props) {
   const { leavesMaterial, ...groupProps } = props;
 
+  const leavesShadowMaterial = useLeavesShadowMaterial();
+
   const { nodes, materials } = useGLTF(
     TREE_MODEL_PATH,
   ) as unknown as GLTFResult;
@@ -36,6 +40,7 @@ export function TreeModel(props: Props) {
         castShadow
         geometry={nodes.Leaves.geometry}
         material={leavesMaterial}
+        customDepthMaterial={leavesShadowMaterial}
         position={[0.168, 6.448, -0.674]}
       />
       <mesh
