@@ -4,6 +4,7 @@ import { DoubleSide, MeshStandardMaterial, SRGBColorSpace } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 import type CustomShaderMaterialVanilla from "three-custom-shader-material/vanilla";
 
+import { capeWaveUniforms } from "@/components/materials/capeMaterial";
 import fragmentShader from "@/shaders/cape/fragment.glsl";
 import vertexShader from "@/shaders/cape/vertex.glsl";
 
@@ -36,6 +37,7 @@ export function CapeModel({ materialRef }: Props) {
           baseMaterial={MeshStandardMaterial}
           vertexShader={vertexShader}
           fragmentShader={fragmentShader}
+          uniforms={capeWaveUniforms}
           map={capeBaseColorTexture}
           roughness={0.5}
           metalness={0}

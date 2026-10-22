@@ -24,3 +24,11 @@ export const CAT_BLOCKING_CENTER: Vec3 = [
   catCentreY + CAT_BLOCKING_LIFT / 2,
   0,
 ];
+
+export const CAPE_HEM_HEIGHT = 0.19;
+export const CAPE_WAVE_TOP_HEIGHT = 1.1;
+export const CAPE_STILL_FRONT_DEPTH = -0.55;
+export const CAPE_WAVE_FRONT_DEPTH = -0.3;
+export const CAPE_WAVE_AMPLITUDE = 0.05;
+export const CAPE_WAVE_NUMBER = 6;
+export const CAPE_WAVE_SPEED = 3;
