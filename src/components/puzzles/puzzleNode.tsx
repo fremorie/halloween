@@ -22,6 +22,7 @@ import { useRejectShake } from "./useRejectShake";
 import { useScaleAnimation } from "./useScaleAnimation";
 import { useRewardWiggle } from "./useRewardWiggle";
 import { useBallScatter } from "./useBallScatter";
+import { useBallKnitting } from "./useBallKnitting";
 
 const HIT_SPHERE_GEOMETRY = new SphereGeometry(HIT_SPHERE_RADIUS, 8, 6);
 
@@ -41,6 +42,7 @@ export function PuzzleNode({
   isActive,
 }: Props) {
   const groupRef = useRef<Group>(null);
+  const knittingBallRef = useRef<Group>(null);
   const ballBodyRef = useRef<RapierRigidBody>(null);
 
   const pressNode = useGameStore((store) => store.pressNode);
@@ -54,6 +56,7 @@ export function PuzzleNode({
   useRejectShake(groupRef, levelIndex, node.id);
   useRewardWiggle(groupRef, levelIndex);
   useBallScatter(ballBodyRef, levelIndex, horizontalOffsetFromPuzzleCenter);
+  useBallKnitting(knittingBallRef, levelIndex);
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
@@ -78,11 +81,13 @@ export function PuzzleNode({
         restitution={YARN_BALL_RESTITUTION}
       />
       <group ref={groupRef}>
-        <YarnBallModel
-          rotationY={node.id * 1.7}
-          material={material}
-          scale={NODE_SCALE}
-        />
+        <group ref={knittingBallRef}>
+          <YarnBallModel
+            rotationY={node.id * 1.7}
+            material={material}
+            scale={NODE_SCALE}
+          />
+        </group>
 
         {isActive && (
           <mesh

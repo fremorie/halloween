@@ -59,7 +59,9 @@ export function Station({ level, stationIndex }: Props) {
           levelIndex={stationIndex}
           isActive={isActive}
         />
-        {level.piece === "hat" && <HatPatchworkModel />}
+        {level.piece === "hat" && (
+          <HatPatchworkModel levelIndex={stationIndex} />
+        )}
       </group>
       <RigidBody
         colliders={false}

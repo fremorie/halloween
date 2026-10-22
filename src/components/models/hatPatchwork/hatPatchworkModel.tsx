@@ -4,9 +4,14 @@ import { SRGBColorSpace } from "three";
 
 import { createPatchworkMaterial } from "@/components/materials/patchworkMaterial";
 import { usePatchworkControls } from "@/components/materials/usePatchworkControls";
+import { usePatchworkStitching } from "@/components/materials/usePatchworkStitching";
 import { useHatPatchworkGLTF } from "./useHatPatchworkGLTF";
 
-export function HatPatchworkModel() {
+type Props = {
+  levelIndex: number;
+};
+
+export function HatPatchworkModel({ levelIndex }: Props) {
   const { nodes } = useHatPatchworkGLTF();
   const hatPatchworkTexture = useTexture(
     `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/HatPatchworkWithBakedNormals.jpg`,
@@ -22,6 +27,7 @@ export function HatPatchworkModel() {
   );
 
   usePatchworkControls();
+  usePatchworkStitching(levelIndex);
 
   return (
     <group dispose={null}>
