@@ -6,6 +6,7 @@ import type { LanternFaceParams } from "@/types/lantern";
 import { JackOLanternCheerfulModel } from "@/components/models/jackOLanternCheerful/jackOLanternCheerfulModel";
 import { JackOLanternHappyModel } from "@/components/models/jackOLanternHappy/jackOLanternHappyModel";
 import { JackOLanternModel } from "@/components/models/jackOLantern/jackOLanternModel";
+import { HatPatchworkModel } from "@/components/models/hatPatchwork/hatPatchworkModel";
 import { PedestalModel } from "@/components/models/pedestal/pedestalModel";
 import {
   PEDESTAL_TOP_HEIGHT,
@@ -58,6 +59,7 @@ export function Station({ level, stationIndex }: Props) {
           levelIndex={stationIndex}
           isActive={isActive}
         />
+        {level.piece === "hat" && <HatPatchworkModel />}
       </group>
       <RigidBody
         colliders={false}
