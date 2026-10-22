@@ -8,6 +8,7 @@ import { JackOLanternHappyModel } from "@/components/models/jackOLanternHappy/ja
 import { JackOLanternModel } from "@/components/models/jackOLantern/jackOLanternModel";
 import { CapePatchworkModel } from "@/components/models/capePatchwork/capePatchworkModel";
 import { HatPatchworkModel } from "@/components/models/hatPatchwork/hatPatchworkModel";
+import { WingsPatchworkModel } from "@/components/models/wingsPatchwork/wingsPatchworkModel";
 import { PedestalModel } from "@/components/models/pedestal/pedestalModel";
 import {
   PEDESTAL_TOP_HEIGHT,
@@ -35,12 +36,11 @@ const PUMPKIN_MODEL_BY_VARIANT = {
   ComponentType<{ faceParams: LanternFaceParams }>
 >;
 
-const PATCHWORK_MODEL_BY_PIECE: Partial<
-  Record<CostumePiece, ComponentType<{ levelIndex: number }>>
-> = {
+const PATCHWORK_MODEL_BY_PIECE = {
   hat: HatPatchworkModel,
   cape: CapePatchworkModel,
-};
+  wings: WingsPatchworkModel,
+} satisfies Record<CostumePiece, ComponentType<{ levelIndex: number }>>;
 
 type Props = {
   level: Level;
@@ -68,7 +68,7 @@ export function Station({ level, stationIndex }: Props) {
           levelIndex={stationIndex}
           isActive={isActive}
         />
-        {PatchworkModel && <PatchworkModel levelIndex={stationIndex} />}
+        <PatchworkModel levelIndex={stationIndex} />
       </group>
       <RigidBody
         colliders={false}
