@@ -9,7 +9,7 @@ import { useHatPatchworkGLTF } from "./useHatPatchworkGLTF";
 export function HatPatchworkModel() {
   const { nodes } = useHatPatchworkGLTF();
   const hatPatchworkTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/HatPatchwork.png`,
+    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/HatPatchworkWithBakedNormals.jpg`,
     (loadedHatPatchworkTexture) => {
       loadedHatPatchworkTexture.flipY = false;
       loadedHatPatchworkTexture.colorSpace = SRGBColorSpace;
