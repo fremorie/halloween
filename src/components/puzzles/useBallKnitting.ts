@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import type { RefObject } from "react";
-import { type Group, MathUtils } from "three";
+import { type Group, MathUtils, Vector3 } from "three";
 
 import {
   KNITTING_BALL_END_SCALE,
@@ -35,12 +35,16 @@ export function useBallKnitting(
     const knittingBall = knittingBallRef.current;
     if (!knittingBall || !isKnitting) return;
 
-    gsap.to(knittingBall.rotation, {
-      x: getRandomSpinAngle(),
-      y: getRandomSpinAngle(),
-      z: getRandomSpinAngle(),
+    const spinAxis = new Vector3().randomDirection();
+    const spin = { angle: 0 };
+
+    gsap.to(spin, {
+      angle: getRandomSpinAngle(),
       duration: KNITTING_DURATION,
       ease: "power1.inOut",
+      onUpdate: () => {
+        knittingBall.quaternion.setFromAxisAngle(spinAxis, spin.angle);
+      },
     });
     gsap.to(knittingBall.scale, {
       ...uniformScale(KNITTING_BALL_END_SCALE),

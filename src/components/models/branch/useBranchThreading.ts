@@ -5,6 +5,7 @@ import { Color, type InstancedMesh } from "three";
 
 import {
   BRANCH_THREAD_DURATION,
+  THREADED_BRANCH_BRIGHTNESS,
   UNTHREADED_BRANCH_TINT,
 } from "@/settings/puzzleSettings";
 import { toGrayscale } from "@/utils/color";
@@ -14,6 +15,10 @@ const UNTHREADED_TINT = new Color(UNTHREADED_BRANCH_TINT);
 
 function getUnthreadedColor(threadedColor: Color) {
   return toGrayscale(threadedColor).multiply(UNTHREADED_TINT);
+}
+
+function getBrightenedColor(materialColor: Color) {
+  return materialColor.clone().multiplyScalar(THREADED_BRANCH_BRIGHTNESS);
 }
 
 type Options = {
@@ -41,6 +46,8 @@ export function useBranchThreading({
   const [colors] = useState(() => ({
     unthreadedStem: getUnthreadedColor(threadedStemColor),
     unthreadedLeaf: getUnthreadedColor(threadedLeafColor),
+    threadedStem: getBrightenedColor(threadedStemColor),
+    threadedLeaf: getBrightenedColor(threadedLeafColor),
     scratch: new Color(),
   }));
 
@@ -67,13 +74,13 @@ export function useBranchThreading({
     paintThreading(
       stems,
       colors.unthreadedStem,
-      threadedStemColor,
+      colors.threadedStem,
       (edgeIndex) => edgeIndex,
     );
     paintThreading(
       leaves,
       colors.unthreadedLeaf,
-      threadedLeafColor,
+      colors.threadedLeaf,
       (leafIndex) => Math.floor(leafIndex / leavesPerEdge),
     );
   };

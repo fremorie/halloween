@@ -10,12 +10,9 @@ export const SUN_LIGHT_SETTINGS = {
   color: "#fff0dc",
   intensity: 1.8,
   offsetFromTarget: [-6, 9, 6] as Vec3,
-  shadowMapSize: 2048,
+  shadowMapSize: 4096,
   shadowBias: -0.0005,
   shadowNormalBias: 0.03,
-  shadowReach: 13,
-  shadowNear: 0.5,
-  shadowFar: 40,
   targetLead: 4,
 };
 
@@ -40,4 +37,13 @@ export const ENVIRONMENT_LIGHTING_SETTINGS = {
 export const SHADOW_CATCHER_SETTINGS = {
   shadowColor: "#4a3d52",
   shadowOpacity: 0.7,
+};
+
+export const SHADOW_CAMERA_BOUNDS = {
+  bottom: -11,
+  far: 42,
+  left: -42,
+  near: -15,
+  right: 15,
+  top: 30,
 };

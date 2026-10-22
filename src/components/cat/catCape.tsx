@@ -1,13 +1,17 @@
 import { useRef } from "react";
-import type { MeshStandardMaterial } from "three";
 
-import { CapeModel } from "@/components/models/cape/capeModel";
+import {
+  type CapeMaterial,
+  CapeModel,
+} from "@/components/models/cape/capeModel";
 import { useCapeFadeIn } from "./useCapeFadeIn";
+import { useCapeWave } from "./useCapeWave";
 
 export function CatCape() {
-  const capeMaterialRef = useRef<MeshStandardMaterial>(null);
+  const capeMaterialRef = useRef<CapeMaterial>(null);
 
   useCapeFadeIn(capeMaterialRef);
+  useCapeWave();
 
   return <CapeModel materialRef={capeMaterialRef} />;
 }

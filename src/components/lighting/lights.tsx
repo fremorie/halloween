@@ -11,6 +11,7 @@ import { useControls } from "leva";
 
 import {
   HEMISPHERE_LIGHT_SETTINGS,
+  SHADOW_CAMERA_BOUNDS,
   SUN_LIGHT_SETTINGS,
 } from "@/settings/lightSettings";
 import { EnvironmentLighting } from "./environmentLighting";
@@ -67,12 +68,12 @@ export function Lights() {
         ]}
         shadow-bias={SUN_LIGHT_SETTINGS.shadowBias}
         shadow-normalBias={SUN_LIGHT_SETTINGS.shadowNormalBias}
-        shadow-camera-left={-SUN_LIGHT_SETTINGS.shadowReach}
-        shadow-camera-right={SUN_LIGHT_SETTINGS.shadowReach}
-        shadow-camera-top={SUN_LIGHT_SETTINGS.shadowReach}
-        shadow-camera-bottom={-SUN_LIGHT_SETTINGS.shadowReach}
-        shadow-camera-near={SUN_LIGHT_SETTINGS.shadowNear}
-        shadow-camera-far={SUN_LIGHT_SETTINGS.shadowFar}
+        shadow-camera-left={SHADOW_CAMERA_BOUNDS.left}
+        shadow-camera-right={SHADOW_CAMERA_BOUNDS.right}
+        shadow-camera-top={SHADOW_CAMERA_BOUNDS.top}
+        shadow-camera-bottom={SHADOW_CAMERA_BOUNDS.bottom}
+        shadow-camera-near={SHADOW_CAMERA_BOUNDS.near}
+        shadow-camera-far={SHADOW_CAMERA_BOUNDS.far}
       />
 
       {environmentLighting && <EnvironmentLighting />}
