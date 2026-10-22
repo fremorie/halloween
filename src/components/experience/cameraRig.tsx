@@ -13,6 +13,7 @@ import {
   CAT_CLOSE_UP_ZOOM,
   LOOK_AT_HEIGHT,
   SOLVING_HALF_WIDTH,
+  SOLVING_LOOK_AT_HEIGHT,
   WALKING_DROP,
   WALKING_LEAD,
   WALKING_ZOOM,
@@ -55,7 +56,7 @@ export function CameraRig() {
       rig.goal.set(catPosition.x, CAT_CLOSE_UP_LOOK_AT_HEIGHT, catPosition.z);
     } else if (isFramingPuzzle) {
       const [focusX, focusZ] = getSolvingFocus(currentStationIndex);
-      rig.goal.set(focusX, LOOK_AT_HEIGHT, focusZ);
+      rig.goal.set(focusX, SOLVING_LOOK_AT_HEIGHT, focusZ);
     } else {
       rig.goal.set(
         catPosition.x,

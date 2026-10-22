@@ -26,3 +26,5 @@ export const CAMERA_ZOOM_SPEED = 2;
 
 export const CAT_CLOSE_UP_LOOK_AT_HEIGHT = 1.2;
 export const CAT_CLOSE_UP_ZOOM = 0.4;
+
+export const SOLVING_LOOK_AT_HEIGHT = 2.5;
