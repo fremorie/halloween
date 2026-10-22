@@ -48,6 +48,7 @@ export function PuzzleBackground({ piece, isActive }: Props) {
     <mesh
       ref={backgroundMeshRef}
       visible={false}
+      renderOrder={1}
       position-y={centreY}
       position-z={-YARN_BALL_RADIUS}
       scale={[width, height, 1]}
