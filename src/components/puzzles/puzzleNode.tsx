@@ -1,27 +1,18 @@
 import type { ThreeEvent } from "@react-three/fiber";
 import { useRef } from "react";
 import { type Group, type MeshStandardMaterial, SphereGeometry } from "three";
-import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 
 import { YarnBallModel } from "@/components/models/yarnBall/yarnBallModel";
 import { NODE_SCALE } from "@/settings/graphSettings";
 import { HIT_SPHERE_RADIUS } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
-import {
-  YARN_BALL_COLLIDER_RADIUS,
-  YARN_BALL_ANGULAR_DAMPING,
-  YARN_BALL_FRICTION,
-  YARN_BALL_LINEAR_DAMPING,
-  YARN_BALL_RESTITUTION,
-} from "@/settings/physicsSettings";
 import type { GraphNode } from "@/types/graph";
 import type { NodeState } from "@/types/puzzle";
 import { useHoverAnimation } from "./useHoverAnimation";
 import { usePointerHover } from "./usePointerHover";
 import { useRejectShake } from "./useRejectShake";
 import { useScaleAnimation } from "./useScaleAnimation";
-import { useRewardWiggle } from "./useRewardWiggle";
-import { useBallScatter } from "./useBallScatter";
+import { useBallKnitting } from "./useBallKnitting";
 
 const HIT_SPHERE_GEOMETRY = new SphereGeometry(HIT_SPHERE_RADIUS, 8, 6);
 
@@ -41,19 +32,16 @@ export function PuzzleNode({
   isActive,
 }: Props) {
   const groupRef = useRef<Group>(null);
-  const ballBodyRef = useRef<RapierRigidBody>(null);
+  const knittingBallRef = useRef<Group>(null);
 
   const pressNode = useGameStore((store) => store.pressNode);
   const enterNode = useGameStore((store) => store.enterNode);
   const { isHovered, startHover, endHover } = usePointerHover(isActive);
 
-  const [horizontalOffsetFromPuzzleCenter] = node.position;
-
   useHoverAnimation(groupRef, isHovered);
   useScaleAnimation(groupRef, state, isHovered);
   useRejectShake(groupRef, levelIndex, node.id);
-  useRewardWiggle(groupRef, levelIndex);
-  useBallScatter(ballBodyRef, levelIndex, horizontalOffsetFromPuzzleCenter);
+  useBallKnitting(knittingBallRef, levelIndex);
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
@@ -64,25 +52,15 @@ export function PuzzleNode({
   };
 
   return (
-    <RigidBody
-      ref={ballBodyRef}
-      type="fixed"
-      colliders={false}
-      linearDamping={YARN_BALL_LINEAR_DAMPING}
-      angularDamping={YARN_BALL_ANGULAR_DAMPING}
-      position={node.position}
-    >
-      <BallCollider
-        args={[YARN_BALL_COLLIDER_RADIUS]}
-        friction={YARN_BALL_FRICTION}
-        restitution={YARN_BALL_RESTITUTION}
-      />
+    <group position={node.position}>
       <group ref={groupRef}>
-        <YarnBallModel
-          rotationY={node.id * 1.7}
-          material={material}
-          scale={NODE_SCALE}
-        />
+        <group ref={knittingBallRef}>
+          <YarnBallModel
+            rotationY={node.id * 1.7}
+            material={material}
+            scale={NODE_SCALE}
+          />
+        </group>
 
         {isActive && (
           <mesh
@@ -94,6 +72,6 @@ export function PuzzleNode({
           />
         )}
       </group>
-    </RigidBody>
+    </group>
   );
 }

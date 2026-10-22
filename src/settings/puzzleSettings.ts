@@ -1,3 +1,8 @@
+import {
+  BRANCH_STEM_END_RADIUS,
+  BRANCH_TUCK_DISTANCE,
+  NODE_RADIUS,
+} from "@/settings/graphSettings";
 import type { Refusal } from "@/types/puzzle";
 
 export const DRAG_LINE_COLOR = "#448c2e";
@@ -30,5 +35,11 @@ export const REJECT_SHAKE_DISTANCE = 0.07;
 export const REJECT_SHAKE_DURATION = 0.4;
 export const REJECT_SHAKE_WIGGLES = 6;
 
-export const REWARD_WIGGLE_DISTANCE = 0.006;
-export const REWARD_WIGGLE_WIGGLES = 14;
+export const KNITTING_BALL_MIN_TURNS = 1;
+export const KNITTING_BALL_MAX_TURNS = 3;
+export const KNITTING_BALL_COVER_MARGIN = 1.03;
+export const KNITTING_BALL_SMALLEST_RADIUS =
+  Math.hypot(BRANCH_TUCK_DISTANCE, BRANCH_STEM_END_RADIUS) *
+  KNITTING_BALL_COVER_MARGIN;
+export const KNITTING_BALL_END_SCALE =
+  KNITTING_BALL_SMALLEST_RADIUS / (NODE_RADIUS * VISITED_NODE_SCALE);

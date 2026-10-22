@@ -1,11 +1,14 @@
 import type { ComponentType } from "react";
 import { CylinderCollider, RigidBody } from "@react-three/rapier";
 
-import type { Level, PumpkinVariant } from "@/types/level";
+import type { CostumePiece, Level, PumpkinVariant } from "@/types/level";
 import type { LanternFaceParams } from "@/types/lantern";
 import { JackOLanternCheerfulModel } from "@/components/models/jackOLanternCheerful/jackOLanternCheerfulModel";
 import { JackOLanternHappyModel } from "@/components/models/jackOLanternHappy/jackOLanternHappyModel";
 import { JackOLanternModel } from "@/components/models/jackOLantern/jackOLanternModel";
+import { CapePatchworkModel } from "@/components/models/capePatchwork/capePatchworkModel";
+import { HatPatchworkModel } from "@/components/models/hatPatchwork/hatPatchworkModel";
+import { WingsPatchworkModel } from "@/components/models/wingsPatchwork/wingsPatchworkModel";
 import { PedestalModel } from "@/components/models/pedestal/pedestalModel";
 import {
   PEDESTAL_TOP_HEIGHT,
@@ -33,6 +36,12 @@ const PUMPKIN_MODEL_BY_VARIANT = {
   ComponentType<{ faceParams: LanternFaceParams }>
 >;
 
+const PATCHWORK_MODEL_BY_PIECE = {
+  hat: HatPatchworkModel,
+  cape: CapePatchworkModel,
+  wings: WingsPatchworkModel,
+} satisfies Record<CostumePiece, ComponentType<{ levelIndex: number }>>;
+
 type Props = {
   level: Level;
   stationIndex: number;
@@ -40,6 +49,7 @@ type Props = {
 
 export function Station({ level, stationIndex }: Props) {
   const PumpkinModel = PUMPKIN_MODEL_BY_VARIANT[level.pumpkin.variant];
+  const PatchworkModel = PATCHWORK_MODEL_BY_PIECE[level.piece];
   const outerSide = getStationSide(stationIndex);
   const isActive = useGameStore(
     (state) =>
@@ -58,6 +68,7 @@ export function Station({ level, stationIndex }: Props) {
           levelIndex={stationIndex}
           isActive={isActive}
         />
+        <PatchworkModel levelIndex={stationIndex} />
       </group>
       <RigidBody
         colliders={false}
