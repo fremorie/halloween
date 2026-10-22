@@ -12,8 +12,11 @@ export const REWARD_BEAT_ORDER: RewardBeat[] = [
 
 export const CAT_CLOSE_UP_BEATS: RewardBeat[] = ["zoomIn", "hatDrop", "speech"];
 
+export const KNITTING_DURATION = 3;
+export const PAUSE_AFTER_KNITTING = 0.5;
+
 export const REWARD_BEAT_DURATIONS: Record<RewardBeat, number> = {
-  knit: 3,
+  knit: KNITTING_DURATION + PAUSE_AFTER_KNITTING,
   zoomIn: 1.2,
   hatDrop: 0.8,
   speech: 2,

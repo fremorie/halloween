@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { useEffect } from "react";
 
-import { REWARD_BEAT_DURATIONS } from "@/settings/rewardSettings";
+import { KNITTING_DURATION } from "@/settings/rewardSettings";
 import { useGameStore } from "@/store/gameStore";
 import { patchworkStitchProgressUniform } from "./patchworkMaterial";
 
@@ -21,7 +21,7 @@ export function usePatchworkStitching(levelIndex: number) {
 
     gsap.to(patchworkStitchProgressUniform, {
       value: 1,
-      duration: REWARD_BEAT_DURATIONS.knit,
+      duration: KNITTING_DURATION,
       ease: "power1.inOut",
     });
   }, [isKnitting]);

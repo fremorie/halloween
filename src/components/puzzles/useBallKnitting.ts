@@ -8,7 +8,7 @@ import {
   KNITTING_BALL_MAX_TURNS,
   KNITTING_BALL_MIN_TURNS,
 } from "@/settings/puzzleSettings";
-import { REWARD_BEAT_DURATIONS } from "@/settings/rewardSettings";
+import { KNITTING_DURATION } from "@/settings/rewardSettings";
 import { useGameStore } from "@/store/gameStore";
 import { uniformScale } from "@/utils/animation";
 
@@ -39,12 +39,12 @@ export function useBallKnitting(
       x: getRandomSpinAngle(),
       y: getRandomSpinAngle(),
       z: getRandomSpinAngle(),
-      duration: REWARD_BEAT_DURATIONS.knit,
+      duration: KNITTING_DURATION,
       ease: "power1.inOut",
     });
     gsap.to(knittingBall.scale, {
       ...uniformScale(KNITTING_BALL_END_SCALE),
-      duration: REWARD_BEAT_DURATIONS.knit,
+      duration: KNITTING_DURATION,
       ease: "power2.in",
     });
   }, [isKnitting]);
