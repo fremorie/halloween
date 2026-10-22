@@ -26,6 +26,7 @@ import { getStationOrigin, getStationSide } from "@/utils/journey";
 import { EulerianPath } from "@/components/puzzles/eulerianPath";
 import { useGameStore } from "@/store/gameStore";
 import { PedestalCollider } from "@/components/models/pedestal/collider";
+import { PuzzleBackground } from "@/components/puzzleBackground/puzzleBackground";
 
 const PUMPKIN_MODEL_BY_VARIANT = {
   classic: JackOLanternModel,
@@ -69,6 +70,7 @@ export function Station({ level, stationIndex }: Props) {
           isActive={isActive}
         />
         <PatchworkModel levelIndex={stationIndex} />
+        <PuzzleBackground piece={level.piece} isActive={isActive} />
       </group>
       <RigidBody
         colliders={false}
