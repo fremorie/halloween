@@ -22,7 +22,7 @@ export function HatPatchworkModel({ levelIndex }: Props) {
   );
 
   const patchworkMaterial = useMemo(
-    () => createPatchworkMaterial(hatPatchworkTexture),
+    () => createPatchworkMaterial(hatPatchworkTexture, "hat"),
     [hatPatchworkTexture],
   );
 

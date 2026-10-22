@@ -3,8 +3,13 @@ import { type Texture, Uniform, UniformsLib, UniformsUtils } from "three";
 
 import fragmentShader from "@/shaders/patchwork/fragment.glsl";
 import vertexShader from "@/shaders/patchwork/vertex.glsl";
+import type { CostumePiece } from "@/types/level";
 
-export const patchworkStitchProgressUniform = new Uniform(0);
+export const patchworkStitchProgressUniforms = {
+  hat: new Uniform(0),
+  cape: new Uniform(0),
+  wings: new Uniform(0),
+} satisfies Record<CostumePiece, Uniform<number>>;
 export const patchworkRowCountUniform = new Uniform(8);
 
 const PatchworkMaterial = shaderMaterial(
@@ -17,14 +22,18 @@ const PatchworkMaterial = shaderMaterial(
   fragmentShader,
 );
 
-export function createPatchworkMaterial(patchworkTexture: Texture) {
+export function createPatchworkMaterial(
+  patchworkTexture: Texture,
+  costumePiece: CostumePiece,
+) {
   const material = new PatchworkMaterial();
 
   Object.assign(material.uniforms, UniformsUtils.clone(UniformsLib.fog));
   material.fog = true;
 
   material.uniforms.uPatchworkTexture.value = patchworkTexture;
-  material.uniforms.uStitchProgress = patchworkStitchProgressUniform;
+  material.uniforms.uStitchProgress =
+    patchworkStitchProgressUniforms[costumePiece];
   material.uniforms.uRowCount = patchworkRowCountUniform;
 
   return material;
