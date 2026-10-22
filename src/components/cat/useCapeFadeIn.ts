@@ -1,13 +1,11 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import type { RefObject } from "react";
-import type { MeshStandardMaterial } from "three";
 
+import type { CapeMaterial } from "@/components/models/cape/capeModel";
 import { COSTUME_SILHOUETTE_FADE_DURATION } from "@/settings/journeySettings";
 
-export function useCapeFadeIn(
-  capeMaterialRef: RefObject<MeshStandardMaterial | null>,
-) {
+export function useCapeFadeIn(capeMaterialRef: RefObject<CapeMaterial | null>) {
   useGSAP(() => {
     const capeMaterial = capeMaterialRef.current;
     if (!capeMaterial) return;

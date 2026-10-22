@@ -5,7 +5,4 @@ export type CapeGLTFResult = GLTF & {
   nodes: {
     Cape: THREE.Mesh;
   };
-  materials: {
-    CapePainted: THREE.MeshStandardMaterial;
-  };
 };
