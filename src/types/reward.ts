@@ -3,5 +3,4 @@
 // - zoom in to cat
 // - drop the piece of costume on the cat
 // - the cat comments on the costume
-export type RewardBeat =
-  "wiggle" | "scatter" | "knit" | "zoomIn" | "hatDrop" | "speech";
+export type RewardBeat = "knit" | "zoomIn" | "hatDrop" | "speech";
