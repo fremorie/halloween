@@ -15,7 +15,8 @@ export const CURRENT_NODE_SCALE = 1.22;
 export const VISITED_NODE_SCALE = 1.08;
 
 export const BRANCH_THREAD_DURATION = 0.25;
-export const UNTHREADED_BRANCH_TINT = "#6e6e6e";
+export const UNTHREADED_BRANCH_TINT = "#a8a8a8";
+export const THREADED_BRANCH_BRIGHTNESS = 1.15;
 
 export const REFUSAL_MESSAGES = {
   noBranch: "No branch joins those two",
