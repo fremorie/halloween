@@ -2,7 +2,7 @@ import { CAT_CLOSE_UP_BEATS } from "@/settings/rewardSettings";
 import type { CameraShot } from "@/types/camera";
 import type { GameMode } from "@/types/game";
 import type { RewardBeat } from "@/types/reward";
-import { IntroBeat } from "@/types/intro";
+import type { IntroBeat } from "@/types/intro";
 
 const PUZZLE_FRAMING_MODES: GameMode[] = [
   "approaching",
