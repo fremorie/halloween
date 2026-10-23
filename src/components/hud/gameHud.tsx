@@ -7,6 +7,7 @@ import { useGameStore } from "@/store/gameStore";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
+  const finishIntro = useGameStore((state) => state.finishIntro);
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
   const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
@@ -55,6 +56,17 @@ export function GameHud() {
             className="pointer-events-auto bg-white px-4 py-1.5 text-sm transition-colors hover:text-orange-500"
           >
             Reset (Esc)
+          </button>
+        )}
+
+        {mode === "intro" && (
+          <button
+            type="button"
+            onClick={finishIntro}
+            className="pointer-events-auto bg-white px-6 py-2 text-xl"
+          >
+            {/* Cat: "Will you help me make a costume?" */}
+            Sure, why not
           </button>
         )}
 
