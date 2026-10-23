@@ -23,7 +23,9 @@ export default function Page() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
-      <ProgressBar value={value} onStartClick={() => console.log("start")} />
+      <div className="w-64">
+        <ProgressBar value={value} onStartClick={() => console.log("start")} />
+      </div>
     </div>
   );
 }

@@ -26,14 +26,16 @@ export function ProgressBarWithStartButton({
   });
 
   return (
-    <div className="relative">
-      <ProgressBar
-        ref={progressBarRef}
-        value={value}
-        onFilled={() => setIsProgressBarFilled(true)}
-      />
-      <div className="absolute inset-0">
-        <StartButton ref={startButtonRef} onClick={onStartClick} />
+    <div className="h-5">
+      <div className="relative">
+        <ProgressBar
+          ref={progressBarRef}
+          value={value}
+          onFilled={() => setIsProgressBarFilled(true)}
+        />
+        <div className="absolute inset-0">
+          <StartButton ref={startButtonRef} onClick={onStartClick} />
+        </div>
       </div>
     </div>
   );

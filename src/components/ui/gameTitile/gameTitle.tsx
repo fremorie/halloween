@@ -14,7 +14,7 @@ export function GameTitle() {
   return (
     <div
       ref={containerRef}
-      className="invisible flex flex-col items-center justify-center pb-[4vh]"
+      className="invisible flex flex-col items-center justify-center pb-[3vh]"
     >
       <div className="grid grid-cols-[max-content_1fr] items-center gap-x-2">
         <h1 ref={titleRef} className={`${barrio.className} contents`}>
