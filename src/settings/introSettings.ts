@@ -20,7 +20,4 @@ export const INTRO_LINES: Record<Exclude<IntroBeat, "flyIn">, string> = {
   askForHelp: "Will you help me make it?",
 };
 
-export const INTRO_DILATED_PUPIL_BEATS: IntroBeat[] = [
-  "complain",
-  "askForHelp",
-];
+export const INTRO_DILATED_PUPIL_BEATS: IntroBeat[] = ["askForHelp"];
