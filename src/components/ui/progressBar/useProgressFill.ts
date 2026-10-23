@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import type { RefObject } from "react";
 
-import { prefersReducedMotion } from "./prefersReducedMotion";
+import { prefersReducedMotion } from "@/utils/animation/prefersReducedMotion";
 
 const FILL_DURATION = 0.4;
 const FULL_PROGRESS_VALUE = 100;

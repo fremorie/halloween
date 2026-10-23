@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { Leva, useControls } from "leva";
 import { Canvas } from "@react-three/fiber";
-import { KeyboardControls, OrbitControls } from "@react-three/drei";
+import { KeyboardControls, OrbitControls, Preload } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
 
@@ -61,6 +61,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
               <CameraRig key={runCount} />
             )}
             <Perf position="bottom-right" />
+            <Preload all />
             <SceneReadySignal onSceneReady={onSceneReady} />
           </Suspense>
         </Canvas>

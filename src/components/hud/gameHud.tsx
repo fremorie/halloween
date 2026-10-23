@@ -4,7 +4,10 @@ import { useEffect } from "react";
 
 import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
-import { INTRO_LINES } from "@/settings/introSettings";
+import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
+import { Button } from "@/components/ui/button/button";
+import { TextBox } from "@/components/ui/textBox/textBox";
+import { levels } from "@/data/levels";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -41,49 +44,31 @@ export function GameHud() {
           </p>
         </div>
       )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
-        {rewardBeat && <p className="text-xl">{rewardBeat}</p>}
-        {introBeat !== null && introBeat !== "flyIn" && (
-          <p className="text-xl">{INTRO_LINES[introBeat]}</p>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
+        {rewardBeat === "speech" && (
+          <TextBox>Nice {levels[currentStationIndex].piece}!</TextBox>
         )}
-        {puzzlePhase === "won" && (
-          <p className="text-4xl text-orange-700">Hooray!</p>
-        )}
+
+        {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
 
         {puzzlePhase === "drawing" && rejection && (
           <p className="opacity-70">{REFUSAL_MESSAGES[rejection.reason]}</p>
         )}
 
         {puzzlePhase === "drawing" && (
-          <button
-            type="button"
-            onClick={cutThread}
-            className="pointer-events-auto bg-white px-4 py-1.5 text-sm transition-colors hover:text-orange-500"
-          >
-            Reset (Esc)
-          </button>
+          <Button onClick={cutThread}>Reset (Esc)</Button>
         )}
 
-        {introBeat === "askForHelp" && (
-          <button
-            type="button"
-            onClick={finishIntro}
-            className="pointer-events-auto bg-white px-6 py-2 text-xl"
-          >
-            {/* Cat: "Will you help me make a costume?" */}
-            Sure, why not
-          </button>
+        {introBeat !== null && introBeat !== "flyIn" && (
+          <div className={introBeat === "askForHelp" ? "" : "invisible"}>
+            <Button onClick={finishIntro}>
+              {/* Cat: "Will you help me make a costume?" */}
+              Sure, why not
+            </Button>
+          </div>
         )}
 
-        {isNearStation && (
-          <button
-            type="button"
-            onClick={beginApproach}
-            className="pointer-events-auto bg-white px-6 py-2 text-xl text-orange-700 transition-colors hover:text-orange-500"
-          >
-            Start (E)
-          </button>
-        )}
+        {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
 
         {mode === "walking" && !isNearStation && (
           <p className="opacity-70">
@@ -93,15 +78,7 @@ export function GameHud() {
           </p>
         )}
 
-        {mode === "done" && (
-          <button
-            type="button"
-            onClick={restartGame}
-            className="pointer-events-auto bg-white px-6 py-2 text-xl text-orange-700 transition-colors hover:text-orange-500"
-          >
-            Play again
-          </button>
-        )}
+        {mode === "done" && <Button onClick={restartGame}>Play again</Button>}
       </div>
     </>
   );
