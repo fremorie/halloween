@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
-import { INTRO_LINES } from "@/settings/introSettings";
+import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -43,9 +43,7 @@ export function GameHud() {
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
         {rewardBeat && <p className="text-xl">{rewardBeat}</p>}
-        {introBeat !== null && introBeat !== "flyIn" && (
-          <p className="text-xl">{INTRO_LINES[introBeat]}</p>
-        )}
+        {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
         {puzzlePhase === "won" && (
           <p className="text-4xl text-orange-700">Hooray!</p>
         )}
