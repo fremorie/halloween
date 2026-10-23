@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import type { RefObject } from "react";
 
-import { prefersReducedMotion } from "@/components/ui/progressBar/prefersReducedMotion";
+import { prefersReducedMotion } from "@/utils/animation/prefersReducedMotion";
 
 const LOADING_SCREEN_FADE_OUT_DURATION = 0.8;
 
