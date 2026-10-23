@@ -16,11 +16,17 @@ const Experience = dynamic(
 
 export function Game() {
   const [isTitleIntroDone, setIsTitleIntroDone] = useState(false);
+  const [isSceneReady, setIsSceneReady] = useState(false);
 
   return (
     <>
-      <LoadingScreen onTitleIntroComplete={() => setIsTitleIntroDone(true)} />
-      {isTitleIntroDone && <Experience />}
+      <LoadingScreen
+        isSceneReady={isSceneReady}
+        onTitleIntroComplete={() => setIsTitleIntroDone(true)}
+      />
+      {isTitleIntroDone && (
+        <Experience onSceneReady={() => setIsSceneReady(true)} />
+      )}
       <GameHud />
     </>
   );
