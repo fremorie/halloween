@@ -5,11 +5,15 @@ import { useRef } from "react";
 import { barrio } from "@/components/ui/fonts/fonts";
 import { useTitleIntro } from "./useTitleIntro";
 
-export function GameTitle() {
+type GameTitleProps = {
+  onIntroComplete?: () => void;
+};
+
+export function GameTitle({ onIntroComplete }: GameTitleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-  useTitleIntro({ containerRef, titleRef });
+  useTitleIntro({ containerRef, titleRef, onIntroComplete });
 
   return (
     <div
