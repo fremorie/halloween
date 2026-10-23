@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
+import { Button } from "@/components/ui/button/button";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -53,35 +54,17 @@ export function GameHud() {
         )}
 
         {puzzlePhase === "drawing" && (
-          <button
-            type="button"
-            onClick={cutThread}
-            className="pointer-events-auto bg-white px-4 py-1.5 text-sm transition-colors hover:text-orange-500"
-          >
-            Reset (Esc)
-          </button>
+          <Button onClick={cutThread}>Reset (Esc)</Button>
         )}
 
         {introBeat === "askForHelp" && (
-          <button
-            type="button"
-            onClick={finishIntro}
-            className="pointer-events-auto bg-white px-6 py-2 text-xl"
-          >
+          <Button onClick={finishIntro}>
             {/* Cat: "Will you help me make a costume?" */}
             Sure, why not
-          </button>
+          </Button>
         )}
 
-        {isNearStation && (
-          <button
-            type="button"
-            onClick={beginApproach}
-            className="pointer-events-auto bg-white px-6 py-2 text-xl text-orange-700 transition-colors hover:text-orange-500"
-          >
-            Start (E)
-          </button>
-        )}
+        {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
 
         {mode === "walking" && !isNearStation && (
           <p className="opacity-70">
@@ -91,15 +74,7 @@ export function GameHud() {
           </p>
         )}
 
-        {mode === "done" && (
-          <button
-            type="button"
-            onClick={restartGame}
-            className="pointer-events-auto bg-white px-6 py-2 text-xl text-orange-700 transition-colors hover:text-orange-500"
-          >
-            Play again
-          </button>
-        )}
+        {mode === "done" && <Button onClick={restartGame}>Play again</Button>}
       </div>
     </>
   );
