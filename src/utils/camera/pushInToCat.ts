@@ -40,9 +40,13 @@ export function pushInToCat(
   pose.lookAt.lerpVectors(moveStart.lookAt, catLookAt, lookAtProgress);
   pose.zoom = MathUtils.lerp(moveStart.zoom, CAT_CLOSE_UP_ZOOM, pushInProgress);
   pose.heightFactor = MathUtils.lerp(
-    1,
+    moveStart.heightFactor,
     CAT_CLOSE_UP_HEIGHT_FACTOR,
     pushInProgress,
   );
-  pose.orbitAngle = closeUpOrbitRadians * pushInProgress;
+  pose.orbitAngle = MathUtils.lerp(
+    moveStart.orbitAngle,
+    closeUpOrbitRadians,
+    pushInProgress,
+  );
 }

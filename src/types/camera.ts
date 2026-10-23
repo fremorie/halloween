@@ -15,5 +15,7 @@ export type ScriptedMoveStart = {
   phase: ScriptedMovePhase;
   elapsedTime: number;
   zoom: number;
+  heightFactor: number;
+  orbitAngle: number;
   lookAt: Vector3;
 };
