@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Experience } from "@/components/experience/experience";
 import { GameHud } from "@/components/hud/gameHud";
+import { LoadingScreen } from "@/components/ui/loadingScreen/loadingScreen";
 
 export default function Page() {
   return (
@@ -13,8 +14,9 @@ export default function Page() {
         Experiments
       </Link>
 
-      <Experience />
-      <GameHud />
+      <LoadingScreen />
+      {/*<Experience />*/}
+      {/*<GameHud />*/}
     </>
   );
 }
