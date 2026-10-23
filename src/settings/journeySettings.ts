@@ -14,7 +14,7 @@ export const PEDESTAL_DETOUR_TRIGGER_FRACTION = 0.85;
 export const PEDESTAL_DETOUR_INSIDE_LEAD_ANGLE = 0.6;
 
 export const CAT_START: Vec3 = [0, 0, 9];
-export const CAT_START_HEADING = Math.PI;
+export const CAT_START_HEADING = Math.PI + 0.26;
 export const ROAM_MARGIN = 14;
 
 // An ellipse around the puzzle
