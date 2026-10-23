@@ -2,6 +2,7 @@ export * from "./followShot";
 export * from "./getCameraShot";
 export * from "./getNextScriptedMoveStart";
 export * from "./getScriptedMovePhase";
+export * from "./getShotHeightFactor";
 export * from "./getShotZoom";
 export * from "./getSolvingDistance";
 export * from "./placeCamera";

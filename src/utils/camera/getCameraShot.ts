@@ -14,7 +14,7 @@ export function getCameraShot(
   rewardBeat: RewardBeat | null,
 ): CameraShot {
   if (mode === "intro") {
-    return "catCloseUp";
+    return "birdView";
   }
 
   if (rewardBeat !== null && CAT_CLOSE_UP_BEATS.includes(rewardBeat)) {

@@ -9,6 +9,7 @@ import {
   getCameraShot,
   getNextScriptedMoveStart,
   getScriptedMovePhase,
+  getShotHeightFactor,
   getShotZoom,
   getSolvingDistance,
   placeCamera,
@@ -39,6 +40,7 @@ export function CameraRig() {
     const shotLookAt = shotLookAtRef.current;
     const shot = getCameraShot(mode, rewardBeat);
     const shotZoom = getShotZoom(shot);
+    const shotHeightFactor = getShotHeightFactor(shot);
     setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
@@ -50,7 +52,7 @@ export function CameraRig() {
     const scriptedMoveStart = scriptedMoveStartRef.current;
 
     if (!isPlacedRef.current) {
-      snapToShot(pose, shotLookAt, shotZoom);
+      snapToShot(pose, shotLookAt, shotZoom, shotHeightFactor);
       isPlacedRef.current = true;
     } else if (scriptedMoveStart?.phase === "knittingPullBack") {
       pullBackForKnitting(
@@ -63,7 +65,7 @@ export function CameraRig() {
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
       pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else {
-      followShot(pose, shotLookAt, shotZoom, delta);
+      followShot(pose, shotLookAt, shotZoom, shotHeightFactor, delta);
     }
 
     placeCamera(camera, pose, solvingDistance);
