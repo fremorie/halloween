@@ -8,6 +8,7 @@ import {
 } from "@react-three/rapier";
 
 import { CAT_START, CAT_START_HEADING } from "@/settings/journeySettings";
+import { INTRO_DILATED_PUPIL_BEATS } from "@/settings/introSettings";
 import { CatRiggedModel } from "@/components/models/catRigged/CatModel";
 import { useGameStore } from "@/store/gameStore";
 import {
@@ -36,6 +37,11 @@ export function Cat({ stationCount }: { stationCount: number }) {
   );
   useCatBodyFollow(rootRef, catBodyRef);
 
+  const isPupilDilated = useGameStore(
+    (state) =>
+      state.introBeat !== null &&
+      INTRO_DILATED_PUPIL_BEATS.includes(state.introBeat),
+  );
   const isWearingHat = useGameStore((state) =>
     state.wornCostumePieces.includes("hat"),
   );
@@ -49,7 +55,10 @@ export function Cat({ stationCount }: { stationCount: number }) {
   return (
     <>
       <group ref={rootRef} position={CAT_START} rotation-y={CAT_START_HEADING}>
-        <CatRiggedModel walkPaceRef={walkPaceRef} />
+        <CatRiggedModel
+          walkPaceRef={walkPaceRef}
+          isPupilDilated={isPupilDilated}
+        />
         {isWearingHat && <CatHat />}
         {isWearingCape && <CatCape />}
         {isWearingWings && <CatWings />}

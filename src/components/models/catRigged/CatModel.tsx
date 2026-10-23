@@ -10,8 +10,13 @@ import { type Group, type Material, type Mesh, MathUtils } from "three";
 import { useFrame } from "@react-three/fiber";
 
 import { useEyeMaterial } from "@/components/materials/useEyeMaterial";
+import { DEFAULT_PUPIL_RADIUS } from "@/components/materials/eyeMaterial";
 import type { EyeParams } from "@/types/eye";
-import { useCatBlink, useCatEyeGlances } from "@/utils/cat";
+import {
+  useCatBlink,
+  useCatEyeGlances,
+  useCatPupilDilation,
+} from "@/utils/cat";
 import {
   CAT_BOTTOM_LID_OPEN_ROTATION_X,
   CAT_TOP_LID_OPEN_ROTATION_X,
@@ -22,6 +27,7 @@ import { CAT_STILL_PACE, CAT_WALK_BLEND_SPEED } from "@/settings/catSettings";
 type Props = JSX.IntrinsicElements["group"] & {
   eyeParams?: EyeParams;
   walkPaceRef?: RefObject<number>;
+  isPupilDilated?: boolean;
 };
 
 function applyMaterialToMeshes(meshes: Mesh[], material: Material) {
@@ -38,6 +44,7 @@ function openLids(topLids: Mesh, bottomLids: Mesh) {
 export function CatRiggedModel({
   eyeParams,
   walkPaceRef,
+  isPupilDilated = false,
   ...groupProps
 }: Props) {
   const groupRef = useRef<Group>(null);
@@ -55,6 +62,11 @@ export function CatRiggedModel({
 
   useCatBlink(nodes.TopLids, nodes.BottomLids);
   useCatEyeGlances(eyeMaterial);
+  useCatPupilDilation(
+    eyeMaterial,
+    eyeParams?.pupilRadius ?? DEFAULT_PUPIL_RADIUS,
+    isPupilDilated,
+  );
 
   const { actions } = useAnimations(animations, groupRef);
 
