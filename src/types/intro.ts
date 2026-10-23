@@ -1,1 +1,1 @@
-export type IntroBeat = "flyIn";
+export type IntroBeat = "flyIn" | "complain" | "askForHelp";

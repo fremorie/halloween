@@ -48,7 +48,7 @@ export const createJourneySlice: StateCreator<
       return;
     }
 
-    set({ mode: "walking" });
+    set({ mode: "walking", introBeat: null });
   },
 
   arriveAtStation: () => {
