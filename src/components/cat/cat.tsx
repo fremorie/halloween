@@ -51,6 +51,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
   const isWearingWings = useGameStore((state) =>
     state.wornCostumePieces.includes("wings"),
   );
+  const eyeGlancesEnabled = useGameStore((state) => state.mode !== "intro");
 
   return (
     <>
@@ -58,6 +59,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
         <CatRiggedModel
           walkPaceRef={walkPaceRef}
           isPupilDilated={isPupilDilated}
+          eyeGlancesEnabled={eyeGlancesEnabled}
         />
         {isWearingHat && <CatHat />}
         {isWearingCape && <CatCape />}

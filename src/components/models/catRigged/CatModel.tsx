@@ -28,6 +28,7 @@ type Props = JSX.IntrinsicElements["group"] & {
   eyeParams?: EyeParams;
   walkPaceRef?: RefObject<number>;
   isPupilDilated?: boolean;
+  eyeGlancesEnabled?: boolean;
 };
 
 function applyMaterialToMeshes(meshes: Mesh[], material: Material) {
@@ -45,6 +46,7 @@ export function CatRiggedModel({
   eyeParams,
   walkPaceRef,
   isPupilDilated = false,
+  eyeGlancesEnabled = true,
   ...groupProps
 }: Props) {
   const groupRef = useRef<Group>(null);
@@ -61,7 +63,7 @@ export function CatRiggedModel({
   }, [nodes]);
 
   useCatBlink(nodes.TopLids, nodes.BottomLids);
-  useCatEyeGlances(eyeMaterial);
+  useCatEyeGlances(eyeMaterial, eyeGlancesEnabled);
   useCatPupilDilation(
     eyeMaterial,
     eyeParams?.pupilRadius ?? DEFAULT_PUPIL_RADIUS,
