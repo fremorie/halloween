@@ -44,7 +44,7 @@ export function GameHud() {
           </p>
         </div>
       )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {rewardBeat === "speech" && (
           <TextBox>Nice {levels[currentStationIndex].piece}!</TextBox>
         )}
@@ -59,11 +59,13 @@ export function GameHud() {
           <Button onClick={cutThread}>Reset (Esc)</Button>
         )}
 
-        {introBeat === "askForHelp" && (
-          <Button onClick={finishIntro}>
-            {/* Cat: "Will you help me make a costume?" */}
-            Sure, why not
-          </Button>
+        {introBeat !== null && introBeat !== "flyIn" && (
+          <div className={introBeat === "askForHelp" ? "" : "invisible"}>
+            <Button onClick={finishIntro}>
+              {/* Cat: "Will you help me make a costume?" */}
+              Sure, why not
+            </Button>
+          </div>
         )}
 
         {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
