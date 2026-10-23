@@ -7,7 +7,7 @@ import {
   RigidBody,
 } from "@react-three/rapier";
 
-import { CAT_START } from "@/settings/journeySettings";
+import { CAT_START, CAT_START_HEADING } from "@/settings/journeySettings";
 import { CatRiggedModel } from "@/components/models/catRigged/CatModel";
 import { useGameStore } from "@/store/gameStore";
 import {
@@ -48,7 +48,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
 
   return (
     <>
-      <group ref={rootRef} position={CAT_START}>
+      <group ref={rootRef} position={CAT_START} rotation-y={CAT_START_HEADING}>
         <CatRiggedModel walkPaceRef={walkPaceRef} />
         {isWearingHat && <CatHat />}
         {isWearingCape && <CatCape />}
