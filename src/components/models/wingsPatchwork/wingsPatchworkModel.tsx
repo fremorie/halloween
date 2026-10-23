@@ -6,6 +6,7 @@ import { createPatchworkMaterial } from "@/components/materials/patchworkMateria
 import { usePatchworkControls } from "@/components/materials/usePatchworkControls";
 import { usePatchworkStitching } from "@/components/materials/usePatchworkStitching";
 import { useWingsPatchworkGLTF } from "./useWingsPatchworkGLTF";
+import { WINGS_PATCHWORK_TEXTURE_PATH } from "./constants";
 
 type Props = {
   levelIndex: number;
@@ -14,7 +15,7 @@ type Props = {
 export function WingsPatchworkModel({ levelIndex }: Props) {
   const { nodes } = useWingsPatchworkGLTF();
   const wingsPatchworkTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/WingsPatchworkWithBakedNormal.jpg`,
+    WINGS_PATCHWORK_TEXTURE_PATH,
     (loadedWingsPatchworkTexture) => {
       loadedWingsPatchworkTexture.flipY = false;
       loadedWingsPatchworkTexture.colorSpace = SRGBColorSpace;
@@ -56,3 +57,5 @@ export function WingsPatchworkModel({ levelIndex }: Props) {
     </group>
   );
 }
+
+useTexture.preload(WINGS_PATCHWORK_TEXTURE_PATH);

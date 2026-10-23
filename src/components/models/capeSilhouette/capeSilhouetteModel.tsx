@@ -4,6 +4,7 @@ import type { MeshBasicMaterial } from "three";
 
 import { useSilhouetteFade } from "@/utils/animation/useSilhouetteFade";
 import { useCapeGLTF } from "./useCapeGLTF";
+import { CAPE_SILHOUETTE_TEXTURE_PATH } from "./constants";
 
 type Props = {
   isRevealed: boolean;
@@ -12,7 +13,7 @@ type Props = {
 export function CapeSilhouetteModel({ isRevealed }: Props) {
   const { nodes } = useCapeGLTF();
   const capeSilhouetteTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/CapeSilhouetteBaseColor.png`,
+    CAPE_SILHOUETTE_TEXTURE_PATH,
     (loadedHatSilhouetteTexture) => {
       loadedHatSilhouetteTexture.flipY = false;
     },
@@ -36,3 +37,5 @@ export function CapeSilhouetteModel({ isRevealed }: Props) {
     </group>
   );
 }
+
+useTexture.preload(CAPE_SILHOUETTE_TEXTURE_PATH);

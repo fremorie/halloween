@@ -4,6 +4,7 @@ import type { MeshBasicMaterial } from "three";
 
 import { useSilhouetteFade } from "@/utils/animation/useSilhouetteFade";
 import { useHatGLTF } from "./useHatGLTF";
+import { HAT_SILHOUETTE_TEXTURE_PATH } from "./constants";
 
 type Props = {
   isRevealed: boolean;
@@ -12,7 +13,7 @@ type Props = {
 export function HatSilhouetteModel({ isRevealed }: Props) {
   const { nodes } = useHatGLTF();
   const hatSilhouetteTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/HatSilhouetteBaseColor.png`,
+    HAT_SILHOUETTE_TEXTURE_PATH,
     (loadedHatSilhouetteTexture) => {
       loadedHatSilhouetteTexture.flipY = false;
     },
@@ -36,3 +37,5 @@ export function HatSilhouetteModel({ isRevealed }: Props) {
     </group>
   );
 }
+
+useTexture.preload(HAT_SILHOUETTE_TEXTURE_PATH);

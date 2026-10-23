@@ -6,6 +6,7 @@ import { createPatchworkMaterial } from "@/components/materials/patchworkMateria
 import { usePatchworkControls } from "@/components/materials/usePatchworkControls";
 import { usePatchworkStitching } from "@/components/materials/usePatchworkStitching";
 import { useCapePatchworkGLTF } from "./useCapePatchworkGLTF";
+import { CAPE_PATCHWORK_TEXTURE_PATH } from "./constants";
 
 type Props = {
   levelIndex: number;
@@ -14,7 +15,7 @@ type Props = {
 export function CapePatchworkModel({ levelIndex }: Props) {
   const { nodes } = useCapePatchworkGLTF();
   const capePatchworkTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/CapePatchworkWithBakedNormals.jpg`,
+    CAPE_PATCHWORK_TEXTURE_PATH,
     (loadedCapePatchworkTexture) => {
       loadedCapePatchworkTexture.flipY = false;
       loadedCapePatchworkTexture.colorSpace = SRGBColorSpace;
@@ -48,3 +49,5 @@ export function CapePatchworkModel({ levelIndex }: Props) {
     </group>
   );
 }
+
+useTexture.preload(CAPE_PATCHWORK_TEXTURE_PATH);
