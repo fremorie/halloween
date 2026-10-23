@@ -4,17 +4,19 @@ import { Cat } from "@/components/cat/cat";
 import { LanternFaceClock } from "@/components/materials/lanternFaceClock";
 import { useGameStore } from "@/store/gameStore";
 import { GrassField } from "@/components/grass/GrassField";
+import { Trees } from "@/components/trees/trees";
 import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
 import { useRewardBeatTimer } from "./useRewardBeatTimer";
-import { Trees } from "@/components/trees/trees";
+import { useIntroBeatTimer } from "./useIntroBeatTimer";
 
 export function World() {
   const runCount = useGameStore((state) => state.runCount);
 
   useCelebrationTimer();
   useRewardBeatTimer();
+  useIntroBeatTimer();
 
   return (
     <>

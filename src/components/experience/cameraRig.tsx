@@ -5,10 +5,13 @@ import { Vector3 } from "three";
 import { useGameStore } from "@/store/gameStore";
 import type { CameraPose, ScriptedMoveStart } from "@/types/camera";
 import {
+  flyInToCat,
   followShot,
   getCameraShot,
   getNextScriptedMoveStart,
   getScriptedMovePhase,
+  getShotHeightFactor,
+  getShotOrbitAngle,
   getShotZoom,
   getSolvingDistance,
   placeCamera,
@@ -33,24 +36,26 @@ export function CameraRig() {
   const solvingDistance = getSolvingDistance(aspect);
 
   useFrame(({ camera, clock }, delta) => {
-    const { catPosition, mode, currentStationIndex, rewardBeat } =
+    const { catPosition, mode, currentStationIndex, rewardBeat, introBeat } =
       useGameStore.getState();
     const pose = poseRef.current;
     const shotLookAt = shotLookAtRef.current;
-    const shot = getCameraShot(mode, rewardBeat);
+    const shot = getCameraShot(mode, rewardBeat, introBeat);
     const shotZoom = getShotZoom(shot);
+    const shotHeightFactor = getShotHeightFactor(shot);
+    const shotOrbitAngle = getShotOrbitAngle(shot);
     setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
       scriptedMoveStartRef.current,
-      getScriptedMovePhase(shot, rewardBeat),
+      getScriptedMovePhase(shot, rewardBeat, mode),
       clock.elapsedTime,
       pose,
     );
     const scriptedMoveStart = scriptedMoveStartRef.current;
 
     if (!isPlacedRef.current) {
-      snapToShot(pose, shotLookAt, shotZoom);
+      snapToShot(pose, shotLookAt, shotZoom, shotHeightFactor, shotOrbitAngle);
       isPlacedRef.current = true;
     } else if (scriptedMoveStart?.phase === "knittingPullBack") {
       pullBackForKnitting(
@@ -60,10 +65,19 @@ export function CameraRig() {
         clock.elapsedTime,
         delta,
       );
+    } else if (scriptedMoveStart?.phase === "introFlyIn") {
+      flyInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
       pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else {
-      followShot(pose, shotLookAt, shotZoom, delta);
+      followShot(
+        pose,
+        shotLookAt,
+        shotZoom,
+        shotHeightFactor,
+        shotOrbitAngle,
+        delta,
+      );
     }
 
     placeCamera(camera, pose, solvingDistance);

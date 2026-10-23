@@ -1,6 +1,7 @@
 import type { Vector3 } from "three";
 
 import {
+  BIRD_VIEW_LOOK_AT,
   CAT_CLOSE_UP_LOOK_AT_HEIGHT,
   LOOK_AT_HEIGHT,
   SOLVING_LOOK_AT_HEIGHT,
@@ -16,6 +17,11 @@ export function setShotLookAt(
   catPosition: Vector3,
   currentStationIndex: number,
 ) {
+  if (shot === "birdView") {
+    shotLookAt.set(...BIRD_VIEW_LOOK_AT);
+    return;
+  }
+
   if (shot === "catCloseUp") {
     shotLookAt.set(catPosition.x, CAT_CLOSE_UP_LOOK_AT_HEIGHT, catPosition.z);
     return;
@@ -25,6 +31,7 @@ export function setShotLookAt(
     shotLookAt.set(focusX, SOLVING_LOOK_AT_HEIGHT, focusZ);
     return;
   }
+
   shotLookAt.set(
     catPosition.x,
     LOOK_AT_HEIGHT - WALKING_DROP,

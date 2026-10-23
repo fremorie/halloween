@@ -1,2 +1,2 @@
 export type GameMode =
-  "walking" | "approaching" | "solving" | "done" | "rewarding";
+  "intro" | "walking" | "approaching" | "solving" | "done" | "rewarding";

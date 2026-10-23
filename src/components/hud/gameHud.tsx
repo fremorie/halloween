@@ -4,9 +4,11 @@ import { useEffect } from "react";
 
 import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
+import { INTRO_LINES } from "@/settings/introSettings";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
+  const finishIntro = useGameStore((state) => state.finishIntro);
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
   const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
@@ -17,6 +19,7 @@ export function GameHud() {
   );
   const restartGame = useGameStore((state) => state.restartGame);
   const rewardBeat = useGameStore((state) => state.rewardBeat);
+  const introBeat = useGameStore((state) => state.introBeat);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -40,6 +43,9 @@ export function GameHud() {
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
         {rewardBeat && <p className="text-xl">{rewardBeat}</p>}
+        {introBeat !== null && introBeat !== "flyIn" && (
+          <p className="text-xl">{INTRO_LINES[introBeat]}</p>
+        )}
         {puzzlePhase === "won" && (
           <p className="text-4xl text-orange-700">Hooray!</p>
         )}
@@ -55,6 +61,17 @@ export function GameHud() {
             className="pointer-events-auto bg-white px-4 py-1.5 text-sm transition-colors hover:text-orange-500"
           >
             Reset (Esc)
+          </button>
+        )}
+
+        {introBeat === "askForHelp" && (
+          <button
+            type="button"
+            onClick={finishIntro}
+            className="pointer-events-auto bg-white px-6 py-2 text-xl"
+          >
+            {/* Cat: "Will you help me make a costume?" */}
+            Sure, why not
           </button>
         )}
 

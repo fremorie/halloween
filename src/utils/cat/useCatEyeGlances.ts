@@ -36,7 +36,10 @@ function pickPauseBeforeNextGlance() {
   return gsap.utils.random(CAT_EYE_GLANCE_MIN_PAUSE, CAT_EYE_GLANCE_MAX_PAUSE);
 }
 
-export function useCatEyeGlances(eyeMaterial: EyeMaterialInstance) {
+export function useCatEyeGlances(
+  eyeMaterial: EyeMaterialInstance,
+  enabled: boolean,
+) {
   useGSAP(
     () => {
       const gazeRotation = new Euler();
@@ -60,10 +63,14 @@ export function useCatEyeGlances(eyeMaterial: EyeMaterialInstance) {
       };
 
       applyEyeGazeRotation(eyeMaterial, gazeRotation);
+      if (!enabled) {
+        return;
+      }
+
       waitThenGlance();
 
       return () => currentGlanceAnimation.kill();
     },
-    { dependencies: [eyeMaterial] },
+    { dependencies: [eyeMaterial, enabled] },
   );
 }

@@ -1,8 +1,9 @@
 import type { Vector3 } from "three";
 
-export type CameraShot = "walking" | "puzzle" | "catCloseUp";
+export type CameraShot = "walking" | "puzzle" | "catCloseUp" | "birdView";
 
-export type ScriptedMovePhase = "knittingPullBack" | "catCloseUp";
+export type ScriptedMovePhase =
+  "knittingPullBack" | "catCloseUp" | "introFlyIn";
 
 export type CameraPose = {
   lookAt: Vector3;
@@ -15,5 +16,7 @@ export type ScriptedMoveStart = {
   phase: ScriptedMovePhase;
   elapsedTime: number;
   zoom: number;
+  heightFactor: number;
+  orbitAngle: number;
   lookAt: Vector3;
 };

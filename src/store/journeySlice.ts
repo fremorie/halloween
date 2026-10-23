@@ -13,6 +13,7 @@ export type JourneySlice = {
   isNearStation: boolean;
   setNearStation: (isNearStation: boolean) => void;
   beginApproach: () => void;
+  finishIntro: () => void;
   arriveAtStation: () => void;
   advanceToNextStation: () => void;
   restartGame: () => void;
@@ -24,7 +25,7 @@ export const createJourneySlice: StateCreator<
   [],
   JourneySlice
 > = (set, get) => ({
-  mode: "walking",
+  mode: "intro",
   runCount: 0,
   catPosition: new Vector3(),
   currentStationIndex: 0,
@@ -40,6 +41,14 @@ export const createJourneySlice: StateCreator<
     }
 
     set({ mode: "approaching", isNearStation: false });
+  },
+
+  finishIntro: () => {
+    if (get().mode !== "intro") {
+      return;
+    }
+
+    set({ mode: "walking", introBeat: null });
   },
 
   arriveAtStation: () => {

@@ -10,13 +10,20 @@ export function getNextScriptedMoveStart(
   elapsedTime: number,
   pose: CameraPose,
 ): ScriptedMoveStart | null {
-  if (phase === null) return null;
-  if (currentMoveStart?.phase === phase) return currentMoveStart;
+  if (phase === null) {
+    return null;
+  }
+
+  if (currentMoveStart?.phase === phase) {
+    return currentMoveStart;
+  }
 
   return {
     phase,
     elapsedTime,
     zoom: pose.zoom,
+    heightFactor: pose.heightFactor,
+    orbitAngle: pose.orbitAngle,
     lookAt: pose.lookAt.clone(),
   };
 }

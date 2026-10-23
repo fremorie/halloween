@@ -10,3 +10,6 @@ export const CAT_EYE_GLANCE_DURATION = 0.4;
 export const CAT_EYE_GLANCE_MIN_PAUSE = 1.5;
 export const CAT_EYE_GLANCE_MAX_PAUSE = 4;
 export const CAT_EYE_LOOK_STRAIGHT_CHANCE = 0.3;
+
+export const CAT_DILATED_PUPIL_RADIUS = 1.6;
+export const CAT_PUPIL_DILATION_DURATION = 0.6;

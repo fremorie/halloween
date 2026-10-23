@@ -17,7 +17,7 @@ export function CatModel({ eyeParams, ...props }: CatModelProps) {
   const { nodes, materials } = useCatGLTF();
   const eyeMaterial = useEyeMaterial(materials.Eye.map, eyeParams);
   const { topLidsRef, bottomLidsRef } = useCatBlink();
-  useCatEyeGlances(eyeMaterial);
+  useCatEyeGlances(eyeMaterial, true);
 
   return (
     <group {...props} dispose={null}>

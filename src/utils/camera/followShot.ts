@@ -18,19 +18,21 @@ export function followShot(
   pose: CameraPose,
   shotLookAt: Vector3,
   shotZoom: number,
+  shotHeightFactor: number,
+  shotOrbitAngle: number,
   delta: number,
 ) {
   followShotLookAt(pose, shotLookAt, delta);
   pose.zoom = MathUtils.damp(pose.zoom, shotZoom, CAMERA_ZOOM_SPEED, delta);
   pose.heightFactor = MathUtils.damp(
     pose.heightFactor,
-    1,
+    shotHeightFactor,
     CAMERA_ZOOM_SPEED,
     delta,
   );
   pose.orbitAngle = MathUtils.damp(
     pose.orbitAngle,
-    0,
+    shotOrbitAngle,
     CAMERA_ZOOM_SPEED,
     delta,
   );

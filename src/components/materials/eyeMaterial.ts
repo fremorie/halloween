@@ -5,10 +5,12 @@ import fragmentShader from "@/shaders/eye/fragment.glsl";
 import vertexShader from "@/shaders/eye/vertex.glsl";
 import type { EyeParams } from "@/types/eye";
 
+export const DEFAULT_PUPIL_RADIUS = 0.8;
+
 const EyeMaterial = shaderMaterial(
   {
     uIrisTexture: null,
-    uPupilRadius: 0.8,
+    uPupilRadius: DEFAULT_PUPIL_RADIUS,
     uHighlightColor: new Color("#ffffff"),
     uHighlightSize: 0.45,
     uInverseGazeRotation: new Matrix3(),
