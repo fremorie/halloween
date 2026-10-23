@@ -7,8 +7,10 @@ export function snapToShot(
   shotLookAt: Vector3,
   shotZoom: number,
   shotHeightFactor: number,
+  shotOrbitAngle: number,
 ) {
   pose.lookAt.copy(shotLookAt);
   pose.zoom = shotZoom;
   pose.heightFactor = shotHeightFactor;
+  pose.orbitAngle = shotOrbitAngle;
 }

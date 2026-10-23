@@ -14,6 +14,8 @@ export const WALKING_ZOOM = 0.75;
 
 export const BIRD_VIEW_ZOOM = 1.2;
 export const BIRD_VIEW_HEIGHT_FACTOR = 18;
+export const BIRD_VIEW_LOOK_AT: Vec3 = [0, 0, -13.5];
+export const BIRD_VIEW_ORBIT_DEGREES = 180;
 
 export const CAMERA_FOLLOW_SPEED = 2.5;
 

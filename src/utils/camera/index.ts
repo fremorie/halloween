@@ -4,6 +4,7 @@ export * from "./getNextScriptedMoveStart";
 export * from "./getPushInDuration";
 export * from "./getScriptedMovePhase";
 export * from "./getShotHeightFactor";
+export * from "./getShotOrbitAngle";
 export * from "./getShotZoom";
 export * from "./getSolvingDistance";
 export * from "./placeCamera";
