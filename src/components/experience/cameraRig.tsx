@@ -34,11 +34,11 @@ export function CameraRig() {
   const solvingDistance = getSolvingDistance(aspect);
 
   useFrame(({ camera, clock }, delta) => {
-    const { catPosition, mode, currentStationIndex, rewardBeat } =
+    const { catPosition, mode, currentStationIndex, rewardBeat, introBeat } =
       useGameStore.getState();
     const pose = poseRef.current;
     const shotLookAt = shotLookAtRef.current;
-    const shot = getCameraShot(mode, rewardBeat);
+    const shot = getCameraShot(mode, rewardBeat, introBeat);
     const shotZoom = getShotZoom(shot);
     const shotHeightFactor = getShotHeightFactor(shot);
     setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);

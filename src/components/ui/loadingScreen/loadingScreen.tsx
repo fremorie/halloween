@@ -9,15 +9,17 @@ import { useLoadingScreenFadeOut } from "./useLoadingScreenFadeOut";
 
 const LAST_PROGRESS_BEFORE_SCENE_READY = 99;
 
-type LoadingScreenProps = {
+type Props = {
   isSceneReady: boolean;
   onTitleIntroComplete: () => void;
+  onStart: () => void;
 };
 
 export function LoadingScreen({
   isSceneReady,
   onTitleIntroComplete,
-}: LoadingScreenProps) {
+  onStart,
+}: Props) {
   const { progress } = useProgress();
   const loadingScreenRef = useRef<HTMLDivElement>(null);
   const [isFadingOut, setIsFadingOut] = useState(false);
@@ -43,7 +45,10 @@ export function LoadingScreen({
         <GameTitle onIntroComplete={onTitleIntroComplete} />
         <ProgressBar
           value={displayedProgress}
-          onStartClick={() => setIsFadingOut(true)}
+          onStartClick={() => {
+            setIsFadingOut(true);
+            onStart();
+          }}
         />
       </div>
     </div>

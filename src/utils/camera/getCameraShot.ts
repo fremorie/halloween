@@ -2,6 +2,7 @@ import { CAT_CLOSE_UP_BEATS } from "@/settings/rewardSettings";
 import type { CameraShot } from "@/types/camera";
 import type { GameMode } from "@/types/game";
 import type { RewardBeat } from "@/types/reward";
+import { IntroBeat } from "@/types/intro";
 
 const PUZZLE_FRAMING_MODES: GameMode[] = [
   "approaching",
@@ -12,9 +13,10 @@ const PUZZLE_FRAMING_MODES: GameMode[] = [
 export function getCameraShot(
   mode: GameMode,
   rewardBeat: RewardBeat | null,
+  introBeat: IntroBeat | null,
 ): CameraShot {
   if (mode === "intro") {
-    return "birdView";
+    return introBeat === null ? "birdView" : "catCloseUp";
   }
 
   if (rewardBeat !== null && CAT_CLOSE_UP_BEATS.includes(rewardBeat)) {
