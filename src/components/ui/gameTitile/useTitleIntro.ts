@@ -5,7 +5,7 @@ import type { RefObject } from "react";
 
 gsap.registerPlugin(SplitText);
 
-const LETTER_RISE_DURATION = 0.9;
+const LETTER_RISE_DURATION = 0.5;
 const LETTER_STAGGER = 0.04;
 
 type TitleIntroOptions = {
