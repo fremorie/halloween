@@ -8,6 +8,7 @@ import {
   CAT_CLOSE_UP_ORBIT_DEGREES,
   CAT_CLOSE_UP_ZOOM,
 } from "@/settings/cameraSettings";
+import { REWARD_BEAT_DURATIONS } from "@/settings/rewardSettings";
 import type { CameraPose, ScriptedMoveStart } from "@/types/camera";
 
 import { getEasedProgress } from "./getEasedProgress";
@@ -15,15 +16,15 @@ import { getEasedProgress } from "./getEasedProgress";
 const pushInEase = gsap.parseEase(CAT_CLOSE_UP_EASE);
 const lookAtEase = gsap.parseEase("power2.inOut");
 const closeUpOrbitRadians = MathUtils.degToRad(CAT_CLOSE_UP_ORBIT_DEGREES);
+const pushInDuration = REWARD_BEAT_DURATIONS.zoomIn;
+const lookAtDuration = pushInDuration * CAT_CLOSE_UP_LOOK_AT_DURATION_FACTOR;
 
 export function pushInToCat(
   pose: CameraPose,
   moveStart: ScriptedMoveStart,
   catLookAt: Vector3,
   elapsedTime: number,
-  pushInDuration: number,
 ) {
-  const lookAtDuration = pushInDuration * CAT_CLOSE_UP_LOOK_AT_DURATION_FACTOR;
   const elapsedSinceMoveStart = elapsedTime - moveStart.elapsedTime;
   const pushInProgress = getEasedProgress(
     pushInEase,

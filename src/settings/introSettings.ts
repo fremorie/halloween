@@ -10,7 +10,7 @@ export const INTRO_BEAT_DURATIONS: Record<
   Exclude<IntroBeat, "askForHelp">,
   number
 > = {
-  flyIn: 4,
+  flyIn: 7,
   complain: 3.5,
 };
 

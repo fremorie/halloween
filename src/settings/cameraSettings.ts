@@ -12,10 +12,10 @@ export const WALKING_LEAD = -1;
 export const WALKING_DROP = 1.3;
 export const WALKING_ZOOM = 0.75;
 
-export const BIRD_VIEW_ZOOM = 1.2;
-export const BIRD_VIEW_HEIGHT_FACTOR = 18;
+export const BIRD_VIEW_ZOOM = 2;
+export const BIRD_VIEW_HEIGHT_FACTOR = 6.5;
 export const BIRD_VIEW_LOOK_AT: Vec3 = [0, 0, -13.5];
-export const BIRD_VIEW_ORBIT_DEGREES = 180;
+export const BIRD_VIEW_ORBIT_DEGREES = 100;
 
 export const CAMERA_FOLLOW_SPEED = 2.5;
 
@@ -41,3 +41,7 @@ export const KNITTING_PULL_BACK_ZOOM = 1.15;
 export const CAT_CLOSE_UP_HEIGHT_FACTOR = 0.4;
 export const CAT_CLOSE_UP_ORBIT_DEGREES = 18;
 export const CAT_CLOSE_UP_LOOK_AT_DURATION_FACTOR = 0.7;
+
+export const INTRO_FLY_IN_ORBIT_EASE = "sine.inOut";
+export const INTRO_FLY_IN_LANDING_EASE = "power2.inOut";
+export const INTRO_FLY_IN_LANDING_START_FACTOR = 0.4;

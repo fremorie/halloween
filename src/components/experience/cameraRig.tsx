@@ -5,10 +5,10 @@ import { Vector3 } from "three";
 import { useGameStore } from "@/store/gameStore";
 import type { CameraPose, ScriptedMoveStart } from "@/types/camera";
 import {
+  flyInToCat,
   followShot,
   getCameraShot,
   getNextScriptedMoveStart,
-  getPushInDuration,
   getScriptedMovePhase,
   getShotHeightFactor,
   getShotOrbitAngle,
@@ -48,7 +48,7 @@ export function CameraRig() {
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
       scriptedMoveStartRef.current,
-      getScriptedMovePhase(shot, rewardBeat),
+      getScriptedMovePhase(shot, rewardBeat, mode),
       clock.elapsedTime,
       pose,
     );
@@ -65,14 +65,10 @@ export function CameraRig() {
         clock.elapsedTime,
         delta,
       );
+    } else if (scriptedMoveStart?.phase === "introFlyIn") {
+      flyInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
-      pushInToCat(
-        pose,
-        scriptedMoveStart,
-        shotLookAt,
-        clock.elapsedTime,
-        getPushInDuration(mode),
-      );
+      pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else {
       followShot(
         pose,
