@@ -15,8 +15,8 @@ export default function Page() {
       </Link>
 
       <LoadingScreen />
-      {/*<Experience />*/}
-      {/*<GameHud />*/}
+      <Experience />
+      <GameHud />
     </>
   );
 }
