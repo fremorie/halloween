@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 
-import { ProgressBar } from "@/app/(experiments)/ui/progress-bar/progressBar";
-import { StartButton } from "@/app/(experiments)/ui/progress-bar/startButton";
-import { useStartButtonReveal } from "@/app/(experiments)/ui/progress-bar/useStartButtonReveal";
+import { ProgressBar } from "./progressBar";
+import { StartButton } from "./startButton";
+import { useStartButtonReveal } from "./useStartButtonReveal";
 
 type ProgressBarWithStartButtonProps = {
   value: number;

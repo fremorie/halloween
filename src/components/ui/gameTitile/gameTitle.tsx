@@ -3,7 +3,7 @@
 import { useRef } from "react";
 
 import { barrio } from "@/components/ui/fonts/fonts";
-import { useTitleIntro } from "@/app/(experiments)/ui/title/useTitleIntro";
+import { useTitleIntro } from "./useTitleIntro";
 
 export function GameTitle() {
   const containerRef = useRef<HTMLDivElement>(null);

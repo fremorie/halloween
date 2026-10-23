@@ -1,7 +1,7 @@
 "use client";
 
-import { ProgressBarWithStartButton } from "./progressBarWithStartButton";
 import { useEffect, useState } from "react";
+import { ProgressBar } from "@/components/ui/progressBar";
 
 const demoProgressSteps = [
   { delayInMilliseconds: 0, progressValue: 10 },
@@ -23,10 +23,7 @@ export default function Page() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
-      <ProgressBarWithStartButton
-        value={value}
-        onStartClick={() => console.log("start")}
-      />
+      <ProgressBar value={value} onStartClick={() => console.log("start")} />
     </div>
   );
 }

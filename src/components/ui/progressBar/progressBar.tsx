@@ -2,7 +2,8 @@
 
 import { Progress } from "radix-ui";
 import { type Ref, useRef } from "react";
-import { useProgressFill } from "@/app/(experiments)/ui/progress-bar/useProgressFill";
+
+import { useProgressFill } from "./useProgressFill";
 
 type Props = {
   value: number;
