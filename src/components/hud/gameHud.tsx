@@ -6,6 +6,8 @@ import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
 import { Button } from "@/components/ui/button/button";
+import { TextBox } from "@/components/ui/textBox/textBox";
+import { levels } from "@/data/levels";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -43,11 +45,11 @@ export function GameHud() {
         </div>
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6 text-center">
-        {rewardBeat && <p className="text-xl">{rewardBeat}</p>}
-        {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
-        {puzzlePhase === "won" && (
-          <p className="text-4xl text-orange-700">Hooray!</p>
+        {rewardBeat === "speech" && (
+          <TextBox>Nice {levels[currentStationIndex].piece}!</TextBox>
         )}
+
+        {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
 
         {puzzlePhase === "drawing" && rejection && (
           <p className="opacity-70">{REFUSAL_MESSAGES[rejection.reason]}</p>
