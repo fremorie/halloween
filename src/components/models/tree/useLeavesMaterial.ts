@@ -5,9 +5,11 @@ import { createLeavesMaterial, leavesTimeUniform } from "./leavesMaterial";
 import { createLeavesShadowMaterial } from "./leavesShadowMaterial";
 import { useFrame } from "@react-three/fiber";
 
+const LEAVES_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/LeavesBaseColor.jpg`;
+
 export function useLeavesMaterial() {
   const leavesTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/LeavesBaseColor.jpg`,
+    LEAVES_TEXTURE_PATH,
     (loadedLeavesTexture) => {
       loadedLeavesTexture.flipY = false;
     },
@@ -28,3 +30,5 @@ export function useLeavesMaterial() {
 export function useLeavesShadowMaterial() {
   return useMemo(() => createLeavesShadowMaterial(), []);
 }
+
+useTexture.preload(LEAVES_TEXTURE_PATH);

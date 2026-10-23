@@ -28,3 +28,10 @@ export const CAT_CLOSE_UP_LOOK_AT_HEIGHT = 1.2;
 export const CAT_CLOSE_UP_ZOOM = 0.4;
 
 export const SOLVING_LOOK_AT_HEIGHT = 2.5;
+
+export const CAT_CLOSE_UP_EASE = "power2.inOut";
+export const KNITTING_PULL_BACK_EASE = "sine.inOut";
+export const KNITTING_PULL_BACK_ZOOM = 1.15;
+export const CAT_CLOSE_UP_HEIGHT_FACTOR = 0.4;
+export const CAT_CLOSE_UP_ORBIT_DEGREES = 18;
+export const CAT_CLOSE_UP_LOOK_AT_DURATION_FACTOR = 0.7;

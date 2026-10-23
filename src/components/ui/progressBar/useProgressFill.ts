@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import type { RefObject } from "react";
 
-import { prefersReducedMotion } from "@/app/(experiments)/ui/progress-bar/prefersReducedMotion";
+import { prefersReducedMotion } from "./prefersReducedMotion";
 
 const FILL_DURATION = 0.4;
 const FULL_PROGRESS_VALUE = 100;

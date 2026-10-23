@@ -4,6 +4,7 @@ import type { MeshBasicMaterial } from "three";
 
 import { useSilhouetteFade } from "@/utils/animation/useSilhouetteFade";
 import { useWingsGLTF } from "./useWingsGLTF";
+import { WINGS_SILHOUETTE_TEXTURE_PATH } from "./constants";
 
 type Props = {
   isRevealed: boolean;
@@ -12,7 +13,7 @@ type Props = {
 export function WingsSilhouetteModel({ isRevealed }: Props) {
   const { nodes } = useWingsGLTF();
   const wingsSilhouetteTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/WingsSilhouetteBaseColor.png`,
+    WINGS_SILHOUETTE_TEXTURE_PATH,
     (loadedWingsSilhouetteTexture) => {
       loadedWingsSilhouetteTexture.flipY = false;
     },
@@ -36,3 +37,5 @@ export function WingsSilhouetteModel({ isRevealed }: Props) {
     </group>
   );
 }
+
+useTexture.preload(WINGS_SILHOUETTE_TEXTURE_PATH);

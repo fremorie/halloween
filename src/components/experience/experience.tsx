@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { Leva, useControls } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, OrbitControls } from "@react-three/drei";
@@ -12,9 +13,14 @@ import { PAPER_COLOR } from "@/settings/paperSettings";
 import { World } from "@/components/world/world";
 import { KEYBOARD_CONTROLS_MAP } from "@/settings/controlsSettings";
 import { CameraRig } from "@/components/experience/cameraRig";
+import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
 
-export function Experience() {
+type ExperienceProps = {
+  onSceneReady: () => void;
+};
+
+export function Experience({ onSceneReady }: ExperienceProps) {
   const runCount = useGameStore((state) => state.runCount);
   const { freeCamera, physicsDebug } = useControls({
     freeCamera: { value: false, label: "Free camera" },
@@ -40,20 +46,23 @@ export function Experience() {
           dpr={[1, 1.5]}
           camera={CAMERA_SETTINGS}
         >
-          <color args={[PAPER_COLOR]} attach="background" />
+          <Suspense fallback={null}>
+            <color args={[PAPER_COLOR]} attach="background" />
 
-          <Effects />
+            <Effects />
 
-          <Physics debug={physicsDebug}>
-            <World />
-          </Physics>
+            <Physics debug={physicsDebug}>
+              <World />
+            </Physics>
 
-          {freeCamera ? (
-            <OrbitControls makeDefault target={CAMERA_TARGET} />
-          ) : (
-            <CameraRig key={runCount} />
-          )}
-          <Perf position="bottom-right" />
+            {freeCamera ? (
+              <OrbitControls makeDefault target={CAMERA_TARGET} />
+            ) : (
+              <CameraRig key={runCount} />
+            )}
+            <Perf position="bottom-right" />
+            <SceneReadySignal onSceneReady={onSceneReady} />
+          </Suspense>
         </Canvas>
       </KeyboardControls>
     </>

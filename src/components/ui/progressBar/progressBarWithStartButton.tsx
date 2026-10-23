@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 
-import { ProgressBar } from "@/app/(experiments)/ui/progress-bar/progressBar";
-import { StartButton } from "@/app/(experiments)/ui/progress-bar/startButton";
-import { useStartButtonReveal } from "@/app/(experiments)/ui/progress-bar/useStartButtonReveal";
+import { ProgressBar } from "./progressBar";
+import { StartButton } from "./startButton";
+import { useStartButtonReveal } from "./useStartButtonReveal";
 
 type ProgressBarWithStartButtonProps = {
   value: number;
@@ -26,14 +26,16 @@ export function ProgressBarWithStartButton({
   });
 
   return (
-    <div className="relative">
-      <ProgressBar
-        ref={progressBarRef}
-        value={value}
-        onFilled={() => setIsProgressBarFilled(true)}
-      />
-      <div className="absolute inset-0">
-        <StartButton ref={startButtonRef} onClick={onStartClick} />
+    <div className="h-5">
+      <div className="relative">
+        <ProgressBar
+          ref={progressBarRef}
+          value={value}
+          onFilled={() => setIsProgressBarFilled(true)}
+        />
+        <div className="absolute inset-0">
+          <StartButton ref={startButtonRef} onClick={onStartClick} />
+        </div>
       </div>
     </div>
   );

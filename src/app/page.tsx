@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { Experience } from "@/components/experience/experience";
-import { GameHud } from "@/components/hud/gameHud";
+import { Game } from "@/components/game/game";
 
 export default function Page() {
   return (
@@ -13,8 +12,7 @@ export default function Page() {
         Experiments
       </Link>
 
-      <Experience />
-      <GameHud />
+      <Game />
     </>
   );
 }

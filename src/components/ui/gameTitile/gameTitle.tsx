@@ -3,18 +3,22 @@
 import { useRef } from "react";
 
 import { barrio } from "@/components/ui/fonts/fonts";
-import { useTitleIntro } from "@/app/(experiments)/ui/title/useTitleIntro";
+import { useTitleIntro } from "./useTitleIntro";
 
-export function GameTitle() {
+type GameTitleProps = {
+  onIntroComplete?: () => void;
+};
+
+export function GameTitle({ onIntroComplete }: GameTitleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-  useTitleIntro({ containerRef, titleRef });
+  useTitleIntro({ containerRef, titleRef, onIntroComplete });
 
   return (
     <div
       ref={containerRef}
-      className="invisible flex h-screen flex-col items-center justify-center pb-[10vh]"
+      className="invisible flex flex-col items-center justify-center pb-[3vh]"
     >
       <div className="grid grid-cols-[max-content_1fr] items-center gap-x-2">
         <h1 ref={titleRef} className={`${barrio.className} contents`}>

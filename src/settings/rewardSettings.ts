@@ -17,7 +17,7 @@ export const PAUSE_AFTER_KNITTING = 0.5;
 
 export const REWARD_BEAT_DURATIONS: Record<RewardBeat, number> = {
   knit: KNITTING_DURATION + PAUSE_AFTER_KNITTING,
-  zoomIn: 1.2,
+  zoomIn: 2.2,
   hatDrop: 0.8,
   speech: 2,
 };

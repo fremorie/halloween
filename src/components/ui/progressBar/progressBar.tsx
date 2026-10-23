@@ -2,7 +2,8 @@
 
 import { Progress } from "radix-ui";
 import { type Ref, useRef } from "react";
-import { useProgressFill } from "@/app/(experiments)/ui/progress-bar/useProgressFill";
+
+import { useProgressFill } from "./useProgressFill";
 
 type Props = {
   value: number;
@@ -19,7 +20,7 @@ export function ProgressBar({ value, onFilled, ref }: Props) {
     <Progress.Root
       ref={ref}
       value={value}
-      className="h-5 w-64 border-2 border-black p-1"
+      className="h-5 w-full border-2 border-black p-1"
     >
       <Progress.Indicator ref={indicatorRef} className="h-full w-0 bg-black" />
     </Progress.Root>

@@ -6,6 +6,7 @@ import { createPatchworkMaterial } from "@/components/materials/patchworkMateria
 import { usePatchworkControls } from "@/components/materials/usePatchworkControls";
 import { usePatchworkStitching } from "@/components/materials/usePatchworkStitching";
 import { useHatPatchworkGLTF } from "./useHatPatchworkGLTF";
+import { HAT_PATCHWORK_TEXTURE_PATH } from "./constants";
 
 type Props = {
   levelIndex: number;
@@ -14,7 +15,7 @@ type Props = {
 export function HatPatchworkModel({ levelIndex }: Props) {
   const { nodes } = useHatPatchworkGLTF();
   const hatPatchworkTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/HatPatchworkWithBakedNormals.jpg`,
+    HAT_PATCHWORK_TEXTURE_PATH,
     (loadedHatPatchworkTexture) => {
       loadedHatPatchworkTexture.flipY = false;
       loadedHatPatchworkTexture.colorSpace = SRGBColorSpace;
@@ -43,3 +44,5 @@ export function HatPatchworkModel({ levelIndex }: Props) {
     </group>
   );
 }
+
+useTexture.preload(HAT_PATCHWORK_TEXTURE_PATH);
