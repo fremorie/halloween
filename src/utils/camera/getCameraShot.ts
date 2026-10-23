@@ -13,9 +13,17 @@ export function getCameraShot(
   mode: GameMode,
   rewardBeat: RewardBeat | null,
 ): CameraShot {
+  if (mode === "intro") {
+    return "catCloseUp";
+  }
+
   if (rewardBeat !== null && CAT_CLOSE_UP_BEATS.includes(rewardBeat)) {
     return "catCloseUp";
   }
-  if (PUZZLE_FRAMING_MODES.includes(mode)) return "puzzle";
+
+  if (PUZZLE_FRAMING_MODES.includes(mode)) {
+    return "puzzle";
+  }
+
   return "walking";
 }
