@@ -8,6 +8,7 @@ import {
   followShot,
   getCameraShot,
   getNextScriptedMoveStart,
+  getPushInDuration,
   getScriptedMovePhase,
   getShotHeightFactor,
   getShotZoom,
@@ -63,7 +64,13 @@ export function CameraRig() {
         delta,
       );
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
-      pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
+      pushInToCat(
+        pose,
+        scriptedMoveStart,
+        shotLookAt,
+        clock.elapsedTime,
+        getPushInDuration(mode),
+      );
     } else {
       followShot(pose, shotLookAt, shotZoom, shotHeightFactor, delta);
     }

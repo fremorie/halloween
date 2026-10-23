@@ -1,6 +1,7 @@
 export * from "./followShot";
 export * from "./getCameraShot";
 export * from "./getNextScriptedMoveStart";
+export * from "./getPushInDuration";
 export * from "./getScriptedMovePhase";
 export * from "./getShotHeightFactor";
 export * from "./getShotZoom";
