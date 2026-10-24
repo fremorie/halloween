@@ -1,4 +1,5 @@
 import type { Vec3 } from "@/types/math";
+import { CostumePiece } from "@/types/level";
 
 export const STATION_SPACING = 18;
 export const STATION_SIDE_OFFSET = 5.8;
@@ -28,3 +29,9 @@ export const ROUTE_ARRIVAL_DISTANCE = 0.02;
 export const CELEBRATION_DURATION = 1.5;
 export const COSTUME_SILHOUETTE_FADE_DURATION = 1;
 export const PUZZLE_BACKGROUND_FADE_DURATION = 0.6;
+
+export const MARCELINOS_COMMENTS: Record<CostumePiece, string> = {
+  hat: "A hat! Perfect.",
+  cape: "I am darkness! I am mystery! I am... slightly itchy.",
+  wings: "BEHOLD! My final form! Imagine the look on the pigeons' faces.",
+};

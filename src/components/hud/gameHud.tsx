@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button/button";
 import { TextBox } from "@/components/ui/textBox/textBox";
 import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
+import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -41,7 +42,9 @@ export function GameHud() {
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {rewardBeat === "speech" && (
-          <TextBox>Nice {levels[currentStationIndex].piece}!</TextBox>
+          <TextBox>
+            {MARCELINOS_COMMENTS[levels[currentStationIndex].piece]}
+          </TextBox>
         )}
 
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
