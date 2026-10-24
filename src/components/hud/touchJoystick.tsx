@@ -13,6 +13,7 @@ function attachJoystick(zone: HTMLDivElement) {
     position: { left: "50%", top: "50%" },
     size: JOYSTICK_SIZE,
     color: JOYSTICK_COLOR,
+    restOpacity: 1,
   });
   joystick.on("move", ({ data }) =>
     joystickTilt.set(data.vector.x, data.vector.y),
@@ -31,7 +32,7 @@ export function TouchJoystick() {
   return (
     <div
       ref={attachJoystick}
-      className="absolute right-8 bottom-8 isolate size-60"
+      className="absolute right-8 bottom-8 isolate size-60 [&_.front]:opacity-100!"
     />
   );
 }
