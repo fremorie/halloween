@@ -12,6 +12,7 @@ import {
 } from "@/utils/puzzle";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
+import { RejectionMessage } from "./rejectionMessage";
 
 type Props = {
   graph: Graph;
@@ -68,6 +69,8 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
       {currentNodeId !== null && (
         <DragLine startPosition={graph.nodes[currentNodeId].position} />
       )}
+
+      <RejectionMessage graph={graph} levelIndex={levelIndex} />
     </group>
   );
 }

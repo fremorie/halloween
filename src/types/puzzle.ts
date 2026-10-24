@@ -9,6 +9,7 @@ export type Traversal = { attempt: Attempt } | { refusal: Refusal };
 
 export type Rejection = {
   levelIndex: number;
+  fromNodeId: number;
   nodeId: number;
   reason: Refusal;
 };

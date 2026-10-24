@@ -4,3 +4,4 @@
 // - drop the piece of costume on the cat
 // - the cat comments on the costume
 export type RewardBeat = "knit" | "zoomIn" | "hatDrop" | "speech";
+export type TimedRewardBeat = Exclude<RewardBeat, "speech">;

@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Halloween",
-  description: "Work in progress",
+  title: "Costume for Marcelino",
+  description:
+    "Marcelino The Cat needs a Halloween costume. Help him make one by solving a series of puzzles.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

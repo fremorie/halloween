@@ -16,6 +16,8 @@ import { CameraRig } from "@/components/experience/cameraRig";
 import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
 
+const DEBUG = false;
+
 type ExperienceProps = {
   onSceneReady: () => void;
 };
@@ -38,6 +40,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
           },
         }}
         collapsed
+        hidden={!DEBUG}
       />
       <KeyboardControls map={KEYBOARD_CONTROLS_MAP}>
         <Canvas
@@ -60,7 +63,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
             ) : (
               <CameraRig key={runCount} />
             )}
-            <Perf position="bottom-right" />
+            {DEBUG && <Perf position="bottom-right" />}
             <Preload all />
             <SceneReadySignal onSceneReady={onSceneReady} />
           </Suspense>

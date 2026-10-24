@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@theme {
+  --color-background: #eee7db;
+  --color-button: #eee7db;
+  --animate-puzzle-instructions-fade-out: puzzle-instructions-fade-out 0.5s
+    ease-in-out forwards;
+}
+
+@keyframes puzzle-instructions-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@layer base {
+  html {
+    --smallest-root-font-size: 10px;
+    --full-hd-root-font-size: 16px;
+    --root-font-size-per-short-side: calc(16 / 1080);
+    font-size: clamp(
+      var(--smallest-root-font-size),
+      calc(100vmin * var(--root-font-size-per-short-side)),
+      var(--full-hd-root-font-size)
+    );
+  }
+}

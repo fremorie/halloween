@@ -2,18 +2,18 @@
 
 import { useEffect } from "react";
 
-import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
 import { Button } from "@/components/ui/button/button";
-import { TextBox } from "@/components/ui/textBox/textBox";
 import { levels } from "@/data/levels";
+import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
+import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
+import { Comment } from "@/components/ui/comment/comment";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
   const finishIntro = useGameStore((state) => state.finishIntro);
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
-  const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
   const isNearStation = useGameStore((state) => state.isNearStation);
   const beginApproach = useGameStore((state) => state.beginApproach);
@@ -23,6 +23,7 @@ export function GameHud() {
   const restartGame = useGameStore((state) => state.restartGame);
   const rewardBeat = useGameStore((state) => state.rewardBeat);
   const introBeat = useGameStore((state) => state.introBeat);
+  const advanceRewardBeat = useGameStore((state) => state.advanceRewardBeat);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -35,25 +36,22 @@ export function GameHud() {
 
   return (
     <>
-      {mode === "solving" && (
-        <div className="pointer-events-none absolute inset-x-0 top-4 flex flex-col items-center text-center">
-          <p className="max-w-72 text-sm opacity-70">
-            Visit every edge exactly once.
-            <br />
-            Click a yarn ball to start.
-          </p>
+      {mode === "solving" && currentStationIndex === 0 && (
+        <div className="pointer-events-none absolute top-4 left-4 flex flex-col items-center">
+          <PuzzleInstructions />
         </div>
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {rewardBeat === "speech" && (
-          <TextBox>Nice {levels[currentStationIndex].piece}!</TextBox>
+          <>
+            <Comment
+              text={MARCELINOS_COMMENTS[levels[currentStationIndex].piece]}
+            />
+            <Button onClick={advanceRewardBeat}>Continue</Button>
+          </>
         )}
 
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
-
-        {puzzlePhase === "drawing" && rejection && (
-          <p className="opacity-70">{REFUSAL_MESSAGES[rejection.reason]}</p>
-        )}
 
         {puzzlePhase === "drawing" && (
           <Button onClick={cutThread}>Reset (Esc)</Button>
@@ -69,14 +67,6 @@ export function GameHud() {
         )}
 
         {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
-
-        {mode === "walking" && !isNearStation && (
-          <p className="opacity-70">
-            {currentStationIndex === 0
-              ? "Walk to the first piece"
-              : "Walk to the next piece"}
-          </p>
-        )}
 
         {mode === "done" && <Button onClick={restartGame}>Play again</Button>}
       </div>

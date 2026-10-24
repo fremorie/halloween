@@ -39,7 +39,7 @@ export function LoadingScreen({
   return (
     <div
       ref={loadingScreenRef}
-      className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-[#F2EBDE] pb-[15vh]"
+      className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-background pb-[15vh]"
     >
       <div className="flex flex-col">
         <GameTitle onIntroComplete={onTitleIntroComplete} />
