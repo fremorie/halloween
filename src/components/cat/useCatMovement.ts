@@ -21,6 +21,7 @@ import {
   isInsideGroundEllipse,
 } from "@/utils/journey";
 import { getMoveDirection, getHeading } from "@/utils/cat";
+import { joystickTilt } from "@/store/joystickTilt";
 import { dampAngle } from "@/utils/animation";
 import type { LimitStepByObstacles } from "./useCatObstacleBlocking";
 
@@ -53,7 +54,7 @@ export function useCatMovement(
     previousPosition.copy(root.position);
 
     if (mode === "walking" || mode === "done") {
-      getMoveDirection(getKeys(), direction);
+      getMoveDirection(getKeys(), joystickTilt, direction);
       walkStep.copy(direction).multiplyScalar(CAT_WALK_SPEED * stepDuration);
       root.position.add(limitStepByObstacles(root, walkStep));
       clampToRoamingArea(root.position, stationCount);

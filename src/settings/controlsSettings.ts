@@ -10,3 +10,6 @@ export const KEYBOARD_CONTROLS_MAP: KeyboardControlsEntry<ControlName>[] = [
 ];
 
 export type HeldControls = Record<ControlName, boolean>;
+
+export const JOYSTICK_SIZE = 120;
+export const JOYSTICK_COLOR = "rgba(255, 255, 255, 0.8)";
