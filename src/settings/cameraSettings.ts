@@ -12,7 +12,6 @@ export const CAMERA_HEIGHT = 1.05;
 export const WALKING_LEAD = -1;
 export const WALKING_DROP = 1.3;
 export const WALKING_ZOOM = 0.75;
-export const WALKING_MIN_HALF_WIDTH = 1;
 
 export const BIRD_VIEW_ZOOM = 2;
 export const BIRD_VIEW_HEIGHT_FACTOR = 6.5;

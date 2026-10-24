@@ -7,11 +7,14 @@ import {
   KNITTING_BALL_COVER_MARGIN,
   VISITED_NODE_SCALE,
 } from "@/settings/puzzleSettings";
+import { getBranchThickness } from "@/utils/graph";
 
-export function getKnittingBallEndScale(branchThickness: number) {
+export function getKnittingBallEndScale() {
   const smallestCoveringRadius =
-    Math.hypot(BRANCH_TUCK_DISTANCE, BRANCH_STEM_END_RADIUS * branchThickness) *
-    KNITTING_BALL_COVER_MARGIN;
+    Math.hypot(
+      BRANCH_TUCK_DISTANCE,
+      BRANCH_STEM_END_RADIUS * getBranchThickness(),
+    ) * KNITTING_BALL_COVER_MARGIN;
 
   return smallestCoveringRadius / (NODE_RADIUS * VISITED_NODE_SCALE);
 }

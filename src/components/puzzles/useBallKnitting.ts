@@ -10,7 +10,6 @@ import {
 import { KNITTING_DURATION } from "@/settings/rewardSettings";
 import { useGameStore } from "@/store/gameStore";
 import { uniformScale } from "@/utils/animation";
-import { getBranchThickness } from "@/utils/graph";
 import { getKnittingBallEndScale } from "@/utils/puzzle";
 
 function getRandomSpinAngle() {
@@ -48,7 +47,7 @@ export function useBallKnitting(
       },
     });
     gsap.to(knittingBall.scale, {
-      ...uniformScale(getKnittingBallEndScale(getBranchThickness())),
+      ...uniformScale(getKnittingBallEndScale()),
       duration: KNITTING_DURATION,
       ease: "power2.in",
     });
