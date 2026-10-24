@@ -16,8 +16,8 @@ export const INTRO_BEAT_DURATIONS: Record<
 
 export const INTRO_LINES: Record<Exclude<IntroBeat, "flyIn">, string> = {
   complain:
-    "Um... Hello. It's almost time to go trick-or-treating... And I don't have a costume.",
-  askForHelp: "Will you help me make it?",
+    "Um... Hello! The name's Marcelino. It's almost time to go trick-or-treating... And I don't have a costume.",
+  askForHelp: "Will you help me make one?",
 };
 
 export const INTRO_DILATED_PUPIL_BEATS: IntroBeat[] = ["askForHelp"];
