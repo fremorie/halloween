@@ -7,7 +7,7 @@ export function useRewardBeatTimer() {
   const rewardBeat = useGameStore((state) => state.rewardBeat);
 
   useEffect(() => {
-    if (rewardBeat === null) {
+    if (rewardBeat === null || rewardBeat === "speech") {
       return;
     }
 

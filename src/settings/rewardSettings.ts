@@ -1,5 +1,5 @@
 import type { CostumePiece } from "@/types/level";
-import type { RewardBeat } from "@/types/reward";
+import type { RewardBeat, TimedRewardBeat } from "@/types/reward";
 
 export const REWARDED_COSTUME_PIECES: CostumePiece[] = ["hat", "cape", "wings"];
 
@@ -16,14 +16,11 @@ export const KNITTING_DURATION = 3;
 export const PAUSE_AFTER_KNITTING = 0.5;
 
 export const SPEECH_TYPING_DURATION = 3;
-// for reading
-const PAUSE_AFTER_SPEECH = 2;
 
-export const REWARD_BEAT_DURATIONS: Record<RewardBeat, number> = {
+export const REWARD_BEAT_DURATIONS: Record<TimedRewardBeat, number> = {
   knit: KNITTING_DURATION + PAUSE_AFTER_KNITTING,
   zoomIn: 2.2,
   hatDrop: 0.8,
-  speech: SPEECH_TYPING_DURATION + PAUSE_AFTER_SPEECH,
 };
 
 export const COSTUME_PIECE_DROP_HEIGHT = 1.5;

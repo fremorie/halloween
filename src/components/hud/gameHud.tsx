@@ -23,6 +23,7 @@ export function GameHud() {
   const restartGame = useGameStore((state) => state.restartGame);
   const rewardBeat = useGameStore((state) => state.rewardBeat);
   const introBeat = useGameStore((state) => state.introBeat);
+  const advanceRewardBeat = useGameStore((state) => state.advanceRewardBeat);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -42,9 +43,12 @@ export function GameHud() {
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {rewardBeat === "speech" && (
-          <Comment
-            text={MARCELINOS_COMMENTS[levels[currentStationIndex].piece]}
-          />
+          <>
+            <Comment
+              text={MARCELINOS_COMMENTS[levels[currentStationIndex].piece]}
+            />
+            <Button onClick={advanceRewardBeat}>Continue</Button>
+          </>
         )}
 
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
