@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 
 import { alef } from "@/components/ui/fonts/fonts";
 import { BrushStroke } from "./brushStroke";
-import { BACKGROUND } from "@/components/ui/colors/colors";
 
 type TextBoxProps = {
   children: ReactNode;
@@ -10,7 +9,7 @@ type TextBoxProps = {
 
 export function TextBox({ children }: TextBoxProps) {
   return (
-    <div className={`relative border-2 border-black bg-[${BACKGROUND}]`}>
+    <div className="relative border-2 border-black bg-background">
       <BrushStroke
         color="yellow"
         className="top-0 -left-1.5 h-[27px] -translate-y-1/2"

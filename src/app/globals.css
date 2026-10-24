@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --color-background: #eee7db;
+  --color-button: #eee7db;
   --animate-puzzle-instructions-fade-out: puzzle-instructions-fade-out 0.5s
     ease-in-out forwards;
 }

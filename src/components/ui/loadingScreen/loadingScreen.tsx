@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 import { GameTitle } from "@/components/ui/gameTitile/gameTitle";
 import { ProgressBar } from "@/components/ui/progressBar";
 import { useLoadingScreenFadeOut } from "./useLoadingScreenFadeOut";
-import { BACKGROUND } from "@/components/ui/colors/colors";
 
 const LAST_PROGRESS_BEFORE_SCENE_READY = 99;
 
@@ -40,7 +39,7 @@ export function LoadingScreen({
   return (
     <div
       ref={loadingScreenRef}
-      className={`fixed inset-0 z-20 flex flex-col items-center justify-center bg-[${BACKGROUND}] pb-[15vh]`}
+      className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-background pb-[15vh]"
     >
       <div className="flex flex-col">
         <GameTitle onIntroComplete={onTitleIntroComplete} />
