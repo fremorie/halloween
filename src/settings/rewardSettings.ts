@@ -15,11 +15,15 @@ export const CAT_CLOSE_UP_BEATS: RewardBeat[] = ["zoomIn", "hatDrop", "speech"];
 export const KNITTING_DURATION = 3;
 export const PAUSE_AFTER_KNITTING = 0.5;
 
+export const SPEECH_TYPING_DURATION = 3;
+// for reading
+const PAUSE_AFTER_SPEECH = 2;
+
 export const REWARD_BEAT_DURATIONS: Record<RewardBeat, number> = {
   knit: KNITTING_DURATION + PAUSE_AFTER_KNITTING,
   zoomIn: 2.2,
   hatDrop: 0.8,
-  speech: 2,
+  speech: SPEECH_TYPING_DURATION + PAUSE_AFTER_SPEECH,
 };
 
 export const COSTUME_PIECE_DROP_HEIGHT = 1.5;

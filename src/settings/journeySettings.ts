@@ -31,7 +31,7 @@ export const COSTUME_SILHOUETTE_FADE_DURATION = 1;
 export const PUZZLE_BACKGROUND_FADE_DURATION = 0.6;
 
 export const MARCELINOS_COMMENTS: Record<CostumePiece, string> = {
-  hat: "A hat! Perfect.",
+  hat: "A hat! Perfect. Now I look like I know a spell or two.",
   cape: "I am darkness! I am mystery! I am... slightly itchy.",
   wings: "BEHOLD! My final form! Imagine the look on the pigeons' faces.",
 };

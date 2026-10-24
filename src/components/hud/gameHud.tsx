@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
 import { Button } from "@/components/ui/button/button";
-import { TextBox } from "@/components/ui/textBox/textBox";
 import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
 import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
+import { Comment } from "@/components/ui/comment/comment";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -42,9 +42,9 @@ export function GameHud() {
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {rewardBeat === "speech" && (
-          <TextBox>
-            {MARCELINOS_COMMENTS[levels[currentStationIndex].piece]}
-          </TextBox>
+          <Comment
+            text={MARCELINOS_COMMENTS[levels[currentStationIndex].piece]}
+          />
         )}
 
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
