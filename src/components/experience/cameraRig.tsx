@@ -41,7 +41,7 @@ export function CameraRig() {
     const pose = poseRef.current;
     const shotLookAt = shotLookAtRef.current;
     const shot = getCameraShot(mode, rewardBeat, introBeat);
-    const shotZoom = getShotZoom(shot, aspect);
+    const shotZoom = getShotZoom(shot, aspect, isTouchDevice);
     const shotHeightFactor = getShotHeightFactor(shot);
     const shotOrbitAngle = getShotOrbitAngle(shot);
     const shotFollowSpeed = getShotFollowSpeed(shot, isTouchDevice);

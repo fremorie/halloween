@@ -3,6 +3,7 @@ import {
   CAMERA_FIT_RADIUS,
   CAT_CLOSE_UP_ZOOM,
   SOLVING_HALF_WIDTH,
+  TOUCH_SCREEN_SOLVING_HALF_WIDTH,
   WALKING_MIN_HALF_WIDTH,
   WALKING_ZOOM,
 } from "@/settings/cameraSettings";
@@ -20,9 +21,20 @@ const SHOT_MIN_HALF_WIDTHS: Partial<Record<CameraShot, number>> = {
   puzzle: SOLVING_HALF_WIDTH,
 };
 
-export function getShotZoom(shot: CameraShot, aspect: number) {
+const TOUCH_SCREEN_SHOT_MIN_HALF_WIDTHS: Partial<Record<CameraShot, number>> = {
+  ...SHOT_MIN_HALF_WIDTHS,
+  puzzle: TOUCH_SCREEN_SOLVING_HALF_WIDTH,
+};
+
+export function getShotZoom(
+  shot: CameraShot,
+  aspect: number,
+  isTouchDevice: boolean,
+) {
   const shotZoom = SHOT_ZOOMS[shot];
-  const minHalfWidth = SHOT_MIN_HALF_WIDTHS[shot];
+  const minHalfWidth = (
+    isTouchDevice ? TOUCH_SCREEN_SHOT_MIN_HALF_WIDTHS : SHOT_MIN_HALF_WIDTHS
+  )[shot];
   if (minHalfWidth === undefined) return shotZoom;
 
   const zoomToFitMinWidth = minHalfWidth / (CAMERA_FIT_RADIUS * aspect);

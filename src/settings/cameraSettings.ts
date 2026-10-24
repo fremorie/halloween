@@ -5,6 +5,7 @@ import type { Vec3 } from "@/types/math";
 export const CAMERA_FOV = 38;
 export const CAMERA_FIT_RADIUS = 3.5;
 export const SOLVING_HALF_WIDTH = 5.5;
+export const TOUCH_SCREEN_SOLVING_HALF_WIDTH = 2.9;
 export const CAMERA_FIT_MARGIN = 1.15;
 export const LOOK_AT_HEIGHT = 3.2;
 export const CAMERA_HEIGHT = 1.05;
