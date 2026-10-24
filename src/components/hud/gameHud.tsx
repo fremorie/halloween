@@ -61,14 +61,6 @@ export function GameHud() {
 
         {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
 
-        {mode === "walking" && !isNearStation && (
-          <p className="opacity-70">
-            {currentStationIndex === 0
-              ? "Walk to the first piece"
-              : "Walk to the next piece"}
-          </p>
-        )}
-
         {mode === "done" && <Button onClick={restartGame}>Play again</Button>}
       </div>
     </>
