@@ -19,8 +19,8 @@ export const UNTHREADED_BRANCH_TINT = "#a8a8a8";
 export const THREADED_BRANCH_BRIGHTNESS = 1.15;
 
 export const REFUSAL_MESSAGES = {
-  noBranch: "No branch joins those two",
-  alreadyThreaded: "That branch is already threaded",
+  noBranch: "No branch joins those two!",
+  alreadyThreaded: "That branch is already threaded!",
 } satisfies Record<Refusal, string>;
 
 export const NODE_SCALE_SETTLE_DURATION = 0.5;

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button/button";
 import { TextBox } from "@/components/ui/textBox/textBox";
 import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
+import { ErrorMessage } from "@/components/ui/error/error";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -49,7 +50,7 @@ export function GameHud() {
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
 
         {puzzlePhase === "drawing" && rejection && (
-          <p className="opacity-70">{REFUSAL_MESSAGES[rejection.reason]}</p>
+          <ErrorMessage message={REFUSAL_MESSAGES[rejection.reason]} />
         )}
 
         {puzzlePhase === "drawing" && (
