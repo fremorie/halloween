@@ -34,7 +34,7 @@ export function GameHud() {
 
   return (
     <>
-      {mode === "solving" && (
+      {mode === "solving" && currentStationIndex === 0 && (
         <div className="pointer-events-none absolute top-4 left-4 flex flex-col items-center">
           <PuzzleInstructions />
         </div>
