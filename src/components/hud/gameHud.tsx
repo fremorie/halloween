@@ -2,20 +2,17 @@
 
 import { useEffect } from "react";
 
-import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
 import { Button } from "@/components/ui/button/button";
 import { TextBox } from "@/components/ui/textBox/textBox";
 import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
-import { ErrorMessage } from "@/components/ui/error/error";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
   const finishIntro = useGameStore((state) => state.finishIntro);
   const puzzlePhase = useGameStore((state) => state.puzzlePhase);
-  const rejection = useGameStore((state) => state.rejection);
   const cutThread = useGameStore((state) => state.cutThread);
   const isNearStation = useGameStore((state) => state.isNearStation);
   const beginApproach = useGameStore((state) => state.beginApproach);
@@ -48,10 +45,6 @@ export function GameHud() {
         )}
 
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
-
-        {puzzlePhase === "drawing" && rejection && (
-          <ErrorMessage message={REFUSAL_MESSAGES[rejection.reason]} />
-        )}
 
         {puzzlePhase === "drawing" && (
           <Button onClick={cutThread}>Reset (Esc)</Button>

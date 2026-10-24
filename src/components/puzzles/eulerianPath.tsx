@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Html } from "@react-three/drei";
 
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 import { useYarnMaterials } from "@/components/models/yarnBall/materials";
@@ -12,6 +13,9 @@ import {
 } from "@/utils/puzzle";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
+import { REFUSAL_MESSAGES } from "@/settings/puzzleSettings";
+import { ErrorMessage } from "@/components/ui/error/error";
+import { getMidpoint } from "@/utils/graph";
 
 type Props = {
   graph: Graph;
@@ -22,6 +26,9 @@ type Props = {
 export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const yarnMaterials = useYarnMaterials();
 
+  const rejection = useGameStore((state) =>
+    state.rejection?.levelIndex === levelIndex ? state.rejection : null,
+  );
   const attempt = useGameStore(
     (state) =>
       state.solvedAttempts[levelIndex] ??
@@ -67,6 +74,19 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
 
       {currentNodeId !== null && (
         <DragLine startPosition={graph.nodes[currentNodeId].position} />
+      )}
+
+      {isDrawing && rejection && currentNodeId && (
+        <Html
+          className="pointer-events-none whitespace-nowrap"
+          position={getMidpoint(
+            graph.nodes[currentNodeId].position,
+            graph.nodes[rejection.nodeId].position,
+          )}
+          center
+        >
+          <ErrorMessage message={REFUSAL_MESSAGES[rejection.reason]} />
+        </Html>
       )}
     </group>
   );
