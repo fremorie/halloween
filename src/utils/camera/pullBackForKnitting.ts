@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { MathUtils, type Vector3 } from "three";
 
 import {
+  CAMERA_FOLLOW_SPEED,
   KNITTING_PULL_BACK_EASE,
   KNITTING_PULL_BACK_ZOOM,
 } from "@/settings/cameraSettings";
@@ -17,6 +18,7 @@ export function pullBackForKnitting(
   pose: CameraPose,
   moveStart: ScriptedMoveStart,
   shotLookAt: Vector3,
+  shotZoom: number,
   elapsedTime: number,
   delta: number,
 ) {
@@ -26,10 +28,10 @@ export function pullBackForKnitting(
     REWARD_BEAT_DURATIONS.knit,
   );
 
-  followShotLookAt(pose, shotLookAt, delta);
+  followShotLookAt(pose, shotLookAt, CAMERA_FOLLOW_SPEED, delta);
   pose.zoom = MathUtils.lerp(
     moveStart.zoom,
-    KNITTING_PULL_BACK_ZOOM,
+    KNITTING_PULL_BACK_ZOOM * shotZoom,
     pullBackProgress,
   );
 }

@@ -4,13 +4,13 @@ import type { RefObject } from "react";
 import { type Group, MathUtils, Vector3 } from "three";
 
 import {
-  KNITTING_BALL_END_SCALE,
   KNITTING_BALL_MAX_TURNS,
   KNITTING_BALL_MIN_TURNS,
 } from "@/settings/puzzleSettings";
 import { KNITTING_DURATION } from "@/settings/rewardSettings";
 import { useGameStore } from "@/store/gameStore";
 import { uniformScale } from "@/utils/animation";
+import { getKnittingBallEndScale } from "@/utils/puzzle";
 
 function getRandomSpinAngle() {
   const spinDirection = Math.random() < 0.5 ? -1 : 1;
@@ -47,7 +47,7 @@ export function useBallKnitting(
       },
     });
     gsap.to(knittingBall.scale, {
-      ...uniformScale(KNITTING_BALL_END_SCALE),
+      ...uniformScale(getKnittingBallEndScale()),
       duration: KNITTING_DURATION,
       ease: "power2.in",
     });

@@ -3,7 +3,11 @@ import { FrontSide } from "three";
 
 import { BRANCH_TUCK_DISTANCE } from "@/settings/graphSettings";
 import type { Graph } from "@/types/graph";
-import { getBranchInstanceMatrices, getBranchSegments } from "@/utils/graph";
+import {
+  getBranchInstanceMatrices,
+  getBranchSegments,
+  getBranchThickness,
+} from "@/utils/graph";
 import { useBranchGLTF } from "./useBranchGLTF";
 import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";
@@ -20,14 +24,16 @@ export function InstancedBranches({ graph, edgeThreading }: Props) {
     () => [nodes.Leaf001, nodes.Leaf002, nodes.Leaf003, nodes.Leaf004],
     [nodes],
   );
+  const branchThickness = getBranchThickness();
   const { stemMatrices, leafMatrices } = useMemo(
     () =>
       getBranchInstanceMatrices(
         getBranchSegments(graph),
         BRANCH_TUCK_DISTANCE,
+        branchThickness,
         leafNodes,
       ),
-    [graph, leafNodes],
+    [graph, branchThickness, leafNodes],
   );
 
   const stemInstancesRef = useInstanceMatrices(stemMatrices);

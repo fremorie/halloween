@@ -6,7 +6,12 @@ const WORLD_UP_DIRECTION = new THREE.Vector3(0, 1, 0);
 const WORLD_X_DIRECTION = new THREE.Vector3(1, 0, 0);
 const NEARLY_VERTICAL_THRESHOLD = 0.99;
 
-export function getEdgePlacement(from: Vec3, to: Vec3, tuckDistance: number) {
+export function getEdgePlacement(
+  from: Vec3,
+  to: Vec3,
+  tuckDistance: number,
+  thickness: number,
+) {
   const start = new THREE.Vector3(...from);
   const end = new THREE.Vector3(...to);
   const direction = end.clone().sub(start).normalize();
@@ -33,8 +38,8 @@ export function getEdgePlacement(from: Vec3, to: Vec3, tuckDistance: number) {
   const stretchedPlacementMatrix = new THREE.Matrix4()
     .makeBasis(
       direction.clone().multiplyScalar(length),
-      edgeUpDirection,
-      edgeSideDirection,
+      edgeUpDirection.clone().multiplyScalar(thickness),
+      edgeSideDirection.clone().multiplyScalar(thickness),
     )
     .setPosition(start);
 

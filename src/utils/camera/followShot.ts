@@ -1,17 +1,15 @@
 import { MathUtils, type Vector3 } from "three";
 
-import {
-  CAMERA_FOLLOW_SPEED,
-  CAMERA_ZOOM_SPEED,
-} from "@/settings/cameraSettings";
+import { CAMERA_ZOOM_SPEED } from "@/settings/cameraSettings";
 import type { CameraPose } from "@/types/camera";
 
 export function followShotLookAt(
   pose: CameraPose,
   shotLookAt: Vector3,
+  followSpeed: number,
   delta: number,
 ) {
-  pose.lookAt.lerp(shotLookAt, 1 - Math.exp(-CAMERA_FOLLOW_SPEED * delta));
+  pose.lookAt.lerp(shotLookAt, 1 - Math.exp(-followSpeed * delta));
 }
 
 export function followShot(
@@ -20,9 +18,10 @@ export function followShot(
   shotZoom: number,
   shotHeightFactor: number,
   shotOrbitAngle: number,
+  followSpeed: number,
   delta: number,
 ) {
-  followShotLookAt(pose, shotLookAt, delta);
+  followShotLookAt(pose, shotLookAt, followSpeed, delta);
   pose.zoom = MathUtils.damp(pose.zoom, shotZoom, CAMERA_ZOOM_SPEED, delta);
   pose.heightFactor = MathUtils.damp(
     pose.heightFactor,

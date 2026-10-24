@@ -8,13 +8,19 @@ export type BranchSegment = { from: Vec3; to: Vec3 };
 export function getBranchInstanceMatrices(
   branchSegments: BranchSegment[],
   tuckDistance: number,
+  thickness: number,
   leafNodes: THREE.Mesh[],
 ) {
   const stemMatrices: THREE.Matrix4[] = [];
   const leafMatrices: THREE.Matrix4[] = [];
 
   for (const { from, to } of branchSegments) {
-    const { matrix, turn } = getEdgePlacement(from, to, tuckDistance);
+    const { matrix, turn } = getEdgePlacement(
+      from,
+      to,
+      tuckDistance,
+      thickness,
+    );
 
     stemMatrices.push(matrix);
 

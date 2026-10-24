@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
@@ -9,6 +10,14 @@ import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
 import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
 import { Comment } from "@/components/ui/comment/comment";
+
+const TouchJoystick = dynamic(
+  () =>
+    import("@/components/hud/touchJoystick").then(
+      (touchJoystickModule) => touchJoystickModule.TouchJoystick,
+    ),
+  { ssr: false },
+);
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -34,8 +43,11 @@ export function GameHud() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [cutThread, beginApproach]);
 
+  const canCatWalk = mode === "walking" || mode === "done";
+
   return (
     <>
+      {canCatWalk && <TouchJoystick />}
       {mode === "solving" && currentStationIndex === 0 && (
         <div className="pointer-events-none absolute top-4 left-4 flex flex-col items-center">
           <PuzzleInstructions />
