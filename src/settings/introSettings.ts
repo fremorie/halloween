@@ -11,7 +11,7 @@ export const INTRO_BEAT_DURATIONS: Record<
   number
 > = {
   flyIn: 7,
-  complain: 3.5,
+  complain: 4.5,
 };
 
 export const INTRO_LINES: Record<Exclude<IntroBeat, "flyIn">, string> = {
