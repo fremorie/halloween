@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-puzzle-instructions-fade-out: puzzle-instructions-fade-out 0.5s
+    ease-in-out forwards;
+}
+
+@keyframes puzzle-instructions-fade-out {
+  to {
+    opacity: 0;
+  }
+}
