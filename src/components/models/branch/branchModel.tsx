@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import type { Vec3 } from "@/types/math";
 import { useBranchGLTF } from "./useBranchGLTF";
-import { getEdgePlacement } from "@/utils/graph";
+import { getBranchThickness, getEdgePlacement } from "@/utils/graph";
 
 type Props = {
   from: Vec3;
@@ -13,9 +13,10 @@ type Props = {
 
 export function BranchModel({ from, to, tuckDistance }: Props) {
   const { nodes, materials } = useBranchGLTF();
+  const branchThickness = getBranchThickness();
   const { matrix, turn } = useMemo(
-    () => getEdgePlacement(from, to, tuckDistance),
-    [from, to, tuckDistance],
+    () => getEdgePlacement(from, to, tuckDistance, branchThickness),
+    [from, to, tuckDistance, branchThickness],
   );
 
   const placedLeafMatrices = useMemo(() => {
