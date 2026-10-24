@@ -8,6 +8,7 @@ import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
 import { Button } from "@/components/ui/button/button";
 import { TextBox } from "@/components/ui/textBox/textBox";
 import { levels } from "@/data/levels";
+import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
 
 export function GameHud() {
   const mode = useGameStore((state) => state.mode);
@@ -36,12 +37,8 @@ export function GameHud() {
   return (
     <>
       {mode === "solving" && (
-        <div className="pointer-events-none absolute inset-x-0 top-4 flex flex-col items-center text-center">
-          <p className="max-w-72 text-sm opacity-70">
-            Visit every edge exactly once.
-            <br />
-            Click a yarn ball to start.
-          </p>
+        <div className="pointer-events-none absolute top-4 left-4 flex flex-col items-center">
+          <PuzzleInstructions />
         </div>
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">

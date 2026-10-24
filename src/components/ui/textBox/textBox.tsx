@@ -20,7 +20,7 @@ export function TextBox({ children }: TextBoxProps) {
         className="-right-1.5 bottom-0 h-[23px] translate-y-1/2"
       />
       <div
-        className={`${alef.className} relative px-10 py-8 text-xl leading-relaxed text-neutral-900`}
+        className={`${alef.className} relative px-6 py-6 text-xl leading-relaxed text-neutral-900`}
       >
         {children}
       </div>
