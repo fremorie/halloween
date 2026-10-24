@@ -69,7 +69,8 @@ export const createPuzzleSlice: StateCreator<GameState, [], [], PuzzleSlice> = (
 
   threadToNode: (nodeId) => {
     const { attempt, currentStationIndex } = get();
-    if (getCurrentNodeId(attempt) === nodeId) {
+    const currentNodeId = getCurrentNodeId(attempt);
+    if (currentNodeId === nodeId) {
       return;
     }
 
@@ -82,7 +83,7 @@ export const createPuzzleSlice: StateCreator<GameState, [], [], PuzzleSlice> = (
     const { graph } = levels[currentStationIndex];
     const traversal = traverseToNode(graph, attempt, nodeId);
     if ("refusal" in traversal) {
-      if (attempt.usedEdgeIndices.length === 0) {
+      if (attempt.usedEdgeIndices.length === 0 || currentNodeId === null) {
         set({ attempt: startAttemptAt(nodeId), rejection: null });
 
         return;
@@ -91,6 +92,7 @@ export const createPuzzleSlice: StateCreator<GameState, [], [], PuzzleSlice> = (
       set({
         rejection: {
           levelIndex: currentStationIndex,
+          fromNodeId: currentNodeId,
           nodeId,
           reason: traversal.refusal,
         },
