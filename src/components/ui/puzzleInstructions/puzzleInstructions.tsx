@@ -1,8 +1,9 @@
 import { Dialog } from "radix-ui";
+import { useState } from "react";
+
 import { TextBox } from "@/components/ui/textBox/textBox";
 import { barrio } from "@/components/ui/fonts/fonts";
 import { Button } from "@/components/ui/button/button";
-import { useState } from "react";
 
 export function PuzzleInstructions() {
   const [isOpen, setIsOpen] = useState(true);
