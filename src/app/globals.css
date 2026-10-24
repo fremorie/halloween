@@ -12,3 +12,16 @@
     opacity: 0;
   }
 }
+
+@layer base {
+  html {
+    --smallest-root-font-size: 10px;
+    --full-hd-root-font-size: 16px;
+    --root-font-size-per-short-side: calc(16 / 1080);
+    font-size: clamp(
+      var(--smallest-root-font-size),
+      calc(100vmin * var(--root-font-size-per-short-side)),
+      var(--full-hd-root-font-size)
+    );
+  }
+}

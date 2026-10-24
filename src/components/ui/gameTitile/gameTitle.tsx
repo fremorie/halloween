@@ -24,11 +24,11 @@ export function GameTitle({ onIntroComplete }: GameTitleProps) {
       <div className="relative grid grid-cols-[max-content_1fr] items-center gap-x-2">
         <BrushStroke
           color="yellow"
-          className="top-0 -left-3 h-[40px] -translate-y-1/2"
+          className="top-0 -left-3 h-10 -translate-y-1/2"
         />
         <BrushStroke
           color="purple"
-          className="-right-3 bottom-0 h-[34px] translate-y-1/2"
+          className="-right-3 bottom-0 h-8.5 translate-y-1/2"
         />
         <h1 ref={titleRef} className={`${barrio.className} contents`}>
           <span className="relative text-7xl uppercase">Costume</span>
