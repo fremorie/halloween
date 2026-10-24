@@ -10,19 +10,21 @@ import {
   getCameraShot,
   getNextScriptedMoveStart,
   getScriptedMovePhase,
+  getShotFollowSpeed,
   getShotHeightFactor,
   getShotOrbitAngle,
   getShotZoom,
-  getSolvingDistance,
   placeCamera,
   pullBackForKnitting,
   pushInToCat,
   setShotLookAt,
   snapToShot,
 } from "@/utils/camera";
+import { isTouchScreen } from "@/utils/isTouchScreen";
 
 export function CameraRig() {
   const aspect = useThree((state) => state.size.width / state.size.height);
+  const isTouchDevice = isTouchScreen();
   const shotLookAtRef = useRef(new Vector3());
   const poseRef = useRef<CameraPose>({
     lookAt: new Vector3(),
@@ -33,17 +35,16 @@ export function CameraRig() {
   const isPlacedRef = useRef(false);
   const scriptedMoveStartRef = useRef<ScriptedMoveStart | null>(null);
 
-  const solvingDistance = getSolvingDistance(aspect);
-
   useFrame(({ camera, clock }, delta) => {
     const { catPosition, mode, currentStationIndex, rewardBeat, introBeat } =
       useGameStore.getState();
     const pose = poseRef.current;
     const shotLookAt = shotLookAtRef.current;
     const shot = getCameraShot(mode, rewardBeat, introBeat);
-    const shotZoom = getShotZoom(shot);
+    const shotZoom = getShotZoom(shot, aspect);
     const shotHeightFactor = getShotHeightFactor(shot);
     const shotOrbitAngle = getShotOrbitAngle(shot);
+    const shotFollowSpeed = getShotFollowSpeed(shot, isTouchDevice);
     setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
@@ -62,6 +63,7 @@ export function CameraRig() {
         pose,
         scriptedMoveStart,
         shotLookAt,
+        shotZoom,
         clock.elapsedTime,
         delta,
       );
@@ -76,11 +78,12 @@ export function CameraRig() {
         shotZoom,
         shotHeightFactor,
         shotOrbitAngle,
+        shotFollowSpeed,
         delta,
       );
     }
 
-    placeCamera(camera, pose, solvingDistance);
+    placeCamera(camera, pose);
   });
 
   return null;

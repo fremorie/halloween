@@ -1,6 +1,9 @@
 import {
   BIRD_VIEW_ZOOM,
+  CAMERA_FIT_RADIUS,
   CAT_CLOSE_UP_ZOOM,
+  SOLVING_HALF_WIDTH,
+  WALKING_MIN_HALF_WIDTH,
   WALKING_ZOOM,
 } from "@/settings/cameraSettings";
 import type { CameraShot } from "@/types/camera";
@@ -12,6 +15,16 @@ const SHOT_ZOOMS: Record<CameraShot, number> = {
   catCloseUp: CAT_CLOSE_UP_ZOOM,
 };
 
-export function getShotZoom(shot: CameraShot) {
-  return SHOT_ZOOMS[shot];
+const SHOT_MIN_HALF_WIDTHS: Partial<Record<CameraShot, number>> = {
+  walking: WALKING_MIN_HALF_WIDTH,
+  puzzle: SOLVING_HALF_WIDTH,
+};
+
+export function getShotZoom(shot: CameraShot, aspect: number) {
+  const shotZoom = SHOT_ZOOMS[shot];
+  const minHalfWidth = SHOT_MIN_HALF_WIDTHS[shot];
+  if (minHalfWidth === undefined) return shotZoom;
+
+  const zoomToFitMinWidth = minHalfWidth / (CAMERA_FIT_RADIUS * aspect);
+  return Math.max(shotZoom, zoomToFitMinWidth);
 }

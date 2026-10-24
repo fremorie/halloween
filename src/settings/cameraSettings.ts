@@ -11,6 +11,7 @@ export const CAMERA_HEIGHT = 1.05;
 export const WALKING_LEAD = -1;
 export const WALKING_DROP = 1.3;
 export const WALKING_ZOOM = 0.75;
+export const WALKING_MIN_HALF_WIDTH = 1;
 
 export const BIRD_VIEW_ZOOM = 2;
 export const BIRD_VIEW_HEIGHT_FACTOR = 6.5;
@@ -18,6 +19,7 @@ export const BIRD_VIEW_LOOK_AT: Vec3 = [0, 0, -13.5];
 export const BIRD_VIEW_ORBIT_DEGREES = 100;
 
 export const CAMERA_FOLLOW_SPEED = 2.5;
+export const TOUCH_SCREEN_WALKING_FOLLOW_SPEED = 6;
 
 export const CAMERA_SETTINGS: CameraProps = {
   fov: CAMERA_FOV,
