@@ -1,5 +1,6 @@
 import { FrontSide } from "three";
 
+import { RevealStandardMaterial } from "@/components/materials/revealStandardMaterial";
 import { useLanternFaceMaterial } from "@/components/materials/useLanternFaceMaterial";
 import type { LanternFaceParams } from "@/types/lantern";
 import { useJackOLanternGLTF } from "./useJackOLanternGLTF";
@@ -17,13 +18,12 @@ export function JackOLanternModel({ faceParams }: Props) {
 
   return (
     <group dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.pumpkin.geometry}
-        material={materials.pumpkin}
-        material-shadowSide={FrontSide}
-      />
+      <mesh castShadow receiveShadow geometry={nodes.pumpkin.geometry}>
+        <RevealStandardMaterial
+          sourceMaterial={materials.pumpkin}
+          shadowSide={FrontSide}
+        />
+      </mesh>
       <mesh geometry={nodes.pumpkin_1.geometry} material={faceMaterial} />
     </group>
   );

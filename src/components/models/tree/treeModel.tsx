@@ -3,6 +3,7 @@ import type { GLTF } from "three-stdlib";
 import * as THREE from "three";
 
 import type { Vec3 } from "@/types/math";
+import { RevealStandardMaterial } from "@/components/materials/revealStandardMaterial";
 
 import { useLeavesShadowMaterial } from "./useLeavesMaterial";
 
@@ -43,11 +44,9 @@ export function TreeModel(props: Props) {
         customDepthMaterial={leavesShadowMaterial}
         position={[0.168, 6.448, -0.674]}
       />
-      <mesh
-        castShadow
-        geometry={nodes.Tree.geometry}
-        material={materials.Tree}
-      />
+      <mesh castShadow geometry={nodes.Tree.geometry}>
+        <RevealStandardMaterial sourceMaterial={materials.Tree} />
+      </mesh>
     </group>
   );
 }
