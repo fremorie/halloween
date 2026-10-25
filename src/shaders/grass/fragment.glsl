@@ -9,6 +9,7 @@ varying vec3 vNormal;
 
 #include "../includes/utils.glsl"
 #include "../includes/lights.glsl"
+#include "../includes/reveal.glsl"
 
 void main() {
     float grassX = vGrassData.x;
@@ -28,6 +29,8 @@ void main() {
 
     vec3 color = baseColor * ambientLighting;
     color *= ao;
+
+    color = revealColor(color);
 
     gl_FragColor = vec4(color, 1.0);
 
