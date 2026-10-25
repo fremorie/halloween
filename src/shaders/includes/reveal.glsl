@@ -9,6 +9,8 @@ uniform sampler2D uRevealNoiseTexture;
 uniform float uRevealNoiseScale;
 uniform float uRevealEdgeWidth;
 uniform float uRevealEdgeSoftness;
+uniform float uRevealWobbleNoiseScale;
+uniform float uRevealWobbleAmount;
 
 float revealRadiusSince(float revealStartTime) {
     float timeSinceRevealStart = max(uRevealTime - revealStartTime, 0.0);
@@ -22,6 +24,8 @@ vec3 revealColor(vec3 color, vec3 worldPosition) {
     vec3 grayscaleColor = vec3(luminance);
 
     float edgeNoise = texture2D(uRevealNoiseTexture, worldPosition.xz * uRevealNoiseScale).r;
+    float wobbleNoise = texture2D(uRevealNoiseTexture, worldPosition.xz * uRevealWobbleNoiseScale).r;
+    float radiusWobbleFactor = 1.0 + (wobbleNoise * 2.0 - 1.0) * uRevealWobbleAmount;
 
     float isInsideAnyReveal = 0.0;
     for (int stationIndex = 0; stationIndex < REVEAL_STATION_COUNT; stationIndex++) {
@@ -31,7 +35,8 @@ vec3 revealColor(vec3 color, vec3 worldPosition) {
         }
 
         float distanceFromRevealCenter = distance(worldPosition.xz, uRevealCenters[stationIndex].xz);
-        float raggedRevealRadius = revealRadiusSince(revealStartTime) - edgeNoise * uRevealEdgeWidth;
+        float wobblyRevealRadius = revealRadiusSince(revealStartTime) * radiusWobbleFactor;
+        float raggedRevealRadius = wobblyRevealRadius - edgeNoise * uRevealEdgeWidth;
         float isInsideReveal = 1.0 - smoothstep(raggedRevealRadius - uRevealEdgeSoftness, raggedRevealRadius, distanceFromRevealCenter);
         isInsideAnyReveal = max(isInsideAnyReveal, isInsideReveal);
     }

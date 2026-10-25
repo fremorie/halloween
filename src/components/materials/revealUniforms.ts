@@ -7,6 +7,8 @@ import {
   REVEAL_INITIAL_SPEED,
   REVEAL_MAX_RADIUS,
   REVEAL_NOISE_SCALE,
+  REVEAL_WOBBLE_AMOUNT,
+  REVEAL_WOBBLE_NOISE_SCALE,
 } from "@/settings/revealSettings";
 import { getStationOrigin } from "@/utils/journey";
 
@@ -33,6 +35,8 @@ export const revealUniforms = {
   uRevealNoiseScale: new Uniform(REVEAL_NOISE_SCALE),
   uRevealEdgeWidth: new Uniform(REVEAL_EDGE_WIDTH),
   uRevealEdgeSoftness: new Uniform(REVEAL_EDGE_SOFTNESS),
+  uRevealWobbleNoiseScale: new Uniform(REVEAL_WOBBLE_NOISE_SCALE),
+  uRevealWobbleAmount: new Uniform(REVEAL_WOBBLE_AMOUNT),
 };
 
 export function isStationRevealStarted(stationIndex: number) {
