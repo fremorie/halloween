@@ -2,6 +2,7 @@ import { Lights } from "@/components/lighting/lights";
 import { levels } from "@/data/levels";
 import { Cat } from "@/components/cat/cat";
 import { LanternFaceClock } from "@/components/materials/lanternFaceClock";
+import { RevealClock } from "@/components/materials/revealClock";
 import { useGameStore } from "@/store/gameStore";
 import { GrassField } from "@/components/grass/GrassField";
 import { Trees } from "@/components/trees/trees";
@@ -34,6 +35,7 @@ export function World() {
       ))}
       <Cat key={runCount} stationCount={levels.length} />
       <LanternFaceClock />
+      <RevealClock />
     </>
   );
 }
