@@ -17,6 +17,7 @@ import downsampleShader from "@/shaders/kuwahara/downsample.glsl";
 // 1 = CSS size
 // 2 = device size
 const PAINT_RESOLUTION_SCALE = 1;
+const BLUR_DOWNSCALE = 2;
 
 export default class KuwaharaEffect extends Effect {
   private texelSize: Uniform<Vector2>;
@@ -26,6 +27,8 @@ export default class KuwaharaEffect extends Effect {
   private tensorTarget: WebGLRenderTarget;
   private tensorPass: ShaderPass;
 
+  private blurTexelSize: Uniform<Vector2>;
+  private blurredAcrossTarget: WebGLRenderTarget;
   private blurredTarget: WebGLRenderTarget;
   private blurAcross: ShaderPass;
   private blurDown: ShaderPass;
@@ -38,6 +41,7 @@ export default class KuwaharaEffect extends Effect {
     const texelSize = new Uniform(new Vector2(1, 1));
 
     const tensorTarget = makeTarget();
+    const blurredTarget = makeTarget();
     const paintedTarget = makeTarget();
 
     super("KuwaharaEffect", fragmentShader, {
@@ -48,16 +52,20 @@ export default class KuwaharaEffect extends Effect {
     });
 
     const sigma = new Uniform(3);
-    this.blurredTarget = makeTarget();
+    const blurTexelSize = new Uniform(new Vector2(1, 1));
+    const blurPixelRatio = new Uniform(PAINT_RESOLUTION_SCALE / BLUR_DOWNSCALE);
+    this.blurTexelSize = blurTexelSize;
+    this.blurredAcrossTarget = makeTarget();
+    this.blurredTarget = blurredTarget;
     this.blurAcross = makePass(blurShader, {
-      uTexelSize: texelSize,
-      uPixelRatio: pixelRatio,
+      uTexelSize: blurTexelSize,
+      uPixelRatio: blurPixelRatio,
       uDirection: { value: new Vector2(1, 0) },
       uSigma: sigma,
     });
     this.blurDown = makePass(blurShader, {
-      uTexelSize: texelSize,
-      uPixelRatio: pixelRatio,
+      uTexelSize: blurTexelSize,
+      uPixelRatio: blurPixelRatio,
       uDirection: { value: new Vector2(0, 1) },
       uSigma: sigma,
     });
@@ -67,7 +75,7 @@ export default class KuwaharaEffect extends Effect {
       uTexelSize: texelSize,
       uPixelRatio: pixelRatio,
       uBrushRadius: { value: 14 },
-      tTensor: { value: tensorTarget.texture },
+      tTensor: { value: blurredTarget.texture },
       uAlpha: { value: 1 },
     });
 
@@ -100,9 +108,14 @@ export default class KuwaharaEffect extends Effect {
 
     this.sceneTarget.setSize(width, height);
     this.tensorTarget.setSize(width, height);
-    this.blurredTarget.setSize(width, height);
     this.paintedTarget.setSize(width, height);
     this.texelSize.value.set(1 / width, 1 / height);
+
+    const blurWidth = Math.max(1, Math.round(width / BLUR_DOWNSCALE));
+    const blurHeight = Math.max(1, Math.round(height / BLUR_DOWNSCALE));
+    this.blurredAcrossTarget.setSize(blurWidth, blurHeight);
+    this.blurredTarget.setSize(blurWidth, blurHeight);
+    this.blurTexelSize.value.set(1 / blurWidth, 1 / blurHeight);
   }
 
   update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
@@ -110,8 +123,16 @@ export default class KuwaharaEffect extends Effect {
 
     this.downsamplePass.render(renderer, inputBuffer, this.sceneTarget);
     this.tensorPass.render(renderer, this.sceneTarget, this.tensorTarget);
-    this.blurAcross.render(renderer, this.tensorTarget, this.blurredTarget);
-    this.blurDown.render(renderer, this.blurredTarget, this.tensorTarget);
+    this.blurAcross.render(
+      renderer,
+      this.tensorTarget,
+      this.blurredAcrossTarget,
+    );
+    this.blurDown.render(
+      renderer,
+      this.blurredAcrossTarget,
+      this.blurredTarget,
+    );
     this.brushPass.render(renderer, this.sceneTarget, this.paintedTarget);
   }
 }
