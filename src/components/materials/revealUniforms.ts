@@ -1,4 +1,4 @@
-import { Uniform, Vector3 } from "three";
+import { type Texture, Uniform, Vector3 } from "three";
 
 import { levels } from "@/data/levels";
 import {
@@ -10,6 +10,7 @@ import { getStationOrigin } from "@/utils/journey";
 const REVEAL_NOT_STARTED = -1;
 
 export const revealTimeUniform = new Uniform(0);
+export const revealNoiseTextureUniform = new Uniform<Texture | null>(null);
 
 const revealStartTimesUniform = new Uniform(
   levels.map(() => REVEAL_NOT_STARTED),
@@ -17,6 +18,7 @@ const revealStartTimesUniform = new Uniform(
 
 export const revealUniforms = {
   uRevealTime: revealTimeUniform,
+  uRevealNoiseTexture: revealNoiseTextureUniform,
   uRevealStartTimes: revealStartTimesUniform,
   uRevealCenters: new Uniform(
     levels.map(
