@@ -1,7 +1,10 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
-import { InstancedBufferAttribute } from "three";
+import { InstancedBufferAttribute, MeshBasicMaterial } from "three";
+import CustomShaderMaterial from "three-custom-shader-material";
+
+import revealFragmentShader from "@/shaders/revealStandard/fragment.glsl";
 
 import { createGrassMaterial, grassTimeUniform } from "./grassMaterial";
 import {
@@ -49,7 +52,9 @@ export function GrassField() {
     <>
       <mesh rotation-x={-Math.PI / 2} renderOrder={-1}>
         <planeGeometry args={[GRASS_MAP_WORLD_SIZE, GRASS_MAP_WORLD_SIZE]} />
-        <meshBasicMaterial
+        <CustomShaderMaterial
+          baseMaterial={MeshBasicMaterial}
+          fragmentShader={revealFragmentShader}
           color="#84661d"
           alphaMap={grassMapTexture}
           transparent
