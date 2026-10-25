@@ -4,7 +4,7 @@ import { useTexture } from "@react-three/drei";
 import { InstancedBufferAttribute, MeshBasicMaterial } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
-import revealFragmentShader from "@/shaders/revealStandard/fragment.glsl";
+import revealFragmentShader from "@/shaders/revealDiffuse/fragment.glsl";
 
 import { createGrassMaterial, grassTimeUniform } from "./grassMaterial";
 import {

@@ -1,7 +1,7 @@
 import { MeshStandardMaterial, type Side } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
-import fragmentShader from "@/shaders/revealStandard/fragment.glsl";
+import fragmentShader from "@/shaders/revealDiffuse/fragment.glsl";
 
 type Props = {
   sourceMaterial: MeshStandardMaterial;
