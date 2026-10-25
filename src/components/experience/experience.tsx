@@ -17,6 +17,7 @@ import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
 
 const DEBUG = false;
+const SHOW_PERF = false;
 
 type ExperienceProps = {
   onSceneReady: () => void;
@@ -63,7 +64,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
             ) : (
               <CameraRig key={runCount} />
             )}
-            {DEBUG && <Perf position="bottom-right" />}
+            {SHOW_PERF && <Perf position="bottom-right" />}
             <Preload all />
             <SceneReadySignal onSceneReady={onSceneReady} />
           </Suspense>

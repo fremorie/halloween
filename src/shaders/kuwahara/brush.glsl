@@ -7,15 +7,10 @@ uniform vec2 uTexelSize;
 
 varying vec2 vUv;
 
-#include "../includes/hueToRgb.glsl"
-
 #define SECTOR_COUNT 8
 #define RING_COUNT 5
-#define RAYS_PER_SIDE 1
-
-const float TAU = 6.28318530718;
-const float SECTOR_ANGLE = TAU / float(SECTOR_COUNT);
-const float RAY_SPACING = SECTOR_ANGLE / float(2 * RAYS_PER_SIDE); // 2 gaps between 3 rays
+#define BORDER_RAY_WEIGHT 0.5
+#define SECTOR_SHARPNESS 4.0
 
 // exp(-d² / (2σ²)) with σ = radius / 3
 // For d = ringFraction:
@@ -23,51 +18,23 @@ const float RAY_SPACING = SECTOR_ANGLE / float(2 * RAYS_PER_SIDE); // 2 gaps bet
 const float GAUSSIAN_FALLOFF = 4.5;
 
 const vec3 LUMINANCE_WEIGHTS = vec3(0.299, 0.587, 0.114);
+const float VARIANCE_EPSILON = 1e-6;
+
+const float COS_HALF_SECTOR = 0.92387953251;
+const float SIN_HALF_SECTOR = 0.38268343236;
+const mat2 ROTATE_BY_HALF_SECTOR = mat2(
+    COS_HALF_SECTOR, SIN_HALF_SECTOR,
+    -SIN_HALF_SECTOR, COS_HALF_SECTOR
+);
 
 vec3 sampleSceneColor(vec2 uv, vec2 pixelOffset) {
     return texture2D(inputBuffer, uv + pixelOffset * uPixelRatio * uTexelSize).rgb;
 }
 
-struct SectorStatistics {
-    vec3 meanColor;
-    float perceivedVariance;
-};
-
 struct EdgeOrientation {
     vec2 gradientDirection;
     float anisotropy;
 };
-
-SectorStatistics measureSector(vec2 uv, int sectorIndex, mat2 shape) {
-    float sectorMiddleAngle = float(sectorIndex) * SECTOR_ANGLE;
-
-    vec3 weightedSum = vec3(0.0);
-    vec3 weightedSumOfSquares = vec3(0.0);
-    float totalWeight = 0.0;
-
-    for (int ring = 1; ring <= RING_COUNT; ring++) {
-        float ringFraction = float(ring) / float(RING_COUNT);
-        float ringRadius = ringFraction * uBrushRadius;
-        float ringWeight = exp(-ringFraction * ringFraction * GAUSSIAN_FALLOFF);
-
-        for (int ray = -RAYS_PER_SIDE; ray <= RAYS_PER_SIDE; ray++) {
-            float rayAngle = sectorMiddleAngle + float(ray) * RAY_SPACING;
-            vec2 pixelOffset = shape * (ringRadius * vec2(cos(rayAngle), sin(rayAngle)));
-            vec3 sampleColor = sampleSceneColor(uv, pixelOffset);
-
-            weightedSum += sampleColor * ringWeight;
-            weightedSumOfSquares += sampleColor * sampleColor * ringWeight;
-            totalWeight += ringWeight;
-        }
-    }
-
-    vec3 meanColor = weightedSum / totalWeight;
-    vec3 colorVariance = weightedSumOfSquares / totalWeight - meanColor * meanColor;
-
-    float perceivedVariance = dot(colorVariance, LUMINANCE_WEIGHTS);
-
-    return SectorStatistics(meanColor, perceivedVariance);
-}
 
 EdgeOrientation readEdgeOrientation(vec2 uv) {
     vec3 tensor = texture2D(tTensor, uv).xyz;
@@ -101,26 +68,76 @@ mat2 kernelShape(EdgeOrientation edge) {
     return rotation * mat2(acrossScale, 0.0, 0.0, alongScale);
 }
 
+struct SectorAccumulator {
+    vec3 weightedSum;
+    vec3 weightedSumOfSquares;
+    float totalWeight;
+};
+
+void addSample(inout SectorAccumulator sector, vec3 sampleColor, float weight) {
+    sector.weightedSum += sampleColor * weight;
+    sector.weightedSumOfSquares += sampleColor * sampleColor * weight;
+    sector.totalWeight += weight;
+}
+
 void main() {
     vec2 uv = vUv;
-    vec4 inputColor = texture2D(inputBuffer, vUv);
     mat2 shape = kernelShape(readEdgeOrientation(uv));
 
-    vec3 smoothestSectorMeanColor = inputColor.rgb;
-    float lowestSectorVariance = 1e9; // infinity (sort of)
-
-    SectorStatistics smoothestSector = SectorStatistics(
-        smoothestSectorMeanColor,
-        lowestSectorVariance
-    );
-
+    SectorAccumulator sectors[SECTOR_COUNT];
     for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
-        SectorStatistics sector = measureSector(uv, sectorIndex, shape);
+        sectors[sectorIndex] = SectorAccumulator(vec3(0.0), vec3(0.0), 0.0);
+    }
 
-        if (sector.perceivedVariance < smoothestSector.perceivedVariance) {
-            smoothestSector = sector;
+    for (int ring = 1; ring <= RING_COUNT; ring++) {
+        float ringFraction = float(ring) / float(RING_COUNT);
+        float ringRadius = ringFraction * uBrushRadius;
+        float ringWeight = exp(-ringFraction * ringFraction * GAUSSIAN_FALLOFF);
+        float borderRayWeight = ringWeight * BORDER_RAY_WEIGHT;
+
+        vec2 centreDirection = vec2(1.0, 0.0);
+
+        for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
+            int nextSectorIndex = sectorIndex + 1 == SECTOR_COUNT ? 0 : sectorIndex + 1;
+
+            vec3 centreColor = sampleSceneColor(uv, shape * (ringRadius * centreDirection));
+            addSample(sectors[sectorIndex], centreColor, ringWeight);
+
+            vec2 borderDirection = ROTATE_BY_HALF_SECTOR * centreDirection;
+            vec3 borderColor = sampleSceneColor(uv, shape * (ringRadius * borderDirection));
+            addSample(sectors[sectorIndex], borderColor, borderRayWeight);
+            addSample(sectors[nextSectorIndex], borderColor, borderRayWeight);
+
+            centreDirection = ROTATE_BY_HALF_SECTOR * borderDirection;
         }
     }
 
-    gl_FragColor = vec4(smoothestSector.meanColor, 1.0);
+    vec3 sectorMeanColors[SECTOR_COUNT];
+    float sectorPerceivedVariances[SECTOR_COUNT];
+    float lowestVariance = 1e9; // infinity (sort of)
+
+    for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
+        SectorAccumulator sector = sectors[sectorIndex];
+        vec3 meanColor = sector.weightedSum / sector.totalWeight;
+        vec3 colorVariance = sector.weightedSumOfSquares / sector.totalWeight - meanColor * meanColor;
+        float perceivedVariance = max(dot(colorVariance, LUMINANCE_WEIGHTS), 0.0);
+
+        sectorMeanColors[sectorIndex] = meanColor;
+        sectorPerceivedVariances[sectorIndex] = perceivedVariance;
+        lowestVariance = min(lowestVariance, perceivedVariance);
+    }
+
+    vec3 blendedColor = vec3(0.0);
+    float totalBlendWeight = 0.0;
+
+    for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
+        float relativeSmoothness =
+            (lowestVariance + VARIANCE_EPSILON) / (sectorPerceivedVariances[sectorIndex] + VARIANCE_EPSILON);
+        float blendWeight = pow(relativeSmoothness, SECTOR_SHARPNESS);
+
+        blendedColor += sectorMeanColors[sectorIndex] * blendWeight;
+        totalBlendWeight += blendWeight;
+    }
+
+    gl_FragColor = vec4(blendedColor / totalBlendWeight, 1.0);
 }

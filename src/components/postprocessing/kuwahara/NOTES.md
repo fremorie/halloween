@@ -1,0 +1,49 @@
+# Kuwahara filter performance log
+
+## Starting point
+
+| State                     | GPU ms, full screen |
+| ------------------------- | ------------------- |
+| baseline, everything on   | 14 ms               |
+| Kuwahara off              | 3 ms                |
+| shadows off               | 12.6 ms             |
+| Kuwahara off, shadows off | 2.6 ms              |
+| Kuwahara off, shadows on  | 3.3 ms              |
+| paint scale 1.0           | 9.6 ms              |
+| paint scale 2.0           | 21 ms               |
+
+## Paper grain baked once per resize
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 12 ms               |
+| Kuwahara off            | 3 ms                |
+| paint scale 1.0         | 7.6 ms              |
+| paint scale 2.0         | 19.2 ms             |
+
+## Multisampling = 0
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 10.6 ms             |
+| Kuwahara off            | 2.3 ms              |
+| paint scale 1.0         | 6.2 ms              |
+| paint scale 2.0         | 18.5 ms             |
+
+## Fetch each border ray once in the brush pass
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 9.5 ms              |
+| Kuwahara off            | 2.3 ms              |
+| paint scale 1.0         | 6.2 ms              |
+| paint scale 2.0         | 13.8 ms             |
+
+## Downsample the scene once for the tensor and brush passes
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 10.5 ms             |
+| Kuwahara off            | 2.3 ms              |
+| paint scale 1.0         | 4.8 ms              |
+| paint scale 2.0         | 19.2 ms             |
