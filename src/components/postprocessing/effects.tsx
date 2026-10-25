@@ -12,7 +12,7 @@ export function Effects() {
   useGpuFrameTimeControls();
 
   return (
-    <EffectComposer multisampling={4}>
+    <EffectComposer multisampling={0}>
       {kuwahara && <Kuwahara />}
       <Vignette
         offset={0.3}

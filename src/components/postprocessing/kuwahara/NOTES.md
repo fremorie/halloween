@@ -20,3 +20,12 @@
 | Kuwahara off            | 3 ms                |
 | paint scale 1.0         | 7.6 ms              |
 | paint scale 2.0         | 19.2 ms             |
+
+## Multisampling = 0
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 10.6 ms             |
+| Kuwahara off            | 2.3 ms              |
+| paint scale 1.0         | 6.2 ms              |
+| paint scale 2.0         | 18.5 ms             |
