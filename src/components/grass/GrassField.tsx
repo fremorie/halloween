@@ -4,7 +4,8 @@ import { useTexture } from "@react-three/drei";
 import { InstancedBufferAttribute, MeshBasicMaterial } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
-import revealFragmentShader from "@/shaders/revealDiffuse/fragment.glsl";
+import { REVEAL_PATCH_MAP } from "@/components/materials/revealPatchMap";
+import revealFragmentShader from "@/shaders/revealOutput/fragment.glsl";
 
 import { createGrassMaterial, grassTimeUniform } from "./grassMaterial";
 import {
@@ -55,6 +56,7 @@ export function GrassField() {
         <CustomShaderMaterial
           baseMaterial={MeshBasicMaterial}
           fragmentShader={revealFragmentShader}
+          patchMap={REVEAL_PATCH_MAP}
           color="#84661d"
           alphaMap={grassMapTexture}
           transparent
