@@ -18,9 +18,14 @@ type Props = PropsWithChildren<{
     far: number;
     position: [number, number, number];
   }>;
+  showPerf?: boolean;
 }>;
 
-export default function Stage({ camera = {}, children }: Props) {
+export default function Stage({
+  camera = {},
+  showPerf = true,
+  children,
+}: Props) {
   const { kuwahara } = useControls({
     kuwahara: { value: true, label: "Kuwahara filter" },
   });
@@ -74,7 +79,7 @@ export default function Stage({ camera = {}, children }: Props) {
         </mesh>
 
         <OrbitControls makeDefault target={[0, 2, 0]} />
-        <Perf position="bottom-right" />
+        {showPerf && <Perf position="bottom-right" />}
       </Canvas>
     </>
   );
