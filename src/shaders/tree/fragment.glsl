@@ -9,6 +9,7 @@ varying vec2 vUv;
 
 #include "../includes/utils.glsl"
 #include "../includes/lights.glsl"
+#include "../includes/reveal.glsl"
 
 void main() {
     vec3 baseColor = texture2D(uLeavesTexture, vUv).rgb;
@@ -40,6 +41,8 @@ void main() {
 
     finalColor = finalColor * ambientLighting;
     finalColor *= ao;
+
+    finalColor = revealColor(finalColor, vPosition);
 
     gl_FragColor = vec4(finalColor, 1.0);
 

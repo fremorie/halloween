@@ -18,6 +18,7 @@ attribute vec2 aBladeWorldPosition;
 varying vec3 vColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
+varying vec3 vWorldPosition;
 
 #include <fog_pars_vertex>
 
@@ -128,4 +129,5 @@ void main() {
     vColor = mix(c1, c2, smoothstep(-1.0, 1.0, noiseValue));
     vGrassData = vec4(x, heightPercent, 0.0, 0.0);
     vNormal = normalize((modelMatrix * vec4(grassLocalNormal, 0.0)).xyz);
+    vWorldPosition = worldPosition.xyz;
 }

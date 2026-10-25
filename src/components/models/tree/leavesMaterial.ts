@@ -7,6 +7,7 @@ import {
   UniformsUtils,
 } from "three";
 
+import { revealUniforms } from "@/components/materials/revealUniforms";
 import fragmentShader from "@/shaders/tree/fragment.glsl";
 import vertexShader from "@/shaders/tree/vertex.glsl";
 
@@ -26,6 +27,7 @@ export function createLeavesMaterial(leavesTexture: Texture) {
   const material = new LeavesMaterial();
 
   Object.assign(material.uniforms, UniformsUtils.clone(UniformsLib.fog));
+  Object.assign(material.uniforms, revealUniforms);
   material.fog = true;
 
   material.uniforms.uTime = leavesTimeUniform;
