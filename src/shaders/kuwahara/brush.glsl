@@ -9,7 +9,8 @@ varying vec2 vUv;
 
 #define SECTOR_COUNT 8
 #define RING_COUNT 5
-#define BORDER_RAY_WEIGHT 1.0
+#define BORDER_RAY_WEIGHT 0.5
+#define SECTOR_SHARPNESS 4.0
 
 // exp(-d² / (2σ²)) with σ = radius / 3
 // For d = ringFraction:
@@ -17,6 +18,7 @@ varying vec2 vUv;
 const float GAUSSIAN_FALLOFF = 4.5;
 
 const vec3 LUMINANCE_WEIGHTS = vec3(0.299, 0.587, 0.114);
+const float VARIANCE_EPSILON = 1e-6;
 
 const float COS_HALF_SECTOR = 0.92387953251;
 const float SIN_HALF_SECTOR = 0.38268343236;
@@ -110,20 +112,32 @@ void main() {
         }
     }
 
-    vec3 smoothestMeanColor = vec3(0.0);
+    vec3 sectorMeanColors[SECTOR_COUNT];
+    float sectorPerceivedVariances[SECTOR_COUNT];
     float lowestVariance = 1e9; // infinity (sort of)
 
     for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
         SectorAccumulator sector = sectors[sectorIndex];
         vec3 meanColor = sector.weightedSum / sector.totalWeight;
         vec3 colorVariance = sector.weightedSumOfSquares / sector.totalWeight - meanColor * meanColor;
-        float perceivedVariance = dot(colorVariance, LUMINANCE_WEIGHTS);
+        float perceivedVariance = max(dot(colorVariance, LUMINANCE_WEIGHTS), 0.0);
 
-        if (perceivedVariance < lowestVariance) {
-            lowestVariance = perceivedVariance;
-            smoothestMeanColor = meanColor;
-        }
+        sectorMeanColors[sectorIndex] = meanColor;
+        sectorPerceivedVariances[sectorIndex] = perceivedVariance;
+        lowestVariance = min(lowestVariance, perceivedVariance);
     }
 
-    gl_FragColor = vec4(smoothestMeanColor, 1.0);
+    vec3 blendedColor = vec3(0.0);
+    float totalBlendWeight = 0.0;
+
+    for (int sectorIndex = 0; sectorIndex < SECTOR_COUNT; sectorIndex++) {
+        float relativeSmoothness =
+            (lowestVariance + VARIANCE_EPSILON) / (sectorPerceivedVariances[sectorIndex] + VARIANCE_EPSILON);
+        float blendWeight = pow(relativeSmoothness, SECTOR_SHARPNESS);
+
+        blendedColor += sectorMeanColors[sectorIndex] * blendWeight;
+        totalBlendWeight += blendWeight;
+    }
+
+    gl_FragColor = vec4(blendedColor / totalBlendWeight, 1.0);
 }
