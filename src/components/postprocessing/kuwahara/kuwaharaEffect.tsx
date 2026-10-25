@@ -15,7 +15,7 @@ import brushShader from "@/shaders/kuwahara/brush.glsl";
 // Target pixels per CSS pixel
 // 1 = CSS size
 // 2 = device size
-const PAINT_RESOLUTION_SCALE = 1.5;
+const PAINT_RESOLUTION_SCALE = 1;
 
 export default class KuwaharaEffect extends Effect {
   private texelSize: Uniform<Vector2>;
