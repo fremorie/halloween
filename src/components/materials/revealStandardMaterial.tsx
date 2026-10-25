@@ -2,6 +2,7 @@ import { MeshStandardMaterial, type Side } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
 import fragmentShader from "@/shaders/revealOutput/fragment.glsl";
+import vertexShader from "@/shaders/revealOutput/vertex.glsl";
 
 import { REVEAL_PATCH_MAP } from "./revealPatchMap";
 
@@ -14,6 +15,7 @@ export function RevealStandardMaterial({ sourceMaterial, shadowSide }: Props) {
   return (
     <CustomShaderMaterial
       baseMaterial={MeshStandardMaterial}
+      vertexShader={vertexShader}
       fragmentShader={fragmentShader}
       patchMap={REVEAL_PATCH_MAP}
       map={sourceMaterial.map}

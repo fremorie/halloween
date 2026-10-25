@@ -6,6 +6,7 @@ import CustomShaderMaterial from "three-custom-shader-material";
 
 import { REVEAL_PATCH_MAP } from "@/components/materials/revealPatchMap";
 import revealFragmentShader from "@/shaders/revealOutput/fragment.glsl";
+import revealVertexShader from "@/shaders/revealOutput/vertex.glsl";
 
 import { createGrassMaterial, grassTimeUniform } from "./grassMaterial";
 import {
@@ -55,6 +56,7 @@ export function GrassField() {
         <planeGeometry args={[GRASS_MAP_WORLD_SIZE, GRASS_MAP_WORLD_SIZE]} />
         <CustomShaderMaterial
           baseMaterial={MeshBasicMaterial}
+          vertexShader={revealVertexShader}
           fragmentShader={revealFragmentShader}
           patchMap={REVEAL_PATCH_MAP}
           color="#84661d"

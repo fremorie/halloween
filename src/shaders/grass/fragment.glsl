@@ -4,6 +4,7 @@ uniform vec3 uHemiGroundColor;
 varying vec3 vColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
+varying vec3 vWorldPosition;
 
 #include <fog_pars_fragment>
 
@@ -30,7 +31,7 @@ void main() {
     vec3 color = baseColor * ambientLighting;
     color *= ao;
 
-    color = revealColor(color);
+    color = revealColor(color, vWorldPosition);
 
     gl_FragColor = vec4(color, 1.0);
 

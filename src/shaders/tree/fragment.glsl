@@ -42,7 +42,7 @@ void main() {
     finalColor = finalColor * ambientLighting;
     finalColor *= ao;
 
-    finalColor = revealColor(finalColor);
+    finalColor = revealColor(finalColor, vPosition);
 
     gl_FragColor = vec4(finalColor, 1.0);
 
