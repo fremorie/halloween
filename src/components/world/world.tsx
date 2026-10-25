@@ -11,6 +11,7 @@ import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
 import { useRewardBeatTimer } from "./useRewardBeatTimer";
 import { useIntroBeatTimer } from "./useIntroBeatTimer";
+import { useStationReveals } from "./useStationReveals";
 
 export function World() {
   const runCount = useGameStore((state) => state.runCount);
@@ -18,6 +19,7 @@ export function World() {
   useCelebrationTimer();
   useRewardBeatTimer();
   useIntroBeatTimer();
+  useStationReveals();
 
   return (
     <>
