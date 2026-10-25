@@ -16,7 +16,7 @@ import { CameraRig } from "@/components/experience/cameraRig";
 import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
 
-const DEBUG = true;
+const DEBUG = false;
 const SHOW_PERF = false;
 
 type ExperienceProps = {
