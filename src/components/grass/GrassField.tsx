@@ -5,6 +5,7 @@ import { InstancedBufferAttribute, MeshBasicMaterial } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
 import { REVEAL_PATCH_MAP } from "@/components/materials/revealPatchMap";
+import { revealUniforms } from "@/components/materials/revealUniforms";
 import revealFragmentShader from "@/shaders/revealOutput/fragment.glsl";
 import revealVertexShader from "@/shaders/revealOutput/vertex.glsl";
 
@@ -59,6 +60,7 @@ export function GrassField() {
           vertexShader={revealVertexShader}
           fragmentShader={revealFragmentShader}
           patchMap={REVEAL_PATCH_MAP}
+          uniforms={revealUniforms}
           color="#84661d"
           alphaMap={grassMapTexture}
           transparent

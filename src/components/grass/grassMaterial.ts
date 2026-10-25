@@ -14,6 +14,7 @@ import {
   TRAIL_FLATTEN,
   TRAIL_PUSH,
 } from "@/settings/grassTrailSettings";
+import { revealUniforms } from "@/components/materials/revealUniforms";
 import fragmentShader from "@/shaders/grass/fragment.glsl";
 import vertexShader from "@/shaders/grass/vertex.glsl";
 
@@ -52,6 +53,7 @@ export function createGrassMaterial(
 ) {
   const material = new GrassMaterial();
   Object.assign(material.uniforms, UniformsUtils.clone(UniformsLib.fog));
+  Object.assign(material.uniforms, revealUniforms);
   material.fog = true;
   material.uniforms.uTime = grassTimeUniform;
   material.uniforms.uTrailMap = grassTrailMapUniform;
