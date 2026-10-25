@@ -11,6 +11,7 @@ import fragmentShader from "@/shaders/kuwahara/fragment.glsl";
 import tensorShader from "@/shaders/kuwahara/tensor.glsl";
 import blurShader from "@/shaders/kuwahara/blur.glsl";
 import brushShader from "@/shaders/kuwahara/brush.glsl";
+import downsampleShader from "@/shaders/kuwahara/downsample.glsl";
 
 // Target pixels per CSS pixel
 // 1 = CSS size
@@ -19,6 +20,9 @@ const PAINT_RESOLUTION_SCALE = 1;
 
 export default class KuwaharaEffect extends Effect {
   private texelSize: Uniform<Vector2>;
+  private sceneTarget: WebGLRenderTarget;
+  private downsamplePass: ShaderPass;
+
   private tensorTarget: WebGLRenderTarget;
   private tensorPass: ShaderPass;
 
@@ -70,6 +74,11 @@ export default class KuwaharaEffect extends Effect {
     this.texelSize = texelSize;
     this.tensorTarget = tensorTarget;
     this.tensorPass = makePass(tensorShader, { uTexelSize: texelSize });
+
+    this.sceneTarget = makeTarget();
+    this.downsamplePass = makePass(downsampleShader, {
+      uTexelSize: texelSize,
+    });
   }
 
   private resizeTargets(
@@ -89,6 +98,7 @@ export default class KuwaharaEffect extends Effect {
       return;
     }
 
+    this.sceneTarget.setSize(width, height);
     this.tensorTarget.setSize(width, height);
     this.blurredTarget.setSize(width, height);
     this.paintedTarget.setSize(width, height);
@@ -98,9 +108,10 @@ export default class KuwaharaEffect extends Effect {
   update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
     this.resizeTargets(renderer, inputBuffer);
 
-    this.tensorPass.render(renderer, inputBuffer, this.tensorTarget);
+    this.downsamplePass.render(renderer, inputBuffer, this.sceneTarget);
+    this.tensorPass.render(renderer, this.sceneTarget, this.tensorTarget);
     this.blurAcross.render(renderer, this.tensorTarget, this.blurredTarget);
     this.blurDown.render(renderer, this.blurredTarget, this.tensorTarget);
-    this.brushPass.render(renderer, inputBuffer, this.paintedTarget);
+    this.brushPass.render(renderer, this.sceneTarget, this.paintedTarget);
   }
 }

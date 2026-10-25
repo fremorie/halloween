@@ -38,3 +38,12 @@
 | Kuwahara off            | 2.3 ms              |
 | paint scale 1.0         | 6.2 ms              |
 | paint scale 2.0         | 13.8 ms             |
+
+## Downsample the scene once for the tensor and brush passes
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 10.5 ms             |
+| Kuwahara off            | 2.3 ms              |
+| paint scale 1.0         | 4.8 ms              |
+| paint scale 2.0         | 19.2 ms             |
