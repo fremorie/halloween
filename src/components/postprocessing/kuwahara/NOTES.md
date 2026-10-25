@@ -1,4 +1,4 @@
-# Kuwahara filter performance
+# Kuwahara filter performance log
 
 ## Starting point
 
@@ -29,3 +29,12 @@
 | Kuwahara off            | 2.3 ms              |
 | paint scale 1.0         | 6.2 ms              |
 | paint scale 2.0         | 18.5 ms             |
+
+## Fetch each border ray once in the brush pass
+
+| State                   | GPU ms, full screen |
+| ----------------------- | ------------------- |
+| baseline, everything on | 9.5 ms              |
+| Kuwahara off            | 2.3 ms              |
+| paint scale 1.0         | 6.2 ms              |
+| paint scale 2.0         | 13.8 ms             |
