@@ -1,0 +1,1 @@
+export const CAT_SPEECH_CHARACTERS_PER_SECOND = 60;

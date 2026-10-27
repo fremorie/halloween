@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 
 import { prefersReducedMotion } from "@/utils/animation/prefersReducedMotion";
 import { getRevealTimesInSeconds } from "./typingRhythm";
@@ -39,7 +39,16 @@ function TypedOnceText({ text, charactersPerSecond }: TypewriterTextProps) {
     );
   });
 
-  return <span ref={textRef}>{text}</span>;
+  return (
+    <span ref={textRef}>
+      {text.split("\n").map((line, lineIndex) => (
+        <Fragment key={lineIndex}>
+          {lineIndex > 0 && <br />}
+          {line}
+        </Fragment>
+      ))}
+    </span>
+  );
 }
 
 export function TypewriterText(props: TypewriterTextProps) {

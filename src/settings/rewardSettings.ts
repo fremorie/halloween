@@ -15,8 +15,6 @@ export const CAT_CLOSE_UP_BEATS: RewardBeat[] = ["zoomIn", "hatDrop", "speech"];
 export const KNITTING_DURATION = 3;
 export const PAUSE_AFTER_KNITTING = 0.5;
 
-export const SPEECH_TYPING_DURATION = 2;
-
 export const REWARD_BEAT_DURATIONS: Record<TimedRewardBeat, number> = {
   knit: KNITTING_DURATION + PAUSE_AFTER_KNITTING,
   zoomIn: 2.2,

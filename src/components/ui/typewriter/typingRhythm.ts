@@ -1,8 +1,8 @@
 const PAUSE_AFTER_PUNCTUATION_IN_SECONDS: Record<string, number> = {
-  ".": 0.4,
-  "!": 0.4,
-  "?": 0.4,
-  ",": 0.15,
+  ".": 0.2,
+  "!": 0.2,
+  "?": 0.2,
+  ",": 0.05,
 };
 
 function getPauseAfterCharacterInSeconds(characters: string[], index: number) {
@@ -31,15 +31,14 @@ export function getRevealTimesInSeconds(
   });
 }
 
-export function getCharactersPerSecondToFitDuration(
+export function getTypingDurationInSeconds(
   text: string,
-  durationInSeconds: number,
+  charactersPerSecond: number,
 ) {
   const characters = Array.from(text.replace(/\s/g, ""));
-  const totalPauseInSeconds = characters.reduce(
-    (pauseSum, _, index) =>
-      pauseSum + getPauseAfterCharacterInSeconds(characters, index),
-    0,
+  const revealTimesInSeconds = getRevealTimesInSeconds(
+    characters,
+    charactersPerSecond,
   );
-  return (characters.length - 1) / (durationInSeconds - totalPauseInSeconds);
+  return revealTimesInSeconds.at(-1) ?? 0;
 }
