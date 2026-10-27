@@ -1,6 +1,7 @@
 import type { Refusal } from "@/types/puzzle";
 
 export const DRAG_LINE_MIN_LENGTH = 0.05;
+export const DRAG_LINE_DEPTH_BIAS = 0.25;
 
 export const HIT_SPHERE_RADIUS = 0.6;
 

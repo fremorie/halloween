@@ -1,9 +1,12 @@
+uniform float uDepthBias;
+
 varying vec3 vWorldNormal;
 varying vec2 vStrandCrossSection;
 varying float vDistanceAlongStrand;
 
 void main() {
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    mvPosition.xyz -= normalize(mvPosition.xyz) * uDepthBias;
 
     gl_Position = projectionMatrix * mvPosition;
 

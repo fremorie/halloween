@@ -6,6 +6,7 @@ import { createDragLineMaterial } from "@/components/materials/dragLineMaterial"
 import { yarnUniforms } from "@/components/materials/yarnMaterial";
 import { NODE_RADIUS } from "@/settings/graphSettings";
 import {
+  DRAG_LINE_DEPTH_BIAS,
   DRAG_LINE_MIN_LENGTH,
   YARN_STRAND_RADIAL_SEGMENTS,
 } from "@/settings/puzzleSettings";
@@ -13,6 +14,7 @@ import type { Vec3 } from "@/types/math";
 import { getBranchThickness } from "@/utils/graph";
 
 const UP_DIRECTION = new Vector3(0, 1, 0);
+const PUZZLE_PLANE_NORMAL = new Vector3(0, 0, 1);
 
 type Props = {
   startPosition: Vec3;
@@ -21,8 +23,11 @@ type Props = {
 
 export function DragLine({ startPosition, yarnColor }: Props) {
   const meshRef = useRef<Mesh>(null);
-  const dragLineMaterial = useMemo(() => createDragLineMaterial(), []);
   const [branchThickness] = useState(getBranchThickness);
+  const dragLineMaterial = useMemo(
+    () => createDragLineMaterial(DRAG_LINE_DEPTH_BIAS * branchThickness),
+    [branchThickness],
+  );
   const [scratch] = useState(() => ({
     plane: new Plane(),
     planeNormal: new Vector3(),
@@ -58,7 +63,9 @@ export function DragLine({ startPosition, yarnColor }: Props) {
     puzzleGroup.localToWorld(startWorldPosition);
 
     raycaster.setFromCamera(pointer, camera);
-    camera.getWorldDirection(planeNormal);
+    planeNormal
+      .copy(PUZZLE_PLANE_NORMAL)
+      .transformDirection(puzzleGroup.matrixWorld);
     plane.setFromNormalAndCoplanarPoint(planeNormal, startWorldPosition);
     raycaster.ray.intersectPlane(plane, hitPoint);
 
