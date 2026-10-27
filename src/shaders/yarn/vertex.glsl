@@ -1,7 +1,12 @@
+attribute float aWrapProgress;
+
 uniform float uWrapGap;
 uniform float uStrandRadius;
 uniform float uTurnsPerUnitLength;
 uniform vec3 uStemProfile[STEM_PROFILE_SAMPLE_COUNT];
+
+varying float vAlongBranch;
+varying float vWrapProgress;
 
 #include <fog_pars_vertex>
 
@@ -58,4 +63,7 @@ void main() {
     #include <fog_vertex>
 
     gl_Position = projectionMatrix * mvPosition;
+
+    vAlongBranch = position.x;
+    vWrapProgress = aWrapProgress;
 }

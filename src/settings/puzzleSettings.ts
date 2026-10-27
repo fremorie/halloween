@@ -40,3 +40,5 @@ export const YARN_STRAND_RADIAL_SEGMENTS = 6;
 export const YARN_STRAND_LENGTH_SEGMENTS = 256;
 export const YARN_TURNS_PER_UNIT_LENGTH = 8;
 export const YARN_WRAP_GAP = 0;
+export const YARN_WRAP_DURATION = 0.7;
+export const YARN_WRAP_EASE = "power1.inOut";

@@ -71,7 +71,7 @@ export function InstancedBranches({ graph, edgeThreading }: Props) {
         receiveShadow
         material-shadowSide={FrontSide}
       />
-      <YarnWrap stemMatrices={stemMatrices} />
+      <YarnWrap stemMatrices={stemMatrices} edgeThreading={edgeThreading} />
     </>
   );
 }
