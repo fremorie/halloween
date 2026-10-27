@@ -22,6 +22,8 @@ type Props = {
   material: MeshStandardMaterial;
   state: NodeState;
   isActive: boolean;
+  onHoverStart: (nodeId: number) => void;
+  onHoverEnd: (nodeId: number) => void;
 };
 
 export function PuzzleNode({
@@ -30,6 +32,8 @@ export function PuzzleNode({
   material,
   state,
   isActive,
+  onHoverStart,
+  onHoverEnd,
 }: Props) {
   const groupRef = useRef<Group>(null);
   const knittingBallRef = useRef<Group>(null);
@@ -45,10 +49,16 @@ export function PuzzleNode({
 
   const handlePointerEnter = (event: ThreeEvent<PointerEvent>) => {
     startHover();
+    onHoverStart(node.id);
     const isPointerHeld = event.buttons !== 0;
     if (isPointerHeld) {
       enterNode(levelIndex, node.id);
     }
+  };
+
+  const handlePointerLeave = () => {
+    endHover();
+    onHoverEnd(node.id);
   };
 
   return (
@@ -68,7 +78,7 @@ export function PuzzleNode({
             visible={false}
             onPointerDown={() => pressNode(levelIndex, node.id)}
             onPointerEnter={handlePointerEnter}
-            onPointerLeave={endHover}
+            onPointerLeave={handlePointerLeave}
           />
         )}
       </group>

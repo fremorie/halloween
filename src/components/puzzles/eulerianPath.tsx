@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { InstancedBranches } from "@/components/models/branch/instancedBranches";
 import { useYarnMaterials } from "@/components/models/yarnBall/materials";
@@ -10,6 +10,7 @@ import {
   getCurrentNodeId,
   getEdgeThreading,
   getEdgeThreadStartNodeIds,
+  getHoverPreviewAttempt,
   getNodeYarnColor,
 } from "@/utils/puzzle";
 import { DragLine } from "./dragLine";
@@ -23,6 +24,13 @@ type Props = {
 };
 
 export function EulerianPath({ graph, levelIndex, isActive }: Props) {
+  const [hoveredNodeId, setHoveredNodeId] = useState<number | null>(null);
+
+  const clearHoveredNode = (nodeId: number) =>
+    setHoveredNodeId((currentHoveredNodeId) =>
+      currentHoveredNodeId === nodeId ? null : currentHoveredNodeId,
+    );
+
   const yarnMaterials = useYarnMaterials();
 
   const attempt = useGameStore(
@@ -39,11 +47,6 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
   const isDrawing = puzzlePhase === "drawing";
   const currentNodeId = isDrawing ? getCurrentNodeId(attempt) : null;
 
-  const edgeThreading = useMemo(
-    () => getEdgeThreading(graph, attempt),
-    [graph, attempt],
-  );
-
   const edgeThreadStartNodeIds = useMemo(
     () => getEdgeThreadStartNodeIds(graph, attempt),
     [graph, attempt],
@@ -54,6 +57,16 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
     if (pathOrder !== -1) return "visited";
     return "idle";
   };
+
+  const previewNodeId = isActive && isDrawing ? hoveredNodeId : null;
+  const previewAttempt = useMemo(
+    () => getHoverPreviewAttempt(graph, attempt, previewNodeId),
+    [graph, attempt, previewNodeId],
+  );
+  const edgeThreading = useMemo(
+    () => getEdgeThreading(graph, previewAttempt),
+    [graph, previewAttempt],
+  );
 
   return (
     <group>
@@ -67,6 +80,8 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
             material={yarnMaterials[node.id % yarnMaterials.length]}
             state={getNodeState(node.id, pathOrder)}
             isActive={isActive}
+            onHoverStart={setHoveredNodeId}
+            onHoverEnd={clearHoveredNode}
           />
         );
       })}
