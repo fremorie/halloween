@@ -8,6 +8,8 @@ uniform vec3 uStemProfile[STEM_PROFILE_SAMPLE_COUNT];
 varying float vAlongBranch;
 varying float vWrapProgress;
 varying vec3 vWorldNormal;
+varying vec2 vStrandCrossSection;
+varying float vDistanceAlongStrand;
 
 #include <fog_pars_vertex>
 
@@ -45,9 +47,8 @@ void main() {
     float wrapRadius = stemRadius + strandRadius + uWrapGap * branchThickness;
     float advancePerRadian = 1.0 / (TAU * uTurnsPerUnitLength);
 
-    vec3 helixTangent = normalize(
-        vec3(advancePerRadian, 0.0, 0.0) + aroundDirection * wrapRadius
-    );
+    vec3 helixVelocityPerRadian = vec3(advancePerRadian, 0.0, 0.0) + aroundDirection * wrapRadius;
+    vec3 helixTangent = normalize(helixVelocityPerRadian);
 
     vec3 strandSideDirection = cross(helixTangent, radialDirection);
     vec3 helixCenter = vec3(distanceAlongBranch, stemCenter) + radialDirection * wrapRadius;
@@ -77,4 +78,6 @@ void main() {
     vAlongBranch = position.x;
     vWrapProgress = aWrapProgress;
     vWorldNormal = normalize(mat3(modelMatrix) * branchRotation * strandNormal);
+    vStrandCrossSection = position.yz;
+    vDistanceAlongStrand = wrapAngle * length(helixVelocityPerRadian);
 }
