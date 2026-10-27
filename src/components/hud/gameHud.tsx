@@ -10,6 +10,7 @@ import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
 import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
 import { Comment } from "@/components/ui/comment/comment";
+import { MovementHint } from "@/components/ui/movementHint/movementHint";
 
 const TouchJoystick = dynamic(
   () =>
@@ -33,6 +34,7 @@ export function GameHud() {
   const rewardBeat = useGameStore((state) => state.rewardBeat);
   const introBeat = useGameStore((state) => state.introBeat);
   const advanceRewardBeat = useGameStore((state) => state.advanceRewardBeat);
+  const runCount = useGameStore((state) => state.runCount);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -44,6 +46,8 @@ export function GameHud() {
   }, [cutThread, beginApproach]);
 
   const canCatWalk = mode === "walking" || mode === "done";
+  const isFirstWalkAfterIntro =
+    mode === "walking" && currentStationIndex === 0 && runCount === 0;
 
   return (
     <>
@@ -53,6 +57,7 @@ export function GameHud() {
           <PuzzleInstructions />
         </div>
       )}
+      {isFirstWalkAfterIntro && <MovementHint />}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {rewardBeat === "speech" && (
           <>
