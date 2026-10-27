@@ -1,12 +1,5 @@
 import { shaderMaterial } from "@react-three/drei";
-import {
-  Color,
-  Uniform,
-  UniformsLib,
-  UniformsUtils,
-  Vector3,
-  DoubleSide,
-} from "three";
+import { Color, Uniform, UniformsLib, UniformsUtils, Vector3 } from "three";
 
 import {
   YARN_GROUND_LIGHT,
@@ -55,7 +48,6 @@ export function createYarnMaterial() {
     yarnUniforms,
   );
   material.fog = true;
-  material.side = DoubleSide;
   material.defines.STEM_PROFILE_SAMPLE_COUNT = STEM_PROFILE.length;
 
   return material;

@@ -19,7 +19,6 @@ varying vec3 vYarnColor;
 #include "../includes/lights.glsl"
 
 const float TAU = 6.28318530718;
-const float INSIDE_DARKNESS = 0.35;
 
 void main() {
     float distanceFromWrapStart = mix(vAlongBranch, 1.0 - vAlongBranch, vWrapsFromEnd);
@@ -36,7 +35,6 @@ void main() {
     float sunLight = max(dot(normal, uSunDirection), 0.0) * uSunStrength;
 
     vec3 litYarnColor = vYarnColor * plyShading * (ambientLight + sunLight);
-    if (!gl_FrontFacing) litYarnColor *= INSIDE_DARKNESS;
 
     gl_FragColor = vec4(litYarnColor, 1.0);
 
