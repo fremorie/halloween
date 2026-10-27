@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 
-import { getMeowSound } from "@/utils/audio";
+import { useGameStore } from "@/store/gameStore";
 
 export function useMeow(spokenText: string) {
+  const meowSound = useGameStore((state) => state.meowSound);
+
   useEffect(() => {
-    const meowSound = getMeowSound();
+    if (meowSound === null) return;
+
     const meowSoundId = meowSound.play();
     return () => {
       meowSound.stop(meowSoundId);
     };
-  }, [spokenText]);
+  }, [meowSound, spokenText]);
 }

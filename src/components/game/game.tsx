@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { GameHud } from "@/components/hud/gameHud";
 import { LoadingScreen } from "@/components/ui/loadingScreen/loadingScreen";
@@ -19,9 +19,14 @@ const Experience = dynamic(
 
 export function Game() {
   const startIntro = useGameStore((state) => state.startIntro);
+  const loadSounds = useGameStore((state) => state.loadSounds);
   const { playThemeMusicWithFadeIn } = useThemeMusic();
   const [isTitleIntroDone, setIsTitleIntroDone] = useState(false);
   const [isSceneReady, setIsSceneReady] = useState(false);
+
+  useEffect(() => {
+    loadSounds();
+  }, [loadSounds]);
 
   return (
     <>
