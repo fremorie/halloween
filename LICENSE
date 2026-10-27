@@ -25,8 +25,13 @@ SOFTWARE.
 Third-party content
 
 The MIT license above applies to the source code, 3D models, Blender files
-and textures in this repository. It does not cover
-public/sound/theme.mp3, which was generated with Suno (https://suno.com) on
-the free plan. That track is owned by Suno and may only be used for
-non-commercial purposes, with attribution to Suno, under Suno's Terms of
-Service (https://suno.com/terms).
+and textures in this repository. It does not cover the following files:
+
+- public/sound/theme.mp3 was generated with Suno (https://suno.com) on the
+  free plan. That track is owned by Suno and may only be used for
+  non-commercial purposes, with attribution to Suno, under Suno's Terms of
+  Service (https://suno.com/terms).
+
+- public/sound/meow.mp3 is "Cute Cat" by Stu9 from Pixabay
+  (https://pixabay.com/sound-effects/nature-cute-cat-352656/), used under the
+  Pixabay Content License (https://pixabay.com/service/license-summary/).
