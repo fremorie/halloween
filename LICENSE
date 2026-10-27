@@ -19,3 +19,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Third-party content
+
+The MIT license above applies to the source code, 3D models, Blender files
+and textures in this repository. It does not cover
+public/sound/theme.mp3, which was generated with Suno (https://suno.com) on
+the free plan. That track is owned by Suno and may only be used for
+non-commercial purposes, with attribution to Suno, under Suno's Terms of
+Service (https://suno.com/terms).
