@@ -24,7 +24,7 @@ export function useThemeMusic() {
     };
   }, []);
 
-  function playThemeMusicWithFadeIn() {
+  const playThemeMusicWithFadeIn = () => {
     const themeMusic = themeMusicRef.current;
     if (themeMusic === null || themeMusic.playing()) return;
 
@@ -35,7 +35,7 @@ export function useThemeMusic() {
       THEME_MUSIC_FADE_IN_DURATION_IN_SECONDS * 1000,
       themeMusicSoundId,
     );
-  }
+  };
 
   return { playThemeMusicWithFadeIn };
 }
