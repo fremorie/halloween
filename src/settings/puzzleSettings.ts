@@ -35,8 +35,8 @@ export const KNITTING_BALL_MIN_TURNS = 1;
 export const KNITTING_BALL_MAX_TURNS = 3;
 export const KNITTING_BALL_COVER_MARGIN = 1.03;
 
-export const YARN_WRAP_RADIUS = 0.11;
 export const YARN_STRAND_RADIUS = 0.03;
 export const YARN_STRAND_RADIAL_SEGMENTS = 6;
 export const YARN_STRAND_LENGTH_SEGMENTS = 256;
 export const YARN_TURNS_PER_UNIT_LENGTH = 8;
+export const YARN_WRAP_GAP = 0;
