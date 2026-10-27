@@ -12,6 +12,7 @@ import { useBranchGLTF } from "./useBranchGLTF";
 import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";
 import { useLeafMaterial } from "./useLeafMaterial";
+import { YarnWrap } from "./yarnWrap";
 
 type Props = {
   graph: Graph;
@@ -70,6 +71,7 @@ export function InstancedBranches({ graph, edgeThreading }: Props) {
         receiveShadow
         material-shadowSide={FrontSide}
       />
+      <YarnWrap stemMatrices={stemMatrices} />
     </>
   );
 }
