@@ -7,6 +7,7 @@ uniform vec3 uStemProfile[STEM_PROFILE_SAMPLE_COUNT];
 
 varying float vAlongBranch;
 varying float vWrapProgress;
+varying vec3 vWorldNormal;
 
 #include <fog_pars_vertex>
 
@@ -52,6 +53,15 @@ void main() {
     vec3 helixCenter = vec3(distanceAlongBranch, stemCenter) + radialDirection * wrapRadius;
     vec3 strandSurfaceOffset = (radialDirection * position.y + strandSideDirection * position.z) * strandRadius;
 
+    vec3 strandNormal = normalize(
+        radialDirection * position.y + strandSideDirection * position.z
+    );
+    mat3 branchRotation = mat3(
+        instanceMatrix[0].xyz / branchLength,
+        instanceMatrix[1].xyz / branchThickness,
+        instanceMatrix[2].xyz / branchThickness
+    );
+
     vec3 worldScaledPosition = helixCenter + strandSurfaceOffset;
     vec3 localPosition = vec3(
         worldScaledPosition.x / branchLength,
@@ -66,4 +76,5 @@ void main() {
 
     vAlongBranch = position.x;
     vWrapProgress = aWrapProgress;
+    vWorldNormal = normalize(mat3(modelMatrix) * branchRotation * strandNormal);
 }

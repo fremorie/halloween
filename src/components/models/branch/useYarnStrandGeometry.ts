@@ -15,6 +15,7 @@ export function useYarnStrandGeometry(instanceCount: number) {
         1,
         YARN_STRAND_RADIAL_SEGMENTS,
         YARN_STRAND_LENGTH_SEGMENTS,
+        true,
       )
         .rotateZ(-Math.PI / 2)
         .translate(0.5, 0, 0)
