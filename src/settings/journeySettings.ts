@@ -32,6 +32,6 @@ export const PUZZLE_BACKGROUND_FADE_DURATION = 0.6;
 
 export const MARCELINOS_COMMENTS: Record<CostumePiece, string> = {
   hat: "A hat! Perfect. Don't I look fabulous?",
-  cape: "I am darkness! I am mystery! I am... slightly itchy.",
-  wings: "BEHOLD! My final form! At last, I can unleash my true evil.",
+  cape: "Oh, a cape! Very mysterious. Very comfortable. Mostly.",
+  wings: "Now we're talking! I was born to wear this.",
 };

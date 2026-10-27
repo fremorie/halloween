@@ -1,8 +1,7 @@
 import type { Refusal } from "@/types/puzzle";
 
-export const DRAG_LINE_COLOR = "#448c2e";
-export const DRAG_LINE_RADIUS = 0.05;
 export const DRAG_LINE_MIN_LENGTH = 0.05;
+export const DRAG_LINE_DEPTH_BIAS = 0.25;
 
 export const HIT_SPHERE_RADIUS = 0.6;
 
@@ -34,3 +33,17 @@ export const REJECT_SHAKE_WIGGLES = 6;
 export const KNITTING_BALL_MIN_TURNS = 1;
 export const KNITTING_BALL_MAX_TURNS = 3;
 export const KNITTING_BALL_COVER_MARGIN = 1.03;
+
+export const YARN_STRAND_RADIUS = 0.04;
+export const YARN_STRAND_RADIAL_SEGMENTS = 6;
+export const YARN_STRAND_LENGTH_SEGMENTS = 256;
+export const YARN_TURNS_PER_UNIT_LENGTH = 8;
+export const YARN_WRAP_GAP = -0.03;
+export const YARN_WRAP_DURATION = 0.7;
+export const YARN_WRAP_EASE = "power1.inOut";
+export const YARN_PLY_COUNT = 3;
+export const YARN_PLY_TWISTS_PER_UNIT_LENGTH = 8;
+export const YARN_PLY_GROOVE_DARKNESS = 0.55;
+export const YARN_SKY_LIGHT = "#fffcf7";
+export const YARN_GROUND_LIGHT = "#4a0e61";
+export const YARN_SUN_STRENGTH = 0.5;

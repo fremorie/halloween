@@ -37,6 +37,12 @@ const PUMPKIN_MODEL_BY_VARIANT = {
   ComponentType<{ faceParams: LanternFaceParams }>
 >;
 
+const PUMPKIN_SCALE_BY_VARIANT = {
+  classic: 1.2,
+  cheerful: 1,
+  happy: 1.3,
+} satisfies Record<PumpkinVariant, number>;
+
 const PATCHWORK_MODEL_BY_PIECE = {
   hat: HatPatchworkModel,
   cape: CapePatchworkModel,
@@ -51,6 +57,9 @@ type Props = {
 export function Station({ level, stationIndex }: Props) {
   const PumpkinModel = PUMPKIN_MODEL_BY_VARIANT[level.pumpkin.variant];
   const PatchworkModel = PATCHWORK_MODEL_BY_PIECE[level.piece];
+  const pumpkinScale = PUMPKIN_SCALE_BY_VARIANT[level.pumpkin.variant];
+  const scaledColliderHalfHeight = PUMPKIN_COLLIDER_HALF_HEIGHT * pumpkinScale;
+  const scaledColliderRadius = PUMPKIN_COLLIDER_RADIUS * pumpkinScale;
   const outerSide = getStationSide(stationIndex);
   const isActive = useGameStore(
     (state) =>
@@ -83,10 +92,12 @@ export function Station({ level, stationIndex }: Props) {
         linearDamping={PUMPKIN_LINEAR_DAMPING}
         angularDamping={PUMPKIN_ANGULAR_DAMPING}
       >
-        <PumpkinModel faceParams={level.pumpkin.faceParams} />
+        <group scale={pumpkinScale}>
+          <PumpkinModel faceParams={level.pumpkin.faceParams} />
+        </group>
         <CylinderCollider
-          args={[PUMPKIN_COLLIDER_HALF_HEIGHT, PUMPKIN_COLLIDER_RADIUS]}
-          position={[0, PUMPKIN_COLLIDER_HALF_HEIGHT, 0]}
+          args={[scaledColliderHalfHeight, scaledColliderRadius]}
+          position={[0, scaledColliderHalfHeight, 0]}
         />
       </RigidBody>
     </group>

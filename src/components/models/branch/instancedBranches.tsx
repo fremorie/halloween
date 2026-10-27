@@ -12,13 +12,19 @@ import { useBranchGLTF } from "./useBranchGLTF";
 import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";
 import { useLeafMaterial } from "./useLeafMaterial";
+import { YarnWrap } from "./yarnWrap";
 
 type Props = {
   graph: Graph;
   edgeThreading: boolean[];
+  edgeThreadStartNodeIds: (number | null)[];
 };
 
-export function InstancedBranches({ graph, edgeThreading }: Props) {
+export function InstancedBranches({
+  graph,
+  edgeThreading,
+  edgeThreadStartNodeIds,
+}: Props) {
   const { nodes, materials } = useBranchGLTF();
   const leafNodes = useMemo(
     () => [nodes.Leaf001, nodes.Leaf002, nodes.Leaf003, nodes.Leaf004],
@@ -69,6 +75,11 @@ export function InstancedBranches({ graph, edgeThreading }: Props) {
         castShadow
         receiveShadow
         material-shadowSide={FrontSide}
+      />
+      <YarnWrap
+        stemMatrices={stemMatrices}
+        edges={graph.edges}
+        edgeThreadStartNodeIds={edgeThreadStartNodeIds}
       />
     </>
   );

@@ -6,6 +6,7 @@ import { RevealSystem } from "@/components/materials/revealSystem";
 import { useGameStore } from "@/store/gameStore";
 import { GrassField } from "@/components/grass/GrassField";
 import { Trees } from "@/components/trees/trees";
+import { ScatteredPumpkins } from "@/components/scatteredPumpkins/scatteredPumpkins";
 import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
@@ -27,6 +28,7 @@ export function World() {
       <Lights />
       <Ground />
       <Trees />
+      <ScatteredPumpkins />
       <GrassField />
       {levels.map((level, stationIndex) => (
         <Station
