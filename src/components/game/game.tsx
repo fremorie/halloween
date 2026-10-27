@@ -6,6 +6,7 @@ import { useState } from "react";
 import { GameHud } from "@/components/hud/gameHud";
 import { LoadingScreen } from "@/components/ui/loadingScreen/loadingScreen";
 import { useGameStore } from "@/store/gameStore";
+import { useThemeMusic } from "./useThemeMusic";
 
 const Experience = dynamic(
   () =>
@@ -17,6 +18,7 @@ const Experience = dynamic(
 
 export function Game() {
   const startIntro = useGameStore((state) => state.startIntro);
+  const { playThemeMusicWithFadeIn } = useThemeMusic();
   const [isTitleIntroDone, setIsTitleIntroDone] = useState(false);
   const [isSceneReady, setIsSceneReady] = useState(false);
 
@@ -25,7 +27,10 @@ export function Game() {
       <LoadingScreen
         isSceneReady={isSceneReady}
         onTitleIntroComplete={() => setIsTitleIntroDone(true)}
-        onStart={startIntro}
+        onStart={() => {
+          startIntro();
+          playThemeMusicWithFadeIn();
+        }}
       />
       {isTitleIntroDone && (
         <Experience onSceneReady={() => setIsSceneReady(true)} />
