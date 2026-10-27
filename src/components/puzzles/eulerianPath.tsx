@@ -10,6 +10,7 @@ import {
   getCurrentNodeId,
   getEdgeThreading,
   getEdgeThreadStartNodeIds,
+  getNodeYarnColor,
 } from "@/utils/puzzle";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
@@ -77,7 +78,10 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
       />
 
       {currentNodeId !== null && (
-        <DragLine startPosition={graph.nodes[currentNodeId].position} />
+        <DragLine
+          startPosition={graph.nodes[currentNodeId].position}
+          yarnColor={getNodeYarnColor(currentNodeId)}
+        />
       )}
 
       <RejectionMessage graph={graph} levelIndex={levelIndex} />
