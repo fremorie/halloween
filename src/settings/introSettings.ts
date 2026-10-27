@@ -1,4 +1,6 @@
 import type { IntroBeat } from "@/types/intro";
+import { getTypingDurationInSeconds } from "@/components/ui/typewriter/typingRhythm";
+import { CAT_SPEECH_CHARACTERS_PER_SECOND } from "@/settings/speechSettings";
 
 export const INTRO_BEAT_ORDER: IntroBeat[] = [
   "flyIn",
@@ -6,18 +8,23 @@ export const INTRO_BEAT_ORDER: IntroBeat[] = [
   "askForHelp",
 ];
 
+export const INTRO_LINES: Record<Exclude<IntroBeat, "flyIn">, string> = {
+  complain:
+    "Um... Hello! The name's Marcelino. It's almost time to go trick-or-treating... And I don't have a costume.",
+  askForHelp: "Will you help me make one?",
+};
+
+export const INTRO_TEXT = `${INTRO_LINES.complain} ${INTRO_LINES.askForHelp}`;
+
 export const INTRO_BEAT_DURATIONS: Record<
   Exclude<IntroBeat, "askForHelp">,
   number
 > = {
   flyIn: 7,
-  complain: 4.5,
-};
-
-export const INTRO_LINES: Record<Exclude<IntroBeat, "flyIn">, string> = {
-  complain:
-    "Um... Hello! The name's Marcelino. It's almost time to go trick-or-treating... And I don't have a costume.",
-  askForHelp: "Will you help me make one?",
+  complain: getTypingDurationInSeconds(
+    INTRO_TEXT,
+    CAT_SPEECH_CHARACTERS_PER_SECOND,
+  ),
 };
 
 export const INTRO_DILATED_PUPIL_BEATS: IntroBeat[] = ["askForHelp"];
