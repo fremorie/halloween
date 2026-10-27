@@ -39,3 +39,4 @@ export const YARN_WRAP_RADIUS = 0.11;
 export const YARN_STRAND_RADIUS = 0.03;
 export const YARN_STRAND_RADIAL_SEGMENTS = 6;
 export const YARN_STRAND_LENGTH_SEGMENTS = 256;
+export const YARN_TURNS_PER_UNIT_LENGTH = 8;
