@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
   images: { unoptimized: true },
   reactCompiler: true,
+  devIndicators: false,
   turbopack: {
     rules: {
       "*.css": {

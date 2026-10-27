@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { GameHud } from "@/components/hud/gameHud";
 import { LoadingScreen } from "@/components/ui/loadingScreen/loadingScreen";
+import { SoundToggleButton } from "@/components/ui/soundToggleButton/soundToggleButton";
 import { useGameStore } from "@/store/gameStore";
 import { useThemeMusic } from "./useThemeMusic";
 
@@ -36,6 +37,7 @@ export function Game() {
         <Experience onSceneReady={() => setIsSceneReady(true)} />
       )}
       <GameHud />
+      <SoundToggleButton />
     </>
   );
 }
