@@ -1,4 +1,3 @@
-uniform vec3 uYarnColor;
 uniform vec3 uSunDirection;
 uniform float uPlyCount;
 uniform float uPlyTwistsPerUnitLength;
@@ -12,6 +11,8 @@ varying float vWrapProgress;
 varying vec3 vWorldNormal;
 varying vec2 vStrandCrossSection;
 varying float vDistanceAlongStrand;
+varying float vWrapsFromEnd;
+varying vec3 vYarnColor;
 
 #include <fog_pars_fragment>
 
@@ -21,7 +22,8 @@ const float TAU = 6.28318530718;
 const float INSIDE_DARKNESS = 0.35;
 
 void main() {
-    bool isUnwrapped = vWrapProgress <= 0.0 || vAlongBranch > vWrapProgress;
+    float distanceFromWrapStart = mix(vAlongBranch, 1.0 - vAlongBranch, vWrapsFromEnd);
+    bool isUnwrapped = vWrapProgress <= 0.0 || distanceFromWrapStart > vWrapProgress;
     if (isUnwrapped) discard;
 
     float aroundStrandAngle = atan(vStrandCrossSection.y, vStrandCrossSection.x);
@@ -33,7 +35,7 @@ void main() {
     vec3 ambientLight = hemiLight(normal, uGroundLight, uSkyLight);
     float sunLight = max(dot(normal, uSunDirection), 0.0) * uSunStrength;
 
-    vec3 litYarnColor = uYarnColor * plyShading * (ambientLight + sunLight);
+    vec3 litYarnColor = vYarnColor * plyShading * (ambientLight + sunLight);
     if (!gl_FrontFacing) litYarnColor *= INSIDE_DARKNESS;
 
     gl_FragColor = vec4(litYarnColor, 1.0);

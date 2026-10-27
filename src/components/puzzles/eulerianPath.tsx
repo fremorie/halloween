@@ -9,6 +9,7 @@ import {
   EMPTY_ATTEMPT,
   getCurrentNodeId,
   getEdgeThreading,
+  getEdgeThreadStartNodeIds,
 } from "@/utils/puzzle";
 import { DragLine } from "./dragLine";
 import { PuzzleNode } from "./puzzleNode";
@@ -42,6 +43,11 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
     [graph, attempt],
   );
 
+  const edgeThreadStartNodeIds = useMemo(
+    () => getEdgeThreadStartNodeIds(graph, attempt),
+    [graph, attempt],
+  );
+
   const getNodeState = (nodeId: number, pathOrder: number): NodeState => {
     if (nodeId === currentNodeId) return "current";
     if (pathOrder !== -1) return "visited";
@@ -64,7 +70,11 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
         );
       })}
 
-      <InstancedBranches graph={graph} edgeThreading={edgeThreading} />
+      <InstancedBranches
+        graph={graph}
+        edgeThreading={edgeThreading}
+        edgeThreadStartNodeIds={edgeThreadStartNodeIds}
+      />
 
       {currentNodeId !== null && (
         <DragLine startPosition={graph.nodes[currentNodeId].position} />

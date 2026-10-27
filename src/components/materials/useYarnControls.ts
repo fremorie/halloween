@@ -2,7 +2,6 @@ import { useControls } from "leva";
 import { useLayoutEffect } from "react";
 
 import {
-  YARN_COLOR,
   YARN_GROUND_LIGHT,
   YARN_PLY_COUNT,
   YARN_PLY_GROOVE_DARKNESS,
@@ -17,7 +16,6 @@ import { yarnUniforms } from "./yarnMaterial";
 
 export function useYarnControls() {
   const {
-    yarnColor,
     wrapGap,
     strandRadius,
     turnsPerUnitLength,
@@ -28,7 +26,6 @@ export function useYarnControls() {
     groundLight,
     sunStrength,
   } = useControls("Yarn", {
-    yarnColor: YARN_COLOR,
     wrapGap: { value: YARN_WRAP_GAP, min: -0.03, max: 0.05, step: 0.002 },
     strandRadius: {
       value: YARN_STRAND_RADIUS,
@@ -61,7 +58,6 @@ export function useYarnControls() {
   });
 
   useLayoutEffect(() => {
-    yarnUniforms.uYarnColor.value.set(yarnColor);
     yarnUniforms.uWrapGap.value = wrapGap;
     yarnUniforms.uStrandRadius.value = strandRadius;
     yarnUniforms.uTurnsPerUnitLength.value = turnsPerUnitLength;
@@ -72,7 +68,6 @@ export function useYarnControls() {
     yarnUniforms.uGroundLight.value.set(groundLight);
     yarnUniforms.uSunStrength.value = sunStrength;
   }, [
-    yarnColor,
     wrapGap,
     strandRadius,
     turnsPerUnitLength,

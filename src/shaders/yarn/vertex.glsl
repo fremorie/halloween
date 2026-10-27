@@ -1,4 +1,6 @@
 attribute float aWrapProgress;
+attribute float aWrapsFromEnd;
+attribute vec3 aYarnColor;
 
 uniform float uWrapGap;
 uniform float uStrandRadius;
@@ -10,6 +12,8 @@ varying float vWrapProgress;
 varying vec3 vWorldNormal;
 varying vec2 vStrandCrossSection;
 varying float vDistanceAlongStrand;
+varying float vWrapsFromEnd;
+varying vec3 vYarnColor;
 
 #include <fog_pars_vertex>
 
@@ -80,4 +84,6 @@ void main() {
     vWorldNormal = normalize(mat3(modelMatrix) * branchRotation * strandNormal);
     vStrandCrossSection = position.yz;
     vDistanceAlongStrand = wrapAngle * length(helixVelocityPerRadian);
+    vWrapsFromEnd = aWrapsFromEnd;
+    vYarnColor = aYarnColor;
 }

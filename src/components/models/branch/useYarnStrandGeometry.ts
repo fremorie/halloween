@@ -22,6 +22,14 @@ export function useYarnStrandGeometry(instanceCount: number) {
         .setAttribute(
           "aWrapProgress",
           new InstancedBufferAttribute(new Float32Array(instanceCount), 1),
+        )
+        .setAttribute(
+          "aWrapsFromEnd",
+          new InstancedBufferAttribute(new Float32Array(instanceCount), 1),
+        )
+        .setAttribute(
+          "aYarnColor",
+          new InstancedBufferAttribute(new Float32Array(instanceCount * 3), 3),
         ),
     [instanceCount],
   );

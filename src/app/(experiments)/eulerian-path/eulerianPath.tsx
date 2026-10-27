@@ -8,6 +8,7 @@ import { InstancedBranches } from "@/components/models/branch/instancedBranches"
 const level = getGroundedGraph(hat);
 
 const allThreaded = level.edges.map(() => true);
+const allThreadedFromStart = level.edges.map((edge) => edge.a);
 
 export function EulerianPath() {
   const yarnMaterials = useYarnMaterials();
@@ -28,7 +29,11 @@ export function EulerianPath() {
         );
       })}
 
-      <InstancedBranches graph={level} edgeThreading={allThreaded} />
+      <InstancedBranches
+        graph={level}
+        edgeThreading={allThreaded}
+        edgeThreadStartNodeIds={allThreadedFromStart}
+      />
     </>
   );
 }

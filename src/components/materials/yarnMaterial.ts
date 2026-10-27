@@ -9,7 +9,6 @@ import {
 } from "three";
 
 import {
-  YARN_COLOR,
   YARN_GROUND_LIGHT,
   YARN_PLY_COUNT,
   YARN_PLY_GROOVE_DARKNESS,
@@ -26,7 +25,6 @@ import fragmentShader from "@/shaders/yarn/fragment.glsl";
 import vertexShader from "@/shaders/yarn/vertex.glsl";
 
 export const yarnUniforms = {
-  uYarnColor: new Uniform(new Color(YARN_COLOR)),
   uWrapGap: new Uniform(YARN_WRAP_GAP),
   uStrandRadius: new Uniform(YARN_STRAND_RADIUS),
   uTurnsPerUnitLength: new Uniform(YARN_TURNS_PER_UNIT_LENGTH),
