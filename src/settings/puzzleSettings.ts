@@ -1,4 +1,5 @@
 import type { Refusal } from "@/types/puzzle";
+import { YARN_PALETTE } from "@/settings/yarnPalette";
 
 export const DRAG_LINE_COLOR = "#448c2e";
 export const DRAG_LINE_RADIUS = 0.05;
@@ -35,10 +36,17 @@ export const KNITTING_BALL_MIN_TURNS = 1;
 export const KNITTING_BALL_MAX_TURNS = 3;
 export const KNITTING_BALL_COVER_MARGIN = 1.03;
 
-export const YARN_STRAND_RADIUS = 0.03;
+export const YARN_STRAND_RADIUS = 0.05;
 export const YARN_STRAND_RADIAL_SEGMENTS = 6;
 export const YARN_STRAND_LENGTH_SEGMENTS = 256;
 export const YARN_TURNS_PER_UNIT_LENGTH = 8;
-export const YARN_WRAP_GAP = 0;
+export const YARN_WRAP_GAP = -0.03;
 export const YARN_WRAP_DURATION = 0.7;
 export const YARN_WRAP_EASE = "power1.inOut";
+export const YARN_COLOR = YARN_PALETTE[1];
+export const YARN_PLY_COUNT = 3;
+export const YARN_PLY_TWISTS_PER_UNIT_LENGTH = 8;
+export const YARN_PLY_GROOVE_DARKNESS = 0.35;
+export const YARN_SKY_LIGHT = "#fffcf7";
+export const YARN_GROUND_LIGHT = "#b3aaa2";
+export const YARN_SUN_STRENGTH = 0.5;

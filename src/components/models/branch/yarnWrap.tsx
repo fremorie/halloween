@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import type { Matrix4 } from "three";
 
 import { createYarnMaterial } from "@/components/materials/yarnMaterial";
+import { useYarnControls } from "@/components/materials/useYarnControls";
 import { useInstanceMatrices } from "./useInstanceMatrices";
 import { useYarnStrandGeometry } from "./useYarnStrandGeometry";
 import { useYarnWrapping } from "./useYarnWrapping";
@@ -16,6 +17,7 @@ export function YarnWrap({ stemMatrices, edgeThreading }: Props) {
   const yarnMaterial = useMemo(() => createYarnMaterial(), []);
   const yarnInstancesRef = useInstanceMatrices(stemMatrices);
   useYarnWrapping(yarnStrandGeometry, edgeThreading);
+  useYarnControls();
 
   useEffect(() => () => yarnMaterial.dispose(), [yarnMaterial]);
 
