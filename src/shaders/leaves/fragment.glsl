@@ -1,9 +1,11 @@
 uniform sampler2D uTexture;
+uniform sampler2D uNoiseTexture;
 uniform vec3 uLightColor;
 uniform vec3 uDarkColor;
 
 varying float vRotation;
 varying float vTumble;
+varying float vSeed;
 
 vec2 rotate(vec2 uv, float angle) {
     float s = sin(angle);
@@ -33,7 +35,10 @@ void main() {
     float mask = texture2D(uTexture, uv).r;
     float alpha = smoothstep(0.2, 0.6, mask) * inBounds;
 
-    vec3 finalColor = mix(uDarkColor, uLightColor, uv.y);
+    vec2 noiseUv = uv * 0.3 + vec2(vSeed, fract(vSeed * 7.13));
+    float leafNoise = texture2D(uNoiseTexture, noiseUv).r;
+
+    vec3 finalColor = mix(uDarkColor, uLightColor, uv.y + (leafNoise - 0.5) * 0.6);
 
     gl_FragColor = vec4(finalColor, alpha);
 
