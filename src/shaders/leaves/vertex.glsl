@@ -17,6 +17,8 @@ varying float vTumble;
 varying float vSeed;
 varying vec3 vWorldPosition;
 
+#include <fog_pars_vertex>
+
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
@@ -46,6 +48,9 @@ void main() {
 
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
+
+    vec4 mvPosition = viewPosition;
+    #include <fog_vertex>
 
     gl_Position = projectedPosition;
 

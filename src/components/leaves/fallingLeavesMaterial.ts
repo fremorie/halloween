@@ -1,5 +1,11 @@
 import { shaderMaterial } from "@react-three/drei";
-import { Color, type Texture, Uniform } from "three";
+import {
+  Color,
+  type Texture,
+  Uniform,
+  UniformsLib,
+  UniformsUtils,
+} from "three";
 
 import { revealUniforms } from "@/components/materials/revealUniforms";
 import fragmentShader from "@/shaders/leaves/fragment.glsl";
@@ -27,6 +33,8 @@ export function createFallingLeavesMaterial(leafTexture: Texture) {
   const material = new FallingLeavesMaterial();
 
   Object.assign(material.uniforms, revealUniforms);
+  Object.assign(material.uniforms, UniformsUtils.clone(UniformsLib.fog));
+  material.fog = true;
 
   material.transparent = true;
   material.depthWrite = false;

@@ -7,6 +7,8 @@ varying float vTumble;
 varying float vSeed;
 varying vec3 vWorldPosition;
 
+#include <fog_pars_fragment>
+
 #include "../includes/reveal.glsl"
 
 vec2 rotate(vec2 uv, float angle) {
@@ -47,4 +49,5 @@ void main() {
     gl_FragColor = vec4(finalColor, alpha);
 
     #include <colorspace_fragment>
+    #include <fog_fragment>
 }
