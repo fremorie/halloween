@@ -15,3 +15,4 @@ export const WHOOSH_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/w
 export const WHOOSH_SOUND_VOLUME = 0.1;
 export const SEWING_MACHINE_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/sewing-machine.mp3`;
 export const SEWING_MACHINE_SOUND_VOLUME = 0.3;
+export const SEWING_MACHINE_PITCH_RISE_IN_SEMITONES = 12;
