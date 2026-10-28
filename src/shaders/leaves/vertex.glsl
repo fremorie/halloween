@@ -1,6 +1,7 @@
 uniform float uTime;
 uniform float uGroundLevel;
 uniform float uTopLevel;
+uniform float uPixelRatio;
 
 attribute float aSeed;
 attribute float aSize;
@@ -57,7 +58,7 @@ void main() {
     float wrapEdgeScale =
         1.0 - smoothstep(wrapHalfLength - 1.0, wrapHalfLength, abs(wrappedDistanceAlongWind));
 
-    gl_PointSize = 600.0 * aSize * heightScale * wrapEdgeScale;
+    gl_PointSize = 600.0 * aSize * heightScale * wrapEdgeScale * uPixelRatio;
     gl_PointSize *= 1.0 / -viewPosition.z;
 
     if (gl_PointSize < 1.0) {

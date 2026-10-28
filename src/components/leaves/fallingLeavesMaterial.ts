@@ -7,6 +7,7 @@ import vertexShader from "@/shaders/leaves/vertex.glsl";
 import { LEAVES_GROUND_LEVEL, LEAVES_SPAWN_HEIGHT } from "./constants";
 
 export const fallingLeavesTimeUniform = new Uniform(0);
+export const fallingLeavesPixelRatioUniform = new Uniform(1);
 
 const FallingLeavesMaterial = shaderMaterial(
   {
@@ -17,6 +18,7 @@ const FallingLeavesMaterial = shaderMaterial(
     uLightColor: new Color(),
     uGroundLevel: LEAVES_GROUND_LEVEL,
     uTopLevel: LEAVES_SPAWN_HEIGHT,
+    uPixelRatio: 1,
   },
   vertexShader,
   fragmentShader,
@@ -29,6 +31,7 @@ export function createFallingLeavesMaterial(leafTexture: Texture) {
   material.depthWrite = false;
 
   material.uniforms.uTime = fallingLeavesTimeUniform;
+  material.uniforms.uPixelRatio = fallingLeavesPixelRatioUniform;
   material.uniforms.uTexture.value = leafTexture;
   material.uniforms.uNoiseTexture = revealNoiseTextureUniform;
 

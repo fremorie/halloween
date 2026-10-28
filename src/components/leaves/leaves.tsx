@@ -1,11 +1,12 @@
-import { useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useLayoutEffect, useMemo } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { BufferAttribute, BufferGeometry, LinearFilter } from "three";
 
 import { LEAVES_TEXTURE_PATH, LEAVES_TIME_SCALE } from "./constants";
 import {
   createFallingLeavesMaterial,
+  fallingLeavesPixelRatioUniform,
   fallingLeavesTimeUniform,
 } from "./fallingLeavesMaterial";
 import { generateLeavesPositions } from "./generateLeavesPositions";
@@ -34,6 +35,12 @@ export function Leaves() {
   );
 
   useFallingLeavesColorControls(fallingLeavesMaterial);
+
+  const devicePixelRatio = useThree((state) => state.viewport.dpr);
+
+  useLayoutEffect(() => {
+    fallingLeavesPixelRatioUniform.value = devicePixelRatio;
+  }, [devicePixelRatio]);
 
   useFrame((_, delta) => {
     fallingLeavesTimeUniform.value += delta * LEAVES_TIME_SCALE;
