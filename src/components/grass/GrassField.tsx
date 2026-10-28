@@ -17,6 +17,7 @@ import {
 import { useGrassColorControls } from "./useGrassColorControls";
 import { useGrassTrail } from "./useGrassTrail";
 import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
+import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap.jpg`;
 
@@ -53,7 +54,7 @@ export function GrassField() {
 
   return (
     <>
-      <mesh rotation-x={-Math.PI / 2} renderOrder={-1}>
+      <mesh rotation-x={-Math.PI / 2} renderOrder={RENDER_ORDER.ground}>
         <planeGeometry args={[GRASS_MAP_WORLD_SIZE, GRASS_MAP_WORLD_SIZE]} />
         <CustomShaderMaterial
           baseMaterial={MeshBasicMaterial}

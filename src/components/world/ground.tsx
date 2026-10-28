@@ -5,12 +5,14 @@ import {
   GROUND_COLLIDER_CENTRE,
   GROUND_COLLIDER_HALF_EXTENTS,
 } from "@/settings/physicsSettings";
+import { RENDER_ORDER } from "@/utils/renderOrder";
 
 export function Ground() {
   return (
     <>
       <mesh
         receiveShadow
+        renderOrder={RENDER_ORDER.shadows}
         position-y={0}
         rotation-x={-Math.PI * 0.5}
         scale={400}

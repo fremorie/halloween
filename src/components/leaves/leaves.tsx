@@ -10,6 +10,7 @@ import {
 } from "./fallingLeavesMaterial";
 import { generateLeavesPositions } from "./generateLeavesPositions";
 import { useFallingLeavesColorControls } from "./useFallingLeavesColorControls";
+import { RENDER_ORDER } from "@/utils/renderOrder";
 
 export function Leaves() {
   const leafTexture = useTexture(LEAVES_TEXTURE_PATH, (loadedLeafTexture) => {
@@ -37,7 +38,13 @@ export function Leaves() {
     fallingLeavesTimeUniform.value += delta * LEAVES_TIME_SCALE;
   });
 
-  return <points geometry={leavesGeometry} material={fallingLeavesMaterial} />;
+  return (
+    <points
+      renderOrder={RENDER_ORDER.leaves}
+      geometry={leavesGeometry}
+      material={fallingLeavesMaterial}
+    />
+  );
 }
 
 useTexture.preload(LEAVES_TEXTURE_PATH);

@@ -8,6 +8,7 @@ import { createPuzzleBackgroundMaterial } from "@/components/puzzleBackground/ma
 import { PUZZLE_BACKGROUND_PLACEMENT_BY_PIECE } from "@/components/puzzleBackground/constants";
 import { PUZZLE_BACKGROUND_FADE_DURATION } from "@/settings/journeySettings";
 import type { CostumePiece } from "@/types/level";
+import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const material = createPuzzleBackgroundMaterial();
 
@@ -48,7 +49,7 @@ export function PuzzleBackground({ piece, isActive }: Props) {
     <mesh
       ref={backgroundMeshRef}
       visible={false}
-      renderOrder={1}
+      renderOrder={RENDER_ORDER.puzzleBackground}
       position-y={centreY}
       position-z={-YARN_BALL_RADIUS}
       scale={[width, height, 1]}
