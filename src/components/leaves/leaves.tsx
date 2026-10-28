@@ -7,6 +7,11 @@ import { useControls, folder } from "leva";
 import vertexShader from "@/shaders/leaves/vertex.glsl";
 import fragmentShader from "@/shaders/leaves/fragment.glsl";
 import { generateLeavesPositions } from "./generateLeavesPositions";
+import {
+  LEAVES_GROUND_LEVEL,
+  LEAVES_SPAWN_HEIGHT,
+  TEXTURE_PATH,
+} from "./constants";
 
 const PetalMaterial = shaderMaterial(
   {
@@ -14,8 +19,8 @@ const PetalMaterial = shaderMaterial(
     uTexture: null,
     uDarkColor: new THREE.Color("#c89580"),
     uLightColor: new THREE.Color("#e5d9d1"),
-    uGroundLevel: 0,
-    uTopLevel: 10,
+    uGroundLevel: LEAVES_GROUND_LEVEL,
+    uTopLevel: LEAVES_SPAWN_HEIGHT,
   },
   vertexShader,
   fragmentShader,
@@ -24,9 +29,7 @@ const PetalMaterial = shaderMaterial(
 extend({ PetalMaterial });
 
 export function Leaves() {
-  const petalTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/petal.png`,
-  );
+  const petalTexture = useTexture(TEXTURE_PATH);
 
   // eslint-disable-next-line
   petalTexture.minFilter = THREE.LinearFilter;
@@ -92,4 +95,4 @@ export function Leaves() {
   );
 }
 
-useTexture.preload(`${process.env.NEXT_PUBLIC_BASE_PATH}/textures/petal.png`);
+useTexture.preload(TEXTURE_PATH);

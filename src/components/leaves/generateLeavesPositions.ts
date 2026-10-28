@@ -1,12 +1,14 @@
 import { MathUtils } from "three";
 
+import { LEAVES_SPAWN_HEIGHT } from "./constants";
+
 export function generateLeavesPositions(
   count: number = 5000,
   minimumX: number = -20,
   maximumX: number = 20,
   nearestZ: number = -50,
   farthestZ: number = 20,
-  spawnHeight: number = 10,
+  spawnHeight: number = LEAVES_SPAWN_HEIGHT,
 ) {
   const positions = new Float32Array(count * 3);
   const seeds = new Float32Array(count);
