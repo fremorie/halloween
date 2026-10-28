@@ -7,6 +7,7 @@ import { GameHud } from "@/components/hud/gameHud";
 import { LoadingScreen } from "@/components/ui/loadingScreen/loadingScreen";
 import { SoundToggleButton } from "@/components/ui/soundToggleButton/soundToggleButton";
 import { useGameStore } from "@/store/gameStore";
+import { useBirds } from "./useBirds";
 import { useThemeMusic } from "./useThemeMusic";
 
 const Experience = dynamic(
@@ -21,6 +22,7 @@ export function Game() {
   const startIntro = useGameStore((state) => state.startIntro);
   const loadSounds = useGameStore((state) => state.loadSounds);
   const { playThemeMusicWithFadeIn } = useThemeMusic();
+  const { playBirdsWithFadeIn } = useBirds();
   const [isTitleIntroDone, setIsTitleIntroDone] = useState(false);
   const [isSceneReady, setIsSceneReady] = useState(false);
 
@@ -36,6 +38,7 @@ export function Game() {
         onStart={() => {
           startIntro();
           playThemeMusicWithFadeIn();
+          playBirdsWithFadeIn();
         }}
       />
       {isTitleIntroDone && (

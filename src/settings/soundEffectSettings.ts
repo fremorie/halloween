@@ -8,3 +8,6 @@ export const FOOTSTEPS_MIN_WALK_PACE = 0.1;
 export const FOOTSTEPS_SOUND_PLAYBACK_RATE = 1.5;
 export const CAPE_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/cape.mp3`;
 export const CAPE_SOUND_VOLUME = 0.8;
+export const BIRDS_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/birds.mp3`;
+export const BIRDS_SOUND_VOLUME = 0.025;
+export const BIRDS_SOUND_FADE_IN_DURATION_IN_SECONDS = 6;
