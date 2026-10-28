@@ -14,6 +14,8 @@ import {
   KNITTING_SOUND_VOLUME,
   MEOW_SOUND_SOURCE,
   MEOW_SOUND_VOLUME,
+  SEWING_MACHINE_SOUND_SOURCE,
+  SEWING_MACHINE_SOUND_VOLUME,
   WHOOSH_SOUND_SOURCE,
   WHOOSH_SOUND_VOLUME,
 } from "@/settings/soundEffectSettings";
@@ -26,6 +28,7 @@ export type SoundSlice = {
   capeSound: Howl | null;
   birdsSound: Howl | null;
   whooshSound: Howl | null;
+  sewingMachineSound: Howl | null;
   loadSounds: () => void;
 };
 
@@ -40,6 +43,7 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
   capeSound: null,
   birdsSound: null,
   whooshSound: null,
+  sewingMachineSound: null,
 
   loadSounds: () => {
     if (get().themeMusic !== null) {
@@ -78,6 +82,10 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
       whooshSound: new Howl({
         src: [WHOOSH_SOUND_SOURCE],
         volume: WHOOSH_SOUND_VOLUME,
+      }),
+      sewingMachineSound: new Howl({
+        src: [SEWING_MACHINE_SOUND_SOURCE],
+        volume: SEWING_MACHINE_SOUND_VOLUME,
       }),
     });
   },
