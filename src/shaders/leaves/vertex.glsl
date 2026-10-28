@@ -15,6 +15,7 @@ const float wrapHalfLength = 5.0;
 varying float vRotation;
 varying float vTumble;
 varying float vSeed;
+varying vec3 vWorldPosition;
 
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
@@ -72,4 +73,5 @@ void main() {
 
     vTumble = sin(uTime * 9.0 + phase);
     vSeed = aSeed;
+    vWorldPosition = modelPosition.xyz;
 }

@@ -1,7 +1,7 @@
 import { shaderMaterial } from "@react-three/drei";
 import { Color, type Texture, Uniform } from "three";
 
-import { revealNoiseTextureUniform } from "@/components/materials/revealUniforms";
+import { revealUniforms } from "@/components/materials/revealUniforms";
 import fragmentShader from "@/shaders/leaves/fragment.glsl";
 import vertexShader from "@/shaders/leaves/vertex.glsl";
 import { LEAVES_GROUND_LEVEL, LEAVES_SPAWN_HEIGHT } from "./constants";
@@ -13,7 +13,6 @@ const FallingLeavesMaterial = shaderMaterial(
   {
     uTime: 0,
     uTexture: null as Texture | null,
-    uNoiseTexture: null as Texture | null,
     uDarkColor: new Color(),
     uLightColor: new Color(),
     uGroundLevel: LEAVES_GROUND_LEVEL,
@@ -27,13 +26,14 @@ const FallingLeavesMaterial = shaderMaterial(
 export function createFallingLeavesMaterial(leafTexture: Texture) {
   const material = new FallingLeavesMaterial();
 
+  Object.assign(material.uniforms, revealUniforms);
+
   material.transparent = true;
   material.depthWrite = false;
 
   material.uniforms.uTime = fallingLeavesTimeUniform;
   material.uniforms.uViewportHeight = fallingLeavesViewportHeightUniform;
   material.uniforms.uTexture.value = leafTexture;
-  material.uniforms.uNoiseTexture = revealNoiseTextureUniform;
 
   return material;
 }
