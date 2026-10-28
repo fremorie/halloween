@@ -6,7 +6,7 @@ import { useControls, folder } from "leva";
 
 import vertexShader from "@/shaders/leaves/vertex.glsl";
 import fragmentShader from "@/shaders/leaves/fragment.glsl";
-import { generateCherryBlossomPetalPositions } from "./generateCherryBlossomPetalPositions";
+import { generateLeavesPositions } from "./generateLeavesPositions";
 
 const PetalMaterial = shaderMaterial(
   {
@@ -41,7 +41,7 @@ export function Leaves() {
 
   const petalsCount = 100;
   const { positions, seeds, sizes } = useMemo(
-    () => generateCherryBlossomPetalPositions(petalsCount),
+    () => generateLeavesPositions(petalsCount),
     [],
   );
 

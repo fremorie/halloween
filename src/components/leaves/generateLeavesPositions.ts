@@ -1,4 +1,4 @@
-export function generateCherryBlossomPetalPositions(
+export function generateLeavesPositions(
   count = 5000,
   sceneRadius = 0.8,
   sceneHeight = 2,
