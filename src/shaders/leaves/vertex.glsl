@@ -6,7 +6,7 @@ attribute float aSeed;
 attribute float aSize;
 attribute vec2 aWrapCenter;
 
-const vec2 windDirection = vec2(1.0, 0.0);
+const vec2 windDirection = normalize(vec2(1.0, -0.3));
 const float windSpeed = 0.6;
 const float wrapHalfLength = 5.0;
 
