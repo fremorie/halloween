@@ -14,6 +14,8 @@ const PetalMaterial = shaderMaterial(
     uTexture: null,
     uDarkColor: new THREE.Color("#c89580"),
     uLightColor: new THREE.Color("#e5d9d1"),
+    uGroundLevel: 0,
+    uTopLevel: 10,
   },
   vertexShader,
   fragmentShader,
@@ -39,7 +41,7 @@ export function Leaves() {
     }
   });
 
-  const petalsCount = 100;
+  const petalsCount = 5000;
   const { positions, seeds, sizes } = useMemo(
     () => generateLeavesPositions(petalsCount),
     [],

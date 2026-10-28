@@ -1,4 +1,6 @@
 uniform float uTime;
+uniform float uGroundLevel;
+uniform float uTopLevel;
 
 attribute float aSeed;
 attribute float aSize;
@@ -17,10 +19,8 @@ void main() {
     modelPosition.y -= uTime * fallSpeed;
 
     // Loop back to top
-    float groundLevel = 0.5;
-    float topLevel = 2.0;
     modelPosition.y =
-        groundLevel + mod(modelPosition.y - groundLevel, topLevel - groundLevel);
+        uGroundLevel + mod(modelPosition.y - uGroundLevel, uTopLevel - uGroundLevel);
 
     // Wind
     float swaySlow = sin(uTime * 6.0 + phase);
@@ -36,9 +36,9 @@ void main() {
     // Grow in at the top and shrink to nothing at the ground
     float fadeDistance = 0.25;
     float bottomScale =
-        smoothstep(groundLevel, groundLevel + fadeDistance, modelPosition.y);
+        smoothstep(uGroundLevel, uGroundLevel + fadeDistance, modelPosition.y);
     float topScale =
-        1.0 - smoothstep(topLevel - fadeDistance, topLevel, modelPosition.y);
+        1.0 - smoothstep(uTopLevel - fadeDistance, uTopLevel, modelPosition.y);
     float heightScale = bottomScale * topScale;
 
     gl_PointSize = 600.0 * aSize * heightScale;

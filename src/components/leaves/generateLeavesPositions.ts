@@ -1,7 +1,12 @@
+import { MathUtils } from "three";
+
 export function generateLeavesPositions(
-  count = 5000,
-  sceneRadius = 10,
-  sceneHeight = 2,
+  count: number = 5000,
+  minimumX: number = -20,
+  maximumX: number = 20,
+  nearestZ: number = -50,
+  farthestZ: number = 20,
+  spawnHeight: number = 10,
 ) {
   const positions = new Float32Array(count * 3);
   const seeds = new Float32Array(count);
@@ -10,16 +15,9 @@ export function generateLeavesPositions(
   for (let i = 0; i < count; i++) {
     const i3 = i * 3;
 
-    // Keep petals inside a circle
-    const angle = Math.random() * Math.PI * 2;
-    const radius = Math.sqrt(Math.random()) * sceneRadius;
-
-    const x = Math.sin(angle) * radius;
-    const z = Math.cos(angle) * radius;
-
-    positions[i3] = x;
-    positions[i3 + 1] = Math.random() * sceneHeight;
-    positions[i3 + 2] = z;
+    positions[i3] = MathUtils.lerp(minimumX, maximumX, Math.random());
+    positions[i3 + 1] = Math.random() * spawnHeight;
+    positions[i3 + 2] = MathUtils.lerp(nearestZ, farthestZ, Math.random());
 
     seeds[i] = Math.random();
 
