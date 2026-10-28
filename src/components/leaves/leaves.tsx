@@ -6,7 +6,7 @@ import { BufferAttribute, BufferGeometry, LinearFilter } from "three";
 import { LEAVES_TEXTURE_PATH, LEAVES_TIME_SCALE } from "./constants";
 import {
   createFallingLeavesMaterial,
-  fallingLeavesPixelRatioUniform,
+  fallingLeavesViewportHeightUniform,
   fallingLeavesTimeUniform,
 } from "./fallingLeavesMaterial";
 import { generateLeavesPositions } from "./generateLeavesPositions";
@@ -36,11 +36,12 @@ export function Leaves() {
 
   useFallingLeavesColorControls(fallingLeavesMaterial);
 
+  const canvasHeight = useThree((state) => state.size.height);
   const devicePixelRatio = useThree((state) => state.viewport.dpr);
 
   useLayoutEffect(() => {
-    fallingLeavesPixelRatioUniform.value = devicePixelRatio;
-  }, [devicePixelRatio]);
+    fallingLeavesViewportHeightUniform.value = canvasHeight * devicePixelRatio;
+  }, [canvasHeight, devicePixelRatio]);
 
   useFrame((_, delta) => {
     fallingLeavesTimeUniform.value += delta * LEAVES_TIME_SCALE;

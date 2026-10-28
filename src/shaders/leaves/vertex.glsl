@@ -1,12 +1,13 @@
 uniform float uTime;
 uniform float uGroundLevel;
 uniform float uTopLevel;
-uniform float uPixelRatio;
+uniform float uViewportHeight;
 
 attribute float aSeed;
 attribute float aSize;
 attribute vec2 aWrapCenter;
 
+const float leafWorldSize = 0.4;
 const vec2 windDirection = normalize(vec2(1.0, -0.3));
 const float windSpeed = 0.6;
 const float wrapHalfLength = 5.0;
@@ -58,8 +59,9 @@ void main() {
     float wrapEdgeScale =
         1.0 - smoothstep(wrapHalfLength - 1.0, wrapHalfLength, abs(wrappedDistanceAlongWind));
 
-    gl_PointSize = 600.0 * aSize * heightScale * wrapEdgeScale * uPixelRatio;
-    gl_PointSize *= 1.0 / -viewPosition.z;
+    float pixelsPerWorldUnit =
+        uViewportHeight * projectionMatrix[1][1] * 0.5 / -viewPosition.z;
+    gl_PointSize = leafWorldSize * aSize * heightScale * wrapEdgeScale * pixelsPerWorldUnit;
 
     if (gl_PointSize < 1.0) {
         gl_Position = vec4(9999.9);
