@@ -1,5 +1,5 @@
 export const MEOW_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/meow.mp3`;
-export const MEOW_SOUND_VOLUME = 0.8;
+export const MEOW_SOUND_VOLUME = 0.6;
 export const KNITTING_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/magic-spell.mp3`;
 export const KNITTING_SOUND_VOLUME = 0.5;
 export const FOOTSTEPS_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/footsteps.mp3`;
