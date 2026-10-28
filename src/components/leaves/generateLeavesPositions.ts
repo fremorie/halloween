@@ -3,6 +3,7 @@ import { MathUtils } from "three";
 import { TREE_CANOPY_RADIUS, TREE_PLACEMENTS } from "@/settings/treeSettings";
 import {
   LEAVES_COUNT,
+  LEAVES_FORWARD_OFFSET,
   LEAVES_SPAWN_HEIGHT,
   LEAVES_STRAY_AREA,
   LEAVES_STRAY_FRACTION,
@@ -14,12 +15,13 @@ function pickPointUnderRandomTree() {
   const angleAroundTrunk = Math.random() * Math.PI * 2;
   const distanceFromTrunk =
     Math.sqrt(Math.random()) * TREE_CANOPY_RADIUS * tree.scale;
+  const cloudCenterZ = tree.position[2] - LEAVES_FORWARD_OFFSET;
 
   return {
     x: tree.position[0] + Math.cos(angleAroundTrunk) * distanceFromTrunk,
-    z: tree.position[2] + Math.sin(angleAroundTrunk) * distanceFromTrunk,
+    z: cloudCenterZ + Math.sin(angleAroundTrunk) * distanceFromTrunk,
     wrapCenterX: tree.position[0],
-    wrapCenterZ: tree.position[2],
+    wrapCenterZ: cloudCenterZ,
   };
 }
 

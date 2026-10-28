@@ -5,6 +5,8 @@ export const LEAVES_SPAWN_HEIGHT = 10;
 export const LEAVES_GROUND_LEVEL = 0;
 export const LEAVES_TIME_SCALE = 0.2;
 
+export const LEAVES_FORWARD_OFFSET = 4;
+
 export const LEAVES_STRAY_FRACTION = 0.1;
 
 export const LEAVES_STRAY_AREA = {
