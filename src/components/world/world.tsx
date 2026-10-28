@@ -12,7 +12,8 @@ import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
 import { useRewardBeatTimer } from "./useRewardBeatTimer";
 import { useIntroBeatTimer } from "./useIntroBeatTimer";
-import { useMagicSpell } from "./useMagicSpell";
+import { useKnittingSound } from "./useKnittingSound";
+import { useWhooshSound } from "./useWhooshSound";
 import { useStationReveals } from "./useStationReveals";
 
 export function World() {
@@ -22,7 +23,8 @@ export function World() {
   useRewardBeatTimer();
   useIntroBeatTimer();
   useStationReveals();
-  useMagicSpell();
+  useKnittingSound();
+  useWhooshSound();
 
   return (
     <>
