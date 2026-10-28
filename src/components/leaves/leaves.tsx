@@ -46,9 +46,9 @@ export function Leaves() {
   );
 
   const { darkColor, lightColor } = useControls({
-    "Cherry blossom petals": folder({
-      darkColor: "#c89580",
-      lightColor: "#e5d9d1",
+    "Leaves particles": folder({
+      darkColor: "#da5017",
+      lightColor: "#c78175",
     }),
   });
 
