@@ -6,8 +6,8 @@ export function useFallingLeavesColorControls(
   fallingLeavesMaterial: ShaderMaterial,
 ) {
   const { darkColor, lightColor } = useControls("Leaves particles", {
-    darkColor: "#da5017",
-    lightColor: "#c78175",
+    darkColor: "#be5326",
+    lightColor: "#c0962a",
   });
 
   useLayoutEffect(() => {
