@@ -48,7 +48,7 @@ void main() {
         1.0 - smoothstep(topLevel - fadeDistance, topLevel, modelPosition.y);
     float heightScale = bottomScale * topScale;
 
-    gl_PointSize = 90.0 * aSize * heightScale;
+    gl_PointSize = 600.0 * aSize * heightScale;
     gl_PointSize *= 1.0 / -viewPosition.z;
 
     if (gl_PointSize < 1.0) {
