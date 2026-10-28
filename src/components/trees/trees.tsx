@@ -19,7 +19,7 @@ export function Trees() {
           />
           <CylinderCollider
             args={[0.75, 2]}
-            position={[tree.position[0], 0.75, tree.position[1]]}
+            position={[tree.position[0], 0.75, tree.position[2]]}
           />
         </RigidBody>
       ))}
