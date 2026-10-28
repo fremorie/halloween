@@ -1,6 +1,6 @@
 export function generateLeavesPositions(
   count = 5000,
-  sceneRadius = 0.8,
+  sceneRadius = 10,
   sceneHeight = 2,
 ) {
   const positions = new Float32Array(count * 3);
