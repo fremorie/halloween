@@ -3,7 +3,7 @@ export const LEAVES_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/texture
 export const LEAVES_COUNT = 1000;
 export const LEAVES_SPAWN_HEIGHT = 10;
 export const LEAVES_GROUND_LEVEL = 0;
-export const LEAVES_TIME_SCALE = 0.1;
+export const LEAVES_TIME_SCALE = 0.2;
 
 export const LEAVES_STRAY_FRACTION = 0.1;
 

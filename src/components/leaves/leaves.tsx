@@ -19,11 +19,12 @@ export function Leaves() {
   });
 
   const leavesGeometry = useMemo(() => {
-    const { positions, seeds, sizes } = generateLeavesPositions();
+    const { positions, seeds, sizes, wrapCenters } = generateLeavesPositions();
     const geometry = new BufferGeometry();
     geometry.setAttribute("position", new BufferAttribute(positions, 3));
     geometry.setAttribute("aSeed", new BufferAttribute(seeds, 1));
     geometry.setAttribute("aSize", new BufferAttribute(sizes, 1));
+    geometry.setAttribute("aWrapCenter", new BufferAttribute(wrapCenters, 2));
     return geometry;
   }, []);
 

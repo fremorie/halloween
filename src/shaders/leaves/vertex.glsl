@@ -4,6 +4,11 @@ uniform float uTopLevel;
 
 attribute float aSeed;
 attribute float aSize;
+attribute vec2 aWrapCenter;
+
+const vec2 windDirection = vec2(1.0, 0.0);
+const float windSpeed = 0.6;
+const float wrapHalfLength = 5.0;
 
 varying float vRotation;
 varying float vTumble;
@@ -20,6 +25,14 @@ void main() {
     // Loop back to top
     modelPosition.y =
         uGroundLevel + mod(modelPosition.y - uGroundLevel, uTopLevel - uGroundLevel);
+
+    float windTravel = uTime * windSpeed * mix(0.7, 1.3, aSeed);
+    vec2 offsetFromWrapCenter = modelPosition.xz - aWrapCenter;
+    float distanceAlongWind = dot(offsetFromWrapCenter, windDirection);
+    float wrappedDistanceAlongWind =
+        mod(distanceAlongWind + windTravel + wrapHalfLength, 2.0 * wrapHalfLength)
+        - wrapHalfLength;
+    modelPosition.xz += windDirection * (wrappedDistanceAlongWind - distanceAlongWind);
 
     // Wind
     float swaySlow = sin(uTime * 6.0 + phase);
@@ -40,7 +53,10 @@ void main() {
         1.0 - smoothstep(uTopLevel - fadeDistance, uTopLevel, modelPosition.y);
     float heightScale = bottomScale * topScale;
 
-    gl_PointSize = 600.0 * aSize * heightScale;
+    float wrapEdgeScale =
+        1.0 - smoothstep(wrapHalfLength - 1.0, wrapHalfLength, abs(wrappedDistanceAlongWind));
+
+    gl_PointSize = 600.0 * aSize * heightScale * wrapEdgeScale;
     gl_PointSize *= 1.0 / -viewPosition.z;
 
     if (gl_PointSize < 1.0) {
