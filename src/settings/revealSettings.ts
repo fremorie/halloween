@@ -5,3 +5,5 @@ export const REVEAL_EDGE_WIDTH = 1.6;
 export const REVEAL_EDGE_SOFTNESS = 0.1;
 export const REVEAL_WOBBLE_NOISE_SCALE = 0.037;
 export const REVEAL_WOBBLE_AMOUNT = 0.09;
+export const WORLD_REVEAL_MAX_RADIUS = 130;
+export const WORLD_REVEAL_GROW_DURATION = 6;
