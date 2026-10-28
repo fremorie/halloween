@@ -20,6 +20,7 @@ import {
 import { useCatMovement } from "./useCatMovement";
 import { useCatBodyFollow } from "./useCatBodyFollow";
 import { useCatObstacleBlocking } from "./useCatObstacleBlocking";
+import { useFootsteps } from "./useFootsteps";
 import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
@@ -36,6 +37,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
     limitStepByObstacles,
   );
   useCatBodyFollow(rootRef, catBodyRef);
+  useFootsteps(walkPaceRef);
 
   const isPupilDilated = useGameStore(
     (state) =>
