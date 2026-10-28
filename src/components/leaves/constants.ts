@@ -11,7 +11,7 @@ export const LEAVES_STRAY_FRACTION = 0.1;
 
 export const LEAVES_STRAY_AREA = {
   minimumX: -20,
-  maximumX: 20,
-  minimumZ: -50,
-  maximumZ: 20,
+  maximumX: 1,
+  minimumZ: -23,
+  maximumZ: -10,
 };
