@@ -6,3 +6,5 @@ export const FOOTSTEPS_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/soun
 export const FOOTSTEPS_SOUND_VOLUME = 0.6;
 export const FOOTSTEPS_MIN_WALK_PACE = 0.1;
 export const FOOTSTEPS_SOUND_PLAYBACK_RATE = 1.5;
+export const CAPE_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/cape.mp3`;
+export const CAPE_SOUND_VOLUME = 0.8;

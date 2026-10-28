@@ -4,6 +4,8 @@ import type { StateCreator } from "zustand";
 import type { GameState } from "@/store/gameStore";
 import { THEME_MUSIC_SOURCE } from "@/settings/musicSettings";
 import {
+  CAPE_SOUND_SOURCE,
+  CAPE_SOUND_VOLUME,
   FOOTSTEPS_SOUND_PLAYBACK_RATE,
   FOOTSTEPS_SOUND_SOURCE,
   FOOTSTEPS_SOUND_VOLUME,
@@ -18,6 +20,7 @@ export type SoundSlice = {
   meowSound: Howl | null;
   magicSpellSound: Howl | null;
   footstepsSound: Howl | null;
+  capeSound: Howl | null;
   loadSounds: () => void;
 };
 
@@ -29,6 +32,7 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
   meowSound: null,
   magicSpellSound: null,
   footstepsSound: null,
+  capeSound: null,
 
   loadSounds: () => {
     if (get().themeMusic !== null) {
@@ -54,6 +58,10 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
         loop: true,
         volume: FOOTSTEPS_SOUND_VOLUME,
         rate: FOOTSTEPS_SOUND_PLAYBACK_RATE,
+      }),
+      capeSound: new Howl({
+        src: [CAPE_SOUND_SOURCE],
+        volume: CAPE_SOUND_VOLUME,
       }),
     });
   },

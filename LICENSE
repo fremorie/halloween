@@ -45,3 +45,9 @@ and textures in this repository. It does not cover the following files:
 - public/sound/footsteps.wav is "Animal Footsteps" by IENBA
   (https://freesound.org/s/658429/), dedicated to the public domain under
   Creative Commons 0 (https://creativecommons.org/publicdomain/zero/1.0/).
+
+- public/sound/cape.mp3 is "Clothes drop 2" by ZoviPoland (Freesound),
+  shared by freesound_community on Pixabay
+  (https://pixabay.com/sound-effects/household-clothes-drop-2-40202/), used
+  under the Pixabay Content License
+  (https://pixabay.com/service/license-summary/).
