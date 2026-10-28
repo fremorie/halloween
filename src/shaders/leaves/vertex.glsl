@@ -7,7 +7,6 @@ attribute float aSize;
 
 varying float vRotation;
 varying float vTumble;
-varying vec4 vPosition;
 
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
@@ -51,7 +50,5 @@ void main() {
     float spinSpeed = mix(8.0, 16.0, aSeed);
     vRotation = uTime * spinSpeed + phase;
 
-    // Varyings
     vTumble = sin(uTime * 9.0 + phase);
-    vPosition = modelPosition;
 }

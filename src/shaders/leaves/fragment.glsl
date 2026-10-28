@@ -4,7 +4,6 @@ uniform vec3 uDarkColor;
 
 varying float vRotation;
 varying float vTumble;
-varying vec4 vPosition;
 
 vec2 rotate(vec2 uv, float angle) {
     float s = sin(angle);

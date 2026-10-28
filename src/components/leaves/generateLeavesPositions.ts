@@ -1,29 +1,38 @@
 import { MathUtils } from "three";
 
-import { LEAVES_SPAWN_HEIGHT } from "./constants";
+type LeavesSpawnArea = {
+  minimumX: number;
+  maximumX: number;
+  minimumZ: number;
+  maximumZ: number;
+  height: number;
+};
 
 export function generateLeavesPositions(
-  count: number = 5000,
-  minimumX: number = -20,
-  maximumX: number = 20,
-  nearestZ: number = -50,
-  farthestZ: number = 20,
-  spawnHeight: number = LEAVES_SPAWN_HEIGHT,
+  leavesCount: number,
+  spawnArea: LeavesSpawnArea,
 ) {
-  const positions = new Float32Array(count * 3);
-  const seeds = new Float32Array(count);
-  const sizes = new Float32Array(count);
+  const positions = new Float32Array(leavesCount * 3);
+  const seeds = new Float32Array(leavesCount);
+  const sizes = new Float32Array(leavesCount);
 
-  for (let i = 0; i < count; i++) {
-    const i3 = i * 3;
+  for (let leafIndex = 0; leafIndex < leavesCount; leafIndex++) {
+    const positionIndex = leafIndex * 3;
 
-    positions[i3] = MathUtils.lerp(minimumX, maximumX, Math.random());
-    positions[i3 + 1] = Math.random() * spawnHeight;
-    positions[i3 + 2] = MathUtils.lerp(nearestZ, farthestZ, Math.random());
+    positions[positionIndex] = MathUtils.lerp(
+      spawnArea.minimumX,
+      spawnArea.maximumX,
+      Math.random(),
+    );
+    positions[positionIndex + 1] = Math.random() * spawnArea.height;
+    positions[positionIndex + 2] = MathUtils.lerp(
+      spawnArea.minimumZ,
+      spawnArea.maximumZ,
+      Math.random(),
+    );
 
-    seeds[i] = Math.random();
-
-    sizes[i] = 0.6 + Math.random() * 0.8;
+    seeds[leafIndex] = Math.random();
+    sizes[leafIndex] = 0.6 + Math.random() * 0.8;
   }
 
   return { positions, seeds, sizes };
