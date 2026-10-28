@@ -4,3 +4,12 @@ export const LEAVES_COUNT = 1000;
 export const LEAVES_SPAWN_HEIGHT = 10;
 export const LEAVES_GROUND_LEVEL = 0;
 export const LEAVES_TIME_SCALE = 0.1;
+
+export const LEAVES_STRAY_FRACTION = 0.1;
+
+export const LEAVES_STRAY_AREA = {
+  minimumX: -20,
+  maximumX: 20,
+  minimumZ: -50,
+  maximumZ: 20,
+};
