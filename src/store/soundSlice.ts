@@ -9,8 +9,8 @@ import {
   FOOTSTEPS_SOUND_PLAYBACK_RATE,
   FOOTSTEPS_SOUND_SOURCE,
   FOOTSTEPS_SOUND_VOLUME,
-  MAGIC_SPELL_SOUND_SOURCE,
-  MAGIC_SPELL_SOUND_VOLUME,
+  KNITTING_SOUND_SOURCE,
+  KNITTING_SOUND_VOLUME,
   MEOW_SOUND_SOURCE,
   MEOW_SOUND_VOLUME,
 } from "@/settings/soundEffectSettings";
@@ -18,7 +18,7 @@ import {
 export type SoundSlice = {
   themeMusic: Howl | null;
   meowSound: Howl | null;
-  magicSpellSound: Howl | null;
+  knittingSound: Howl | null;
   footstepsSound: Howl | null;
   capeSound: Howl | null;
   loadSounds: () => void;
@@ -30,7 +30,7 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
 ) => ({
   themeMusic: null,
   meowSound: null,
-  magicSpellSound: null,
+  knittingSound: null,
   footstepsSound: null,
   capeSound: null,
 
@@ -49,9 +49,9 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
         src: [MEOW_SOUND_SOURCE],
         volume: MEOW_SOUND_VOLUME,
       }),
-      magicSpellSound: new Howl({
-        src: [MAGIC_SPELL_SOUND_SOURCE],
-        volume: MAGIC_SPELL_SOUND_VOLUME,
+      knittingSound: new Howl({
+        src: [KNITTING_SOUND_SOURCE],
+        volume: KNITTING_SOUND_VOLUME,
       }),
       footstepsSound: new Howl({
         src: [FOOTSTEPS_SOUND_SOURCE],
