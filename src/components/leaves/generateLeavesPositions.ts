@@ -1,35 +1,25 @@
-import { MathUtils } from "three";
+import { TREE_CANOPY_RADIUS, TREE_PLACEMENTS } from "@/settings/treeSettings";
+import { LEAVES_COUNT, LEAVES_SPAWN_HEIGHT } from "./constants";
 
-type LeavesSpawnArea = {
-  minimumX: number;
-  maximumX: number;
-  minimumZ: number;
-  maximumZ: number;
-  height: number;
-};
+export function generateLeavesPositions() {
+  const positions = new Float32Array(LEAVES_COUNT * 3);
+  const seeds = new Float32Array(LEAVES_COUNT);
+  const sizes = new Float32Array(LEAVES_COUNT);
 
-export function generateLeavesPositions(
-  leavesCount: number,
-  spawnArea: LeavesSpawnArea,
-) {
-  const positions = new Float32Array(leavesCount * 3);
-  const seeds = new Float32Array(leavesCount);
-  const sizes = new Float32Array(leavesCount);
-
-  for (let leafIndex = 0; leafIndex < leavesCount; leafIndex++) {
+  for (let leafIndex = 0; leafIndex < LEAVES_COUNT; leafIndex++) {
     const positionIndex = leafIndex * 3;
 
-    positions[positionIndex] = MathUtils.lerp(
-      spawnArea.minimumX,
-      spawnArea.maximumX,
-      Math.random(),
-    );
-    positions[positionIndex + 1] = Math.random() * spawnArea.height;
-    positions[positionIndex + 2] = MathUtils.lerp(
-      spawnArea.minimumZ,
-      spawnArea.maximumZ,
-      Math.random(),
-    );
+    const tree =
+      TREE_PLACEMENTS[Math.floor(Math.random() * TREE_PLACEMENTS.length)];
+    const angleAroundTrunk = Math.random() * Math.PI * 2;
+    const distanceFromTrunk =
+      Math.sqrt(Math.random()) * TREE_CANOPY_RADIUS * tree.scale;
+
+    positions[positionIndex] =
+      tree.position[0] + Math.cos(angleAroundTrunk) * distanceFromTrunk;
+    positions[positionIndex + 1] = Math.random() * LEAVES_SPAWN_HEIGHT;
+    positions[positionIndex + 2] =
+      tree.position[2] + Math.sin(angleAroundTrunk) * distanceFromTrunk;
 
     seeds[leafIndex] = Math.random();
     sizes[leafIndex] = 0.6 + Math.random() * 0.8;

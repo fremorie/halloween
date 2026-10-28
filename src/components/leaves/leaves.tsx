@@ -3,12 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { BufferAttribute, BufferGeometry, LinearFilter } from "three";
 
-import {
-  LEAVES_COUNT,
-  LEAVES_SPAWN_AREA,
-  LEAVES_TEXTURE_PATH,
-  LEAVES_TIME_SCALE,
-} from "./constants";
+import { LEAVES_TEXTURE_PATH, LEAVES_TIME_SCALE } from "./constants";
 import {
   createFallingLeavesMaterial,
   fallingLeavesTimeUniform,
@@ -23,10 +18,7 @@ export function Leaves() {
   });
 
   const leavesGeometry = useMemo(() => {
-    const { positions, seeds, sizes } = generateLeavesPositions(
-      LEAVES_COUNT,
-      LEAVES_SPAWN_AREA,
-    );
+    const { positions, seeds, sizes } = generateLeavesPositions();
     const geometry = new BufferGeometry();
     geometry.setAttribute("position", new BufferAttribute(positions, 3));
     geometry.setAttribute("aSeed", new BufferAttribute(seeds, 1));
