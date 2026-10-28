@@ -1,4 +1,4 @@
-export const LEAVES_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/petal.png`;
+export const LEAVES_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/MapleLeaf.png`;
 
 export const LEAVES_COUNT = 5000;
 export const LEAVES_SPAWN_HEIGHT = 10;
