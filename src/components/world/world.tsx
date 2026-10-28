@@ -13,6 +13,7 @@ import { useCelebrationTimer } from "./useCelebrationTimer";
 import { useRewardBeatTimer } from "./useRewardBeatTimer";
 import { useIntroBeatTimer } from "./useIntroBeatTimer";
 import { useKnittingSound } from "./useKnittingSound";
+import { useWhooshSound } from "./useWhooshSound";
 import { useStationReveals } from "./useStationReveals";
 
 export function World() {
@@ -23,6 +24,7 @@ export function World() {
   useIntroBeatTimer();
   useStationReveals();
   useKnittingSound();
+  useWhooshSound();
 
   return (
     <>

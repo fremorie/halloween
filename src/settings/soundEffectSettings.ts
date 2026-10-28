@@ -11,3 +11,5 @@ export const CAPE_SOUND_VOLUME = 0.8;
 export const BIRDS_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/birds.mp3`;
 export const BIRDS_SOUND_VOLUME = 0.025;
 export const BIRDS_SOUND_FADE_IN_DURATION_IN_SECONDS = 6;
+export const WHOOSH_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/whoosh.mp3`;
+export const WHOOSH_SOUND_VOLUME = 0.1;

@@ -14,6 +14,8 @@ import {
   KNITTING_SOUND_VOLUME,
   MEOW_SOUND_SOURCE,
   MEOW_SOUND_VOLUME,
+  WHOOSH_SOUND_SOURCE,
+  WHOOSH_SOUND_VOLUME,
 } from "@/settings/soundEffectSettings";
 
 export type SoundSlice = {
@@ -23,6 +25,7 @@ export type SoundSlice = {
   footstepsSound: Howl | null;
   capeSound: Howl | null;
   birdsSound: Howl | null;
+  whooshSound: Howl | null;
   loadSounds: () => void;
 };
 
@@ -36,6 +39,7 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
   footstepsSound: null,
   capeSound: null,
   birdsSound: null,
+  whooshSound: null,
 
   loadSounds: () => {
     if (get().themeMusic !== null) {
@@ -70,6 +74,10 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
         src: [BIRDS_SOUND_SOURCE],
         loop: true,
         volume: 0,
+      }),
+      whooshSound: new Howl({
+        src: [WHOOSH_SOUND_SOURCE],
+        volume: WHOOSH_SOUND_VOLUME,
       }),
     });
   },
