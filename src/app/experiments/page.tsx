@@ -16,6 +16,7 @@ const experiments = [
   "ui",
   "cat-in-a-hat",
   "tree",
+  "tree-v2",
 ] as const;
 
 export default function Page() {
