@@ -67,7 +67,7 @@ export function TreeV4Model(props: Props) {
         geometry={nodes.CanopyBlob001.geometry}
         position={nodes.CanopyBlob001.position}
       >
-        <meshStandardMaterial map={canopyBlobTexture} />
+        <meshBasicMaterial map={canopyBlobTexture} />
       </mesh>
       <mesh
         castShadow
