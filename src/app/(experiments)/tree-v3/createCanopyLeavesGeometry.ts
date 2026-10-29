@@ -1,4 +1,5 @@
 import {
+  BufferAttribute,
   BufferGeometry,
   Euler,
   MathUtils,
@@ -57,7 +58,16 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
 
     leafTransform.compose(surfacePoint, leafOrientation, leafScale);
 
-    return new PlaneGeometry().translate(0, 0.5, 0).applyMatrix4(leafTransform);
+    const leafGeometry = new PlaneGeometry()
+      .translate(0, 0.5, 0)
+      .applyMatrix4(leafTransform);
+    const leafSeed = Math.random();
+    leafGeometry.setAttribute(
+      "aSeed",
+      new BufferAttribute(new Float32Array(4).fill(leafSeed), 1),
+    );
+
+    return leafGeometry;
   });
 
   return mergeGeometries(leafGeometries);
