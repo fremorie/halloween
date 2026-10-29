@@ -1,7 +1,11 @@
+import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
-import { DoubleSide, SRGBColorSpace } from "three";
+import { SRGBColorSpace } from "three";
 
 import type { Vec3 } from "@/types/math";
+
+import { createCanopyLeavesMaterial } from "./canopyLeavesMaterial";
+import { useCanopyLeavesFlutter } from "./useCanopyLeavesFlutter";
 
 import {
   TREE_V4_CANOPY_BLOB_TEXTURE_PATH,
@@ -49,6 +53,13 @@ export function TreeV4Model(props: Props) {
     TREE_V4_CANOPY_LEAF_ALPHA_TEXTURE_PATH,
   );
 
+  const canopyLeavesMaterial = useMemo(
+    () => createCanopyLeavesMaterial(canopyLeafTexture, canopyLeafAlphaTexture),
+    [canopyLeafTexture, canopyLeafAlphaTexture],
+  );
+
+  useCanopyLeavesFlutter();
+
   return (
     <group {...props} dispose={null}>
       <mesh castShadow receiveShadow geometry={nodes.Trunk001.geometry}>
@@ -67,15 +78,9 @@ export function TreeV4Model(props: Props) {
       <mesh
         castShadow
         geometry={nodes.CanopyLeaves001.geometry}
+        material={canopyLeavesMaterial}
         position={nodes.CanopyLeaves001.position}
-      >
-        <meshStandardMaterial
-          map={canopyLeafTexture}
-          alphaMap={canopyLeafAlphaTexture}
-          alphaTest={0.5}
-          side={DoubleSide}
-        />
-      </mesh>
+      />
     </group>
   );
 }
