@@ -23,6 +23,36 @@ const CANOPY_LEAF_MAX_TILT_FROM_UP = MathUtils.degToRad(25);
 const WORLD_UP = new Vector3(0, 1, 0);
 const ORIGIN = new Vector3();
 
+function liftLeafAboveSurface(
+  leafGeometry: BufferGeometry,
+  stemPoint: Vector3,
+  surfaceNormal: Vector3,
+) {
+  const cornerPositions = leafGeometry.getAttribute("position");
+  const stemToCorner = new Vector3();
+  let deepestCornerBelowSurface = 0;
+
+  for (
+    let cornerIndex = 0;
+    cornerIndex < cornerPositions.count;
+    cornerIndex++
+  ) {
+    stemToCorner
+      .fromBufferAttribute(cornerPositions, cornerIndex)
+      .sub(stemPoint);
+    deepestCornerBelowSurface = Math.min(
+      deepestCornerBelowSurface,
+      stemToCorner.dot(surfaceNormal),
+    );
+  }
+
+  leafGeometry.translate(
+    -surfaceNormal.x * deepestCornerBelowSurface,
+    -surfaceNormal.y * deepestCornerBelowSurface,
+    -surfaceNormal.z * deepestCornerBelowSurface,
+  );
+}
+
 export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
   const canopySurfaceSampler = new MeshSurfaceSampler(
     new Mesh(canopyGeometry),
@@ -72,6 +102,8 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
     const leafGeometry = new PlaneGeometry()
       .translate(0, 0.5, 0)
       .applyMatrix4(leafTransform);
+    liftLeafAboveSurface(leafGeometry, surfacePoint, surfaceNormal);
+
     const leafSeed = Math.random();
     leafGeometry.setAttribute(
       "aSeed",

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 import { useGLTF, useTexture } from "@react-three/drei";
 import type { Mesh } from "three";
 
@@ -7,7 +8,10 @@ import { useFallingLeavesColorControls } from "@/components/leaves/useFallingLea
 import { TREE_MODEL_PATH } from "@/components/models/tree/treeModel";
 
 import { createCanopyLeavesGeometry } from "./createCanopyLeavesGeometry";
-import { createCanopyLeavesMaterial } from "./canopyLeavesMaterial";
+import {
+  canopyLeavesTimeUniform,
+  createCanopyLeavesMaterial,
+} from "./canopyLeavesMaterial";
 
 type TreeNodes = {
   nodes: {
@@ -30,6 +34,10 @@ export function CanopyLeaves() {
   );
 
   useFallingLeavesColorControls(canopyLeavesMaterial);
+
+  useFrame((_, delta) => {
+    canopyLeavesTimeUniform.value += delta;
+  });
 
   return (
     <group scale={0.5}>
