@@ -15,8 +15,9 @@ import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.j
 const CANOPY_LEAVES_COUNT = 1200;
 const CANOPY_LEAF_MIN_SIZE = 0.25;
 const CANOPY_LEAF_MAX_SIZE = 1.1;
-const CANOPY_LEAF_LIFT = 0.3;
+const CANOPY_LEAF_LIFT = 0.02;
 const CANOPY_LEAF_MAX_TILT_OFF_SURFACE = MathUtils.degToRad(35);
+const CANOPY_UNDERSIDE_LEAF_TILT_SCALE = 0.25;
 const CANOPY_LEAF_MAX_TILT_FROM_UP = MathUtils.degToRad(25);
 
 const WORLD_UP = new Vector3(0, 1, 0);
@@ -41,10 +42,20 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
     surfaceNormal.normalize();
     surfacePoint.addScaledVector(surfaceNormal, CANOPY_LEAF_LIFT);
 
+    const maxTiltOffSurface =
+      CANOPY_LEAF_MAX_TILT_OFF_SURFACE *
+      MathUtils.mapLinear(
+        surfaceNormal.y,
+        -1,
+        1,
+        CANOPY_UNDERSIDE_LEAF_TILT_SCALE,
+        1,
+      );
+
     outwardFacingRotation.lookAt(surfaceNormal, ORIGIN, WORLD_UP);
     leafRuffleAngles.set(
-      MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_OFF_SURFACE),
-      MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_OFF_SURFACE),
+      MathUtils.randFloatSpread(2 * maxTiltOffSurface),
+      MathUtils.randFloatSpread(2 * maxTiltOffSurface),
       MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_FROM_UP),
     );
     leafRuffle.setFromEuler(leafRuffleAngles);
