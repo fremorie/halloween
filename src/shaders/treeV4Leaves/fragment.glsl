@@ -1,20 +1,30 @@
-uniform sampler2D uLeafTexture;
 uniform sampler2D uLeafAlphaTexture;
+uniform vec3 uDarkColor;
+uniform vec3 uLightColor;
 
 varying vec2 vUv;
+varying float vSeed;
+varying vec3 vWorldPosition;
 
 #include <fog_pars_fragment>
 
+#include "../includes/reveal.glsl"
+
 void main() {
-    float leafMask = texture2D(uLeafAlphaTexture, vUv).r;
+    float mask = texture2D(uLeafAlphaTexture, vUv).r;
+    float alpha = smoothstep(0.2, 0.6, mask);
 
-    if (leafMask < 0.5) discard;
+    if (alpha < 0.5) discard;
 
-    vec3 leafColor = texture2D(uLeafTexture, vUv).rgb;
+    vec2 noiseUv = vUv * 0.3 + vec2(vSeed, fract(vSeed * 7.13));
+    float leafNoise = texture2D(uRevealNoiseTexture, noiseUv).r;
 
-    gl_FragColor = vec4(leafColor, 1.0);
+    vec3 finalColor = mix(uDarkColor, uLightColor, vUv.y + (leafNoise - 0.5) * 0.6);
 
-    #include <tonemapping_fragment>
+    finalColor = revealColor(finalColor, vWorldPosition);
+
+    gl_FragColor = vec4(finalColor, 1.0);
+
     #include <colorspace_fragment>
     #include <fog_fragment>
 }

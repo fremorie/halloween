@@ -6,6 +6,8 @@ const float flutterSpeed = 3.5;
 const float flutterAmount = 0.15;
 
 varying vec2 vUv;
+varying float vSeed;
+varying vec3 vWorldPosition;
 
 #include <fog_pars_vertex>
 
@@ -22,4 +24,6 @@ void main() {
     gl_Position = projectionMatrix * mvPosition;
 
     vUv = uv;
+    vSeed = _seed;
+    vWorldPosition = (modelMatrix * vec4(flutteredPosition, 1.0)).xyz;
 }

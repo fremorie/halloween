@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
 import { SRGBColorSpace } from "three";
 
+import { useFallingLeavesColorControls } from "@/components/leaves/useFallingLeavesColorControls";
 import type { Vec3 } from "@/types/math";
 
 import { createCanopyLeavesMaterial } from "./canopyLeavesMaterial";
@@ -10,7 +11,6 @@ import { useCanopyLeavesFlutter } from "./useCanopyLeavesFlutter";
 import {
   TREE_V4_CANOPY_BLOB_TEXTURE_PATH,
   TREE_V4_CANOPY_LEAF_ALPHA_TEXTURE_PATH,
-  TREE_V4_CANOPY_LEAF_TEXTURE_PATH,
   TREE_V4_TRUNK_BASE_COLOR_TEXTURE_PATH,
   TREE_V4_TRUNK_NORMAL_MAP_PATH,
 } from "./constants";
@@ -42,22 +42,16 @@ export function TreeV4Model(props: Props) {
     },
   );
 
-  const canopyLeafTexture = useTexture(
-    TREE_V4_CANOPY_LEAF_TEXTURE_PATH,
-    (loadedCanopyLeafTexture) => {
-      loadedCanopyLeafTexture.colorSpace = SRGBColorSpace;
-    },
-  );
-
   const canopyLeafAlphaTexture = useTexture(
     TREE_V4_CANOPY_LEAF_ALPHA_TEXTURE_PATH,
   );
 
   const canopyLeavesMaterial = useMemo(
-    () => createCanopyLeavesMaterial(canopyLeafTexture, canopyLeafAlphaTexture),
-    [canopyLeafTexture, canopyLeafAlphaTexture],
+    () => createCanopyLeavesMaterial(canopyLeafAlphaTexture),
+    [canopyLeafAlphaTexture],
   );
 
+  useFallingLeavesColorControls(canopyLeavesMaterial);
   useCanopyLeavesFlutter();
 
   return (
@@ -88,5 +82,4 @@ export function TreeV4Model(props: Props) {
 useTexture.preload(TREE_V4_TRUNK_BASE_COLOR_TEXTURE_PATH);
 useTexture.preload(TREE_V4_TRUNK_NORMAL_MAP_PATH);
 useTexture.preload(TREE_V4_CANOPY_BLOB_TEXTURE_PATH);
-useTexture.preload(TREE_V4_CANOPY_LEAF_TEXTURE_PATH);
 useTexture.preload(TREE_V4_CANOPY_LEAF_ALPHA_TEXTURE_PATH);
