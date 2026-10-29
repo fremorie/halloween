@@ -51,8 +51,6 @@ export function useCatMovement(
       arriveAtStation,
     } = useGameStore.getState();
 
-    console.log(`X: ${catPosition.x}, Z: ${catPosition.z}`);
-
     previousPosition.copy(root.position);
 
     if (mode === "walking" || mode === "done") {
