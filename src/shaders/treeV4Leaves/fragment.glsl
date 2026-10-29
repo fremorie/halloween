@@ -5,10 +5,12 @@ uniform vec3 uLightColor;
 varying vec2 vUv;
 varying float vSeed;
 varying vec3 vWorldPosition;
+varying vec3 vNormal;
 
 #include <fog_pars_fragment>
 
 #include "../includes/reveal.glsl"
+#include "../includes/canopyLighting.glsl"
 
 void main() {
     float mask = texture2D(uLeafAlphaTexture, vUv).r;
@@ -21,6 +23,8 @@ void main() {
 
     vec3 finalColor = mix(uDarkColor, uLightColor, vUv.y + (leafNoise - 0.5) * 0.6);
 
+    vec3 normal = normalize(vNormal) * (gl_FrontFacing ? 1.0 : -1.0);
+    finalColor *= canopyLighting(normal);
     finalColor = revealColor(finalColor, vWorldPosition);
 
     gl_FragColor = vec4(finalColor, 1.0);

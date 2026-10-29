@@ -8,6 +8,7 @@ const float flutterAmount = 0.15;
 varying vec2 vUv;
 varying float vSeed;
 varying vec3 vWorldPosition;
+varying vec3 vNormal;
 
 #include <fog_pars_vertex>
 
@@ -26,4 +27,5 @@ void main() {
     vUv = uv;
     vSeed = _seed;
     vWorldPosition = (modelMatrix * vec4(flutteredPosition, 1.0)).xyz;
+    vNormal = normalize(mat3(modelMatrix) * normal);
 }
