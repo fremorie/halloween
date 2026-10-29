@@ -14,8 +14,11 @@ const CANOPY_LEAVES_COUNT = 400;
 const CANOPY_LEAF_SIZE = 0.6;
 const CANOPY_LEAF_SIZE_VARIATION = 0.3;
 const CANOPY_LEAF_LIFT = 0.3;
+const CANOPY_LEAF_MAX_TILT_FROM_UP = MathUtils.degToRad(25);
 
 const PLANE_FACING_DIRECTION = new Vector3(0, 0, 1);
+const WORLD_UP = new Vector3(0, 1, 0);
+const ORIGIN = new Vector3();
 
 export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
   const canopySurfaceSampler = new MeshSurfaceSampler(
@@ -24,8 +27,9 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
 
   const surfacePoint = new Vector3();
   const surfaceNormal = new Vector3();
+  const upFacingRotation = new Matrix4();
   const leafOrientation = new Quaternion();
-  const leafSpin = new Quaternion();
+  const leafTilt = new Quaternion();
   const leafScale = new Vector3();
   const leafTransform = new Matrix4();
 
@@ -34,13 +38,12 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
     surfaceNormal.normalize();
     surfacePoint.addScaledVector(surfaceNormal, CANOPY_LEAF_LIFT);
 
-    leafSpin.setFromAxisAngle(
+    upFacingRotation.lookAt(surfaceNormal, ORIGIN, WORLD_UP);
+    leafTilt.setFromAxisAngle(
       PLANE_FACING_DIRECTION,
-      Math.random() * Math.PI * 2,
+      MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_FROM_UP),
     );
-    leafOrientation
-      .setFromUnitVectors(PLANE_FACING_DIRECTION, surfaceNormal)
-      .multiply(leafSpin);
+    leafOrientation.setFromRotationMatrix(upFacingRotation).multiply(leafTilt);
 
     leafScale.setScalar(
       CANOPY_LEAF_SIZE *
