@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
-import { SRGBColorSpace } from "three";
+import { MeshStandardMaterial, SRGBColorSpace } from "three";
 
 import { useFallingLeavesColorControls } from "@/components/leaves/useFallingLeavesColorControls";
+import { RevealStandardMaterial } from "@/components/materials/revealStandardMaterial";
 import type { Vec3 } from "@/types/math";
 
 import { createCanopyBlobMaterial } from "./canopyBlobMaterial";
@@ -44,6 +45,15 @@ export function TreeV4Model(props: Props) {
     },
   );
 
+  const trunkSourceMaterial = useMemo(
+    () =>
+      new MeshStandardMaterial({
+        map: trunkBaseColorTexture,
+        normalMap: trunkNormalMap,
+      }),
+    [trunkBaseColorTexture, trunkNormalMap],
+  );
+
   const canopyBlobMaterial = useMemo(
     () => createCanopyBlobMaterial(canopyBlobTexture),
     [canopyBlobTexture],
@@ -69,10 +79,7 @@ export function TreeV4Model(props: Props) {
   return (
     <group {...props} dispose={null}>
       <mesh castShadow receiveShadow geometry={nodes.Trunk001.geometry}>
-        <meshStandardMaterial
-          map={trunkBaseColorTexture}
-          normalMap={trunkNormalMap}
-        />
+        <RevealStandardMaterial sourceMaterial={trunkSourceMaterial} />
       </mesh>
       <mesh
         castShadow

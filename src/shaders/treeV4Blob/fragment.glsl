@@ -1,11 +1,16 @@
 uniform sampler2D uBlobTexture;
 
 varying vec2 vUv;
+varying vec3 vWorldPosition;
 
 #include <fog_pars_fragment>
 
+#include "../includes/reveal.glsl"
+
 void main() {
     vec3 blobColor = texture2D(uBlobTexture, vUv).rgb;
+
+    blobColor = revealColor(blobColor, vWorldPosition);
 
     gl_FragColor = vec4(blobColor, 1.0);
 
