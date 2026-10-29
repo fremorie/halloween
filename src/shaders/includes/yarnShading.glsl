@@ -1,4 +1,4 @@
-#include "./lights.glsl"
+#include "./hemiLight.glsl"
 
 uniform vec3 uSunDirection;
 uniform float uPlyCount;

@@ -9,7 +9,7 @@ varying vec3 vWorldPosition;
 #include <fog_pars_fragment>
 
 #include "../includes/utils.glsl"
-#include "../includes/lights.glsl"
+#include "../includes/hemiLight.glsl"
 #include "../includes/reveal.glsl"
 
 void main() {
