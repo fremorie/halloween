@@ -18,6 +18,7 @@ const experiments = [
   "tree",
   "tree-v2",
   "tree-v3",
+  "tree-v4",
 ] as const;
 
 export default function Page() {
