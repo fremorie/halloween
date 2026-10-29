@@ -6,6 +6,7 @@ import { useFallingLeavesColorControls } from "@/components/leaves/useFallingLea
 import type { Vec3 } from "@/types/math";
 
 import { createCanopyLeavesMaterial } from "./canopyLeavesMaterial";
+import { createCanopyLeavesShadowMaterial } from "./canopyLeavesShadowMaterial";
 import { useCanopyLeavesFlutter } from "./useCanopyLeavesFlutter";
 
 import {
@@ -51,6 +52,11 @@ export function TreeV4Model(props: Props) {
     [canopyLeafAlphaTexture],
   );
 
+  const canopyLeavesShadowMaterial = useMemo(
+    () => createCanopyLeavesShadowMaterial(canopyLeafAlphaTexture),
+    [canopyLeafAlphaTexture],
+  );
+
   useFallingLeavesColorControls(canopyLeavesMaterial);
   useCanopyLeavesFlutter();
 
@@ -73,6 +79,7 @@ export function TreeV4Model(props: Props) {
         castShadow
         geometry={nodes.CanopyLeaves001.geometry}
         material={canopyLeavesMaterial}
+        customDepthMaterial={canopyLeavesShadowMaterial}
         position={nodes.CanopyLeaves001.position}
       />
     </group>
