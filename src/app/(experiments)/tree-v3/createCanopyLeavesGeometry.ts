@@ -1,5 +1,6 @@
 import {
   BufferGeometry,
+  Euler,
   MathUtils,
   Matrix4,
   Mesh,
@@ -10,13 +11,13 @@ import {
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
 
-const CANOPY_LEAVES_COUNT = 400;
-const CANOPY_LEAF_SIZE = 0.6;
-const CANOPY_LEAF_SIZE_VARIATION = 0.3;
+const CANOPY_LEAVES_COUNT = 1200;
+const CANOPY_LEAF_MIN_SIZE = 0.25;
+const CANOPY_LEAF_MAX_SIZE = 1.1;
 const CANOPY_LEAF_LIFT = 0.3;
+const CANOPY_LEAF_MAX_TILT_OFF_SURFACE = MathUtils.degToRad(35);
 const CANOPY_LEAF_MAX_TILT_FROM_UP = MathUtils.degToRad(25);
 
-const PLANE_FACING_DIRECTION = new Vector3(0, 0, 1);
 const WORLD_UP = new Vector3(0, 1, 0);
 const ORIGIN = new Vector3();
 
@@ -27,9 +28,10 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
 
   const surfacePoint = new Vector3();
   const surfaceNormal = new Vector3();
-  const upFacingRotation = new Matrix4();
+  const outwardFacingRotation = new Matrix4();
+  const leafRuffleAngles = new Euler();
+  const leafRuffle = new Quaternion();
   const leafOrientation = new Quaternion();
-  const leafTilt = new Quaternion();
   const leafScale = new Vector3();
   const leafTransform = new Matrix4();
 
@@ -38,24 +40,24 @@ export function createCanopyLeavesGeometry(canopyGeometry: BufferGeometry) {
     surfaceNormal.normalize();
     surfacePoint.addScaledVector(surfaceNormal, CANOPY_LEAF_LIFT);
 
-    upFacingRotation.lookAt(surfaceNormal, ORIGIN, WORLD_UP);
-    leafTilt.setFromAxisAngle(
-      PLANE_FACING_DIRECTION,
+    outwardFacingRotation.lookAt(surfaceNormal, ORIGIN, WORLD_UP);
+    leafRuffleAngles.set(
+      MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_OFF_SURFACE),
+      MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_OFF_SURFACE),
       MathUtils.randFloatSpread(2 * CANOPY_LEAF_MAX_TILT_FROM_UP),
     );
-    leafOrientation.setFromRotationMatrix(upFacingRotation).multiply(leafTilt);
+    leafRuffle.setFromEuler(leafRuffleAngles);
+    leafOrientation
+      .setFromRotationMatrix(outwardFacingRotation)
+      .multiply(leafRuffle);
 
     leafScale.setScalar(
-      CANOPY_LEAF_SIZE *
-        MathUtils.randFloat(
-          1 - CANOPY_LEAF_SIZE_VARIATION,
-          1 + CANOPY_LEAF_SIZE_VARIATION,
-        ),
+      MathUtils.randFloat(CANOPY_LEAF_MIN_SIZE, CANOPY_LEAF_MAX_SIZE),
     );
 
     leafTransform.compose(surfacePoint, leafOrientation, leafScale);
 
-    return new PlaneGeometry().applyMatrix4(leafTransform);
+    return new PlaneGeometry().translate(0, 0.5, 0).applyMatrix4(leafTransform);
   });
 
   return mergeGeometries(leafGeometries);
