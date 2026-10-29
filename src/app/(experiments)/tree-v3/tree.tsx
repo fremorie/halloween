@@ -8,7 +8,7 @@ import { TREE_MODEL_PATH } from "@/components/models/tree/treeModel";
 import { CanopyLeaves } from "./canopyLeaves";
 import { useFullyRevealedColors } from "./useFullyRevealedColors";
 
-const CANOPY_BLOB_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/LeavesBaseColor.jpg`;
+const CANOPY_BLOB_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/LeavesBaseColor2.jpg`;
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -43,7 +43,7 @@ export function Tree() {
           geometry={nodes.Leaves.geometry}
           position={[0.168, 6.448, -0.674]}
         >
-          <meshStandardMaterial map={canopyBlobTexture} />
+          <meshBasicMaterial map={canopyBlobTexture} />
         </mesh>
         <mesh castShadow geometry={nodes.Tree.geometry}>
           <RevealStandardMaterial sourceMaterial={materials.Tree} />
