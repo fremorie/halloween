@@ -1,21 +1,21 @@
 import { CylinderCollider, RigidBody } from "@react-three/rapier";
 
-import { useLeavesMaterial } from "@/components/models/tree/useLeavesMaterial";
-import { TreeModel } from "@/components/models/tree/treeModel";
+import { TreeV4Model } from "@/components/models/tree-v4/treeV4Model";
+import { useTreeV4Materials } from "@/components/models/tree-v4/useTreeV4Materials";
 import { TREE_PLACEMENTS } from "@/settings/treeSettings";
 
 export function Trees() {
-  const leavesMaterial = useLeavesMaterial();
+  const treeV4Materials = useTreeV4Materials();
 
   return (
     <>
       {TREE_PLACEMENTS.map((tree) => (
         <RigidBody type="fixed" colliders={false} key={tree.key}>
-          <TreeModel
+          <TreeV4Model
             position={tree.position}
             scale={tree.scale}
             rotation-y={tree.rotationY}
-            leavesMaterial={leavesMaterial}
+            materials={treeV4Materials}
           />
           <CylinderCollider
             args={[0.75, 2]}
