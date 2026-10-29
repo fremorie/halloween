@@ -23,8 +23,7 @@ void main() {
 
     vec3 finalColor = mix(uDarkColor, uLightColor, vUv.y + (leafNoise - 0.5) * 0.6);
 
-    vec3 normal = normalize(vNormal) * (gl_FrontFacing ? 1.0 : -1.0);
-    finalColor *= canopyLighting(normal);
+    finalColor *= canopyLighting(normalize(vNormal));
     finalColor = revealColor(finalColor, vWorldPosition);
 
     gl_FragColor = vec4(finalColor, 1.0);
