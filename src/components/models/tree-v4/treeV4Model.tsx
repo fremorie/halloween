@@ -5,6 +5,7 @@ import { SRGBColorSpace } from "three";
 import { useFallingLeavesColorControls } from "@/components/leaves/useFallingLeavesColorControls";
 import type { Vec3 } from "@/types/math";
 
+import { createCanopyBlobMaterial } from "./canopyBlobMaterial";
 import { createCanopyLeavesMaterial } from "./canopyLeavesMaterial";
 import { createCanopyLeavesShadowMaterial } from "./canopyLeavesShadowMaterial";
 import { useCanopyLeavesFlutter } from "./useCanopyLeavesFlutter";
@@ -43,6 +44,11 @@ export function TreeV4Model(props: Props) {
     },
   );
 
+  const canopyBlobMaterial = useMemo(
+    () => createCanopyBlobMaterial(canopyBlobTexture),
+    [canopyBlobTexture],
+  );
+
   const canopyLeafAlphaTexture = useTexture(
     TREE_V4_CANOPY_LEAF_ALPHA_TEXTURE_PATH,
   );
@@ -71,10 +77,9 @@ export function TreeV4Model(props: Props) {
       <mesh
         castShadow
         geometry={nodes.CanopyBlob001.geometry}
+        material={canopyBlobMaterial}
         position={nodes.CanopyBlob001.position}
-      >
-        <meshBasicMaterial map={canopyBlobTexture} />
-      </mesh>
+      />
       <mesh
         castShadow
         geometry={nodes.CanopyLeaves001.geometry}
