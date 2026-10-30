@@ -1,9 +1,9 @@
 import { Vector3 } from "three";
 
-import { CAT_START } from "@/settings/journeySettings";
 import { getHeading } from "@/utils/cat";
+import { FINALE_LANDING_SPOT } from "@/settings/finaleSettings";
 
-const homePosition = new Vector3(...CAT_START);
+const homePosition = new Vector3(...FINALE_LANDING_SPOT);
 const directionHome = new Vector3();
 
 export function getHomeHeading(position: Vector3) {

@@ -1,4 +1,5 @@
 import type { FinaleBeat } from "@/types/finale";
+import type { Vec3 } from "@/types/math";
 
 export const FINALE_BEAT_ORDER: FinaleBeat[] = [
   "takeOff",
@@ -34,5 +35,6 @@ export const FINALE_CRUISE_EXTRA_HEIGHT = 3;
 export const FINALE_FLIGHT_EASE = "sine.inOut";
 export const FINALE_LANDING_EASE = "power2.inOut";
 export const FINALE_TURN_SPEED = 3;
+export const FINALE_LANDING_SPOT: Vec3 = [1, 0, 1];
 
 export const FLIGHT_CHASE_BEATS: FinaleBeat[] = ["turnAround", "flight"];

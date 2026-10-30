@@ -5,12 +5,12 @@ import { gsap } from "gsap";
 
 import { useGameStore } from "@/store/gameStore";
 import type { FinaleBeat } from "@/types/finale";
-import { CAT_START } from "@/settings/journeySettings";
 import {
   FINALE_BEAT_DURATIONS,
   FINALE_FLIGHT_EASE,
   FINALE_HOVER_HEIGHT,
   FINALE_LANDING_EASE,
+  FINALE_LANDING_SPOT,
   FINALE_TAKE_OFF_EASE,
   FINALE_TURN_SPEED,
 } from "@/settings/finaleSettings";
@@ -24,8 +24,8 @@ const takeOffEase = gsap.parseEase(FINALE_TAKE_OFF_EASE);
 const flightEase = gsap.parseEase(FINALE_FLIGHT_EASE);
 const landingEase = gsap.parseEase(FINALE_LANDING_EASE);
 
-const [catStartX, , catStartZ] = CAT_START;
-const flightEnd = new Vector3(catStartX, FINALE_HOVER_HEIGHT, catStartZ);
+const [landingSpotX, , landingSpotZ] = FINALE_LANDING_SPOT;
+const flightEnd = new Vector3(landingSpotX, FINALE_HOVER_HEIGHT, landingSpotZ);
 const closeUpOrbitRadians = MathUtils.degToRad(CAT_CLOSE_UP_ORBIT_DEGREES);
 const directionToCloseUpCamera = new Vector3(
   Math.sin(closeUpOrbitRadians),
