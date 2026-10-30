@@ -26,3 +26,6 @@ export const FINALE_BEAT_DURATIONS: Record<
 };
 
 export const THANK_YOU_LINE = "Thank you! Now I'm ready for Halloween.";
+
+export const FINALE_HOVER_HEIGHT = 2.5;
+export const FINALE_TAKE_OFF_EASE = "power2.inOut";

@@ -24,6 +24,7 @@ import { useFootsteps } from "./useFootsteps";
 import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
+import { useCatFlight } from "./useCatFlight";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
@@ -37,6 +38,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
     limitStepByObstacles,
   );
   useCatBodyFollow(rootRef, catBodyRef);
+  useCatFlight(rootRef);
   useFootsteps(walkPaceRef);
 
   const isPupilDilated = useGameStore(

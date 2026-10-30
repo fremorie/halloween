@@ -23,7 +23,12 @@ export function setShotLookAt(
   }
 
   if (shot === "catCloseUp") {
-    shotLookAt.set(catPosition.x, CAT_CLOSE_UP_LOOK_AT_HEIGHT, catPosition.z);
+    shotLookAt.set(
+      catPosition.x,
+      catPosition.y + CAT_CLOSE_UP_LOOK_AT_HEIGHT,
+      catPosition.z,
+    );
+
     return;
   }
   if (shot === "puzzle") {

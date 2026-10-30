@@ -19,6 +19,10 @@ export function getCameraShot(
     return introBeat === null ? "birdView" : "catCloseUp";
   }
 
+  if (mode === "finale") {
+    return "catCloseUp";
+  }
+
   if (rewardBeat !== null && CAT_CLOSE_UP_BEATS.includes(rewardBeat)) {
     return "catCloseUp";
   }
