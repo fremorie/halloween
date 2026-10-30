@@ -26,9 +26,11 @@ import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
 import { useCatFlight } from "./useCatFlight";
 import { useIsFinaleFlying } from "./useIsFinaleFlying";
+import { useCatFlightBob } from "./useCatFlightBob";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
+  const bobGroupRef = useRef<Group>(null);
   const catBodyRef = useRef<RapierRigidBody>(null);
 
   const isFlying = useIsFinaleFlying();
@@ -42,6 +44,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
   );
   useCatBodyFollow(rootRef, catBodyRef);
   useCatFlight(rootRef);
+  useCatFlightBob(rootRef, bobGroupRef);
   useFootsteps(walkPaceRef);
 
   const isPupilDilated = useGameStore(
@@ -63,16 +66,19 @@ export function Cat({ stationCount }: { stationCount: number }) {
   return (
     <>
       <group ref={rootRef} position={CAT_START} rotation-y={CAT_START_HEADING}>
-        <CatRiggedModel
-          walkPaceRef={walkPaceRef}
-          isPupilDilated={isPupilDilated}
-          isFlying={isFlying}
-          eyeGlancesEnabled={eyeGlancesEnabled}
-        />
-        {isWearingHat && <CatHat />}
-        {isWearingCape && <CatCape />}
-        {isWearingWings && <CatWings />}
+        <group ref={bobGroupRef}>
+          <CatRiggedModel
+            walkPaceRef={walkPaceRef}
+            isPupilDilated={isPupilDilated}
+            isFlying={isFlying}
+            eyeGlancesEnabled={eyeGlancesEnabled}
+          />
+          {isWearingHat && <CatHat />}
+          {isWearingCape && <CatCape />}
+          {isWearingWings && <CatWings />}
+        </group>
       </group>
+
       <RigidBody
         ref={catBodyRef}
         type="kinematicPosition"

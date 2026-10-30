@@ -18,7 +18,7 @@ import { useGameStore } from "@/store/gameStore";
 import { levels } from "@/data/levels";
 import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
 
-const DEBUG = false;
+const DEBUG = true;
 const SHOW_PERF = false;
 
 type ExperienceProps = {

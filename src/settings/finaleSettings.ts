@@ -41,3 +41,6 @@ export const FLIGHT_CHASE_BEATS: FinaleBeat[] = [
   "turnAround",
   "flight",
 ];
+
+export const FINALE_BOB_AMPLITUDE = 0.15;
+export const FINALE_BOB_PHASE = Math.PI;
