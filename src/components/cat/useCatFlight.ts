@@ -1,26 +1,42 @@
-import { type RefObject, useRef } from "react";
-import { type Group, MathUtils } from "three";
+import { type RefObject, useRef, useState } from "react";
+import { type Group, MathUtils, Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 import { gsap } from "gsap";
 
 import { useGameStore } from "@/store/gameStore";
 import type { FinaleBeat } from "@/types/finale";
+import { CAT_START } from "@/settings/journeySettings";
 import {
   FINALE_BEAT_DURATIONS,
+  FINALE_FLIGHT_EASE,
   FINALE_HOVER_HEIGHT,
+  FINALE_LANDING_EASE,
   FINALE_TAKE_OFF_EASE,
+  FINALE_TURN_SPEED,
 } from "@/settings/finaleSettings";
 import { getEasedProgress } from "@/utils/camera/getEasedProgress";
+import { dampAngle } from "@/utils/animation";
+import { getHeading } from "@/utils/cat";
+import { getFlightPoint } from "@/utils/finale";
 
 const takeOffEase = gsap.parseEase(FINALE_TAKE_OFF_EASE);
+const flightEase = gsap.parseEase(FINALE_FLIGHT_EASE);
+const landingEase = gsap.parseEase(FINALE_LANDING_EASE);
+
+const [catStartX, , catStartZ] = CAT_START;
+const flightEnd = new Vector3(catStartX, FINALE_HOVER_HEIGHT, catStartZ);
+
+const HEADING_BEATS: FinaleBeat[] = ["turnAround", "flight"];
 
 export function useCatFlight(rootRef: RefObject<Group | null>) {
   const currentBeatStartRef = useRef<{
     beat: FinaleBeat | null;
     elapsedTime: number;
-  }>({ beat: null, elapsedTime: 0 });
+    position: Vector3;
+  }>({ beat: null, elapsedTime: 0, position: new Vector3() });
+  const [directionHome] = useState(() => new Vector3());
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     const root = rootRef.current;
     const { mode, finaleBeat, catPosition } = useGameStore.getState();
     if (!root || mode !== "finale") {
@@ -31,6 +47,7 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
     if (currentBeatStart.beat !== finaleBeat) {
       currentBeatStart.beat = finaleBeat;
       currentBeatStart.elapsedTime = clock.elapsedTime;
+      currentBeatStart.position.copy(root.position);
     }
 
     const elapsedSinceBeatStart =
@@ -43,6 +60,45 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
         FINALE_BEAT_DURATIONS.takeOff,
       );
       root.position.y = MathUtils.lerp(0, FINALE_HOVER_HEIGHT, takeOffProgress);
+    }
+
+    if (finaleBeat === "flight") {
+      const flightProgress = getEasedProgress(
+        flightEase,
+        elapsedSinceBeatStart,
+        FINALE_BEAT_DURATIONS.flight,
+      );
+      getFlightPoint(
+        currentBeatStart.position,
+        flightEnd,
+        flightProgress,
+        root.position,
+      );
+    }
+
+    if (finaleBeat === "landing") {
+      const landingProgress = getEasedProgress(
+        landingEase,
+        elapsedSinceBeatStart,
+        FINALE_BEAT_DURATIONS.landing,
+      );
+      root.position.y = MathUtils.lerp(
+        currentBeatStart.position.y,
+        0,
+        landingProgress,
+      );
+    }
+
+    if (finaleBeat !== null && HEADING_BEATS.includes(finaleBeat)) {
+      directionHome.copy(flightEnd).sub(root.position).setY(0);
+      if (directionHome.lengthSq() > 0) {
+        root.rotation.y = dampAngle(
+          root.rotation.y,
+          getHeading(directionHome),
+          FINALE_TURN_SPEED,
+          delta,
+        );
+      }
     }
 
     catPosition.copy(root.position);
