@@ -25,10 +25,13 @@ import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
 import { useCatFlight } from "./useCatFlight";
+import { useIsFinaleFlying } from "./useIsFinaleFlying";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
   const catBodyRef = useRef<RapierRigidBody>(null);
+
+  const isFlying = useIsFinaleFlying();
 
   const { blockingColliderRef, limitStepByObstacles } =
     useCatObstacleBlocking();
@@ -63,6 +66,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
         <CatRiggedModel
           walkPaceRef={walkPaceRef}
           isPupilDilated={isPupilDilated}
+          isFlying={isFlying}
           eyeGlancesEnabled={eyeGlancesEnabled}
         />
         {isWearingHat && <CatHat />}

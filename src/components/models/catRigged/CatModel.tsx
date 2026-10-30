@@ -28,13 +28,18 @@ import {
   CAT_TOP_LID_OPEN_ROTATION_X,
 } from "./constants";
 import { useCatGLTF } from "./useCatGLTF";
-import { CAT_STILL_PACE, CAT_WALK_BLEND_SPEED } from "@/settings/catSettings";
+import {
+  CAT_FLY_FADE_DURATION,
+  CAT_STILL_PACE,
+  CAT_WALK_BLEND_SPEED,
+} from "@/settings/catSettings";
 
 type Props = JSX.IntrinsicElements["group"] & {
   eyeParams?: EyeParams;
   walkPaceRef?: RefObject<number>;
   isPupilDilated?: boolean;
   eyeGlancesEnabled?: boolean;
+  isFlying?: boolean;
 };
 
 function applyMaterialToMeshes(meshes: Mesh[], material: Material) {
@@ -53,6 +58,7 @@ export function CatRiggedModel({
   walkPaceRef,
   isPupilDilated = false,
   eyeGlancesEnabled = true,
+  isFlying = false,
   ...groupProps
 }: Props) {
   const groupRef = useRef<Group>(null);
@@ -81,6 +87,20 @@ export function CatRiggedModel({
   useEffect(() => {
     actions.Walk?.setEffectiveWeight(walkPaceRef ? 0 : 1).play();
   }, [actions, walkPaceRef]);
+
+  useEffect(() => {
+    const flyAction = actions?.Fly;
+
+    if (!flyAction) {
+      return;
+    }
+
+    if (isFlying) {
+      flyAction.reset().fadeIn(CAT_FLY_FADE_DURATION).play();
+    } else {
+      flyAction.fadeOut(CAT_FLY_FADE_DURATION);
+    }
+  }, [actions, isFlying]);
 
   useFrame((_, delta) => {
     const walk = actions.Walk;
