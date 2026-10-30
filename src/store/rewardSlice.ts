@@ -27,14 +27,23 @@ export const createRewardSlice: StateCreator<GameState, [], [], RewardSlice> = (
 
   advanceRewardBeat: () => {
     const { rewardBeat } = get();
+
     if (rewardBeat === null) {
       return;
     }
     const nextBeat =
       REWARD_BEAT_ORDER[REWARD_BEAT_ORDER.indexOf(rewardBeat) + 1];
+
     if (nextBeat === undefined) {
       set({ rewardBeat: null });
-      get().advanceToNextStation();
+
+      const isLastStation = get().currentStationIndex === levels.length - 1;
+
+      if (isLastStation) {
+        get().startFinale();
+      } else {
+        get().advanceToNextStation();
+      }
 
       return;
     }

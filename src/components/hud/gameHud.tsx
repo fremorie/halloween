@@ -35,6 +35,7 @@ export function GameHud() {
   const introBeat = useGameStore((state) => state.introBeat);
   const advanceRewardBeat = useGameStore((state) => state.advanceRewardBeat);
   const runCount = useGameStore((state) => state.runCount);
+  const finaleBeat = useGameStore((state) => state.finaleBeat);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -59,6 +60,8 @@ export function GameHud() {
       )}
       {isFirstWalkAfterIntro && <MovementHint />}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
+        {finaleBeat !== null && <p>{finaleBeat}</p>}
+
         {rewardBeat === "speech" && (
           <>
             <Comment

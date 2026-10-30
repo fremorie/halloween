@@ -16,6 +16,7 @@ import { useIntroBeatTimer } from "./useIntroBeatTimer";
 import { useKnittingSound } from "./useKnittingSound";
 import { useWhooshSound } from "./useWhooshSound";
 import { useStationReveals } from "./useStationReveals";
+import { useFinaleBeatTimer } from "./useFinaleBeatTimer";
 
 export function World() {
   const runCount = useGameStore((state) => state.runCount);
@@ -23,7 +24,10 @@ export function World() {
   useCelebrationTimer();
   useRewardBeatTimer();
   useIntroBeatTimer();
+  useFinaleBeatTimer();
+
   useStationReveals();
+
   useKnittingSound();
   useWhooshSound();
 
