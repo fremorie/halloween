@@ -18,6 +18,7 @@ import { getEasedProgress } from "@/utils/camera/getEasedProgress";
 import { dampAngle } from "@/utils/animation";
 import { getHeading } from "@/utils/cat";
 import { getFlightPoint } from "@/utils/finale";
+import { CAT_CLOSE_UP_ORBIT_DEGREES } from "@/settings/cameraSettings";
 
 const takeOffEase = gsap.parseEase(FINALE_TAKE_OFF_EASE);
 const flightEase = gsap.parseEase(FINALE_FLIGHT_EASE);
@@ -25,8 +26,15 @@ const landingEase = gsap.parseEase(FINALE_LANDING_EASE);
 
 const [catStartX, , catStartZ] = CAT_START;
 const flightEnd = new Vector3(catStartX, FINALE_HOVER_HEIGHT, catStartZ);
+const closeUpOrbitRadians = MathUtils.degToRad(CAT_CLOSE_UP_ORBIT_DEGREES);
+const directionToCloseUpCamera = new Vector3(
+  Math.sin(closeUpOrbitRadians),
+  0,
+  Math.cos(closeUpOrbitRadians),
+);
 
 const HEADING_BEATS: FinaleBeat[] = ["turnAround", "flight"];
+const FACE_CAMERA_BEATS: FinaleBeat[] = ["landing", "thankYou"];
 
 export function useCatFlight(rootRef: RefObject<Group | null>) {
   const currentBeatStartRef = useRef<{
@@ -34,7 +42,7 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
     elapsedTime: number;
     position: Vector3;
   }>({ beat: null, elapsedTime: 0, position: new Vector3() });
-  const [directionHome] = useState(() => new Vector3());
+  const [turnDirection] = useState(() => new Vector3());
 
   useFrame(({ clock }, delta) => {
     const root = rootRef.current;
@@ -90,15 +98,20 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
     }
 
     if (finaleBeat !== null && HEADING_BEATS.includes(finaleBeat)) {
-      directionHome.copy(flightEnd).sub(root.position).setY(0);
-      if (directionHome.lengthSq() > 0) {
-        root.rotation.y = dampAngle(
-          root.rotation.y,
-          getHeading(directionHome),
-          FINALE_TURN_SPEED,
-          delta,
-        );
-      }
+      turnDirection.copy(flightEnd).sub(root.position).setY(0);
+    }
+
+    if (finaleBeat !== null && FACE_CAMERA_BEATS.includes(finaleBeat)) {
+      turnDirection.copy(directionToCloseUpCamera);
+    }
+
+    if (finaleBeat !== null && turnDirection.lengthSq() > 0) {
+      root.rotation.y = dampAngle(
+        root.rotation.y,
+        getHeading(turnDirection),
+        FINALE_TURN_SPEED,
+        delta,
+      );
     }
 
     catPosition.copy(root.position);
