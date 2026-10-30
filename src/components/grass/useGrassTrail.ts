@@ -4,6 +4,7 @@ import {
   ClampToEdgeWrapping,
   Color,
   LinearFilter,
+  MathUtils,
   Mesh,
   OrthographicCamera,
   PlaneGeometry,
@@ -20,6 +21,7 @@ import {
   TRAIL_MAX_STAMP_DISTANCE,
   TRAIL_RECOVERY_TIME,
   TRAIL_RESOLUTION,
+  TRAIL_STAMP_FADE_OUT_HEIGHT,
   TRAIL_TEXEL_SIZE,
 } from "@/settings/grassTrailSettings";
 import { useGameStore } from "@/store/gameStore";
@@ -124,6 +126,8 @@ function renderTrailFrame(
   uniforms.uPreviousPlayerPosition.value.copy(trailPass.catPosition);
   uniforms.uPlayerPosition.value.set(catPosition.x, catPosition.z);
   uniforms.uDecay.value = Math.exp(-delta / TRAIL_RECOVERY_TIME);
+  uniforms.uStampStrength.value =
+    1 - MathUtils.smoothstep(catPosition.y, 0, TRAIL_STAMP_FADE_OUT_HEIGHT);
 
   const previousRenderTarget = renderer.getRenderTarget();
   renderer.setRenderTarget(trailPass.write);
