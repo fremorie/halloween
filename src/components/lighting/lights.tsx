@@ -77,6 +77,7 @@ export function Lights() {
         shadow-camera-near={SHADOW_CAMERA_BOUNDS.near}
         shadow-camera-far={SHADOW_CAMERA_BOUNDS.far}
         shadow-camera-up={SHADOW_CAMERA_UP}
+        shadow-radius={5}
       />
 
       {environmentLighting && <EnvironmentLighting />}
