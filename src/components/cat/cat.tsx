@@ -25,10 +25,16 @@ import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
 import { useCatFlight } from "./useCatFlight";
+import { useIsFinaleFlying } from "./useIsFinaleFlying";
+import { useCatFlightBob } from "./useCatFlightBob";
+import { FINALE_DILATED_PUPIL_BEATS } from "@/settings/finaleSettings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
+  const bobGroupRef = useRef<Group>(null);
   const catBodyRef = useRef<RapierRigidBody>(null);
+
+  const isFlying = useIsFinaleFlying();
 
   const { blockingColliderRef, limitStepByObstacles } =
     useCatObstacleBlocking();
@@ -39,12 +45,15 @@ export function Cat({ stationCount }: { stationCount: number }) {
   );
   useCatBodyFollow(rootRef, catBodyRef);
   useCatFlight(rootRef);
+  useCatFlightBob(rootRef, bobGroupRef);
   useFootsteps(walkPaceRef);
 
   const isPupilDilated = useGameStore(
     (state) =>
-      state.introBeat !== null &&
-      INTRO_DILATED_PUPIL_BEATS.includes(state.introBeat),
+      (state.introBeat !== null &&
+        INTRO_DILATED_PUPIL_BEATS.includes(state.introBeat)) ||
+      (state.finaleBeat !== null &&
+        FINALE_DILATED_PUPIL_BEATS.includes(state.finaleBeat)),
   );
   const isWearingHat = useGameStore((state) =>
     state.wornCostumePieces.includes("hat"),
@@ -60,15 +69,19 @@ export function Cat({ stationCount }: { stationCount: number }) {
   return (
     <>
       <group ref={rootRef} position={CAT_START} rotation-y={CAT_START_HEADING}>
-        <CatRiggedModel
-          walkPaceRef={walkPaceRef}
-          isPupilDilated={isPupilDilated}
-          eyeGlancesEnabled={eyeGlancesEnabled}
-        />
-        {isWearingHat && <CatHat />}
-        {isWearingCape && <CatCape />}
-        {isWearingWings && <CatWings />}
+        <group ref={bobGroupRef}>
+          <CatRiggedModel
+            walkPaceRef={walkPaceRef}
+            isPupilDilated={isPupilDilated}
+            isFlying={isFlying}
+            eyeGlancesEnabled={eyeGlancesEnabled}
+          />
+          {isWearingHat && <CatHat />}
+          {isWearingCape && <CatCape />}
+          {isWearingWings && <CatWings />}
+        </group>
       </group>
+
       <RigidBody
         ref={catBodyRef}
         type="kinematicPosition"

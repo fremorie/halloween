@@ -14,10 +14,16 @@ import {
   KNITTING_SOUND_VOLUME,
   MEOW_SOUND_SOURCE,
   MEOW_SOUND_VOLUME,
+  PURR_SOUND_SOURCE,
+  PURR_SOUND_VOLUME,
   SEWING_MACHINE_SOUND_SOURCE,
   SEWING_MACHINE_SOUND_VOLUME,
   WHOOSH_SOUND_SOURCE,
   WHOOSH_SOUND_VOLUME,
+  WING_FLAP_SOUND_PLAYBACK_RATE,
+  WING_FLAP_SOUND_SOURCE,
+  WING_FLAP_SOUND_SPRITES,
+  WING_FLAP_SOUND_VOLUME,
 } from "@/settings/soundEffectSettings";
 
 export type SoundSlice = {
@@ -29,6 +35,8 @@ export type SoundSlice = {
   birdsSound: Howl | null;
   whooshSound: Howl | null;
   sewingMachineSound: Howl | null;
+  wingFlapSound: Howl | null;
+  purrSound: Howl | null;
   loadSounds: () => void;
 };
 
@@ -44,6 +52,8 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
   birdsSound: null,
   whooshSound: null,
   sewingMachineSound: null,
+  wingFlapSound: null,
+  purrSound: null,
 
   loadSounds: () => {
     if (get().themeMusic !== null) {
@@ -86,6 +96,17 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
       sewingMachineSound: new Howl({
         src: [SEWING_MACHINE_SOUND_SOURCE],
         volume: SEWING_MACHINE_SOUND_VOLUME,
+      }),
+      wingFlapSound: new Howl({
+        src: [WING_FLAP_SOUND_SOURCE],
+        volume: WING_FLAP_SOUND_VOLUME,
+        rate: WING_FLAP_SOUND_PLAYBACK_RATE,
+        sprite: WING_FLAP_SOUND_SPRITES,
+      }),
+      purrSound: new Howl({
+        src: [PURR_SOUND_SOURCE],
+        loop: true,
+        volume: PURR_SOUND_VOLUME,
       }),
     });
   },

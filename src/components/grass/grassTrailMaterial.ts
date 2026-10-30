@@ -17,6 +17,7 @@ export const GrassTrailMaterial = shaderMaterial(
     uPlayerPosition: new Vector2(),
     uPreviousPlayerPosition: new Vector2(),
     uBrushRadius: TRAIL_BRUSH_RADIUS,
+    uStampStrength: 1,
     uDecay: 1,
   },
   vertexShader,

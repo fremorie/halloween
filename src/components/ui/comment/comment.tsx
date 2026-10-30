@@ -1,5 +1,5 @@
 import { CatSpeechText } from "@/components/ui/catSpeech/catSpeechText";
-import { TextBox } from "@/components/ui/textBox/textBox";
+import { SpeechTextBox } from "@/components/ui/speechTextBox/speechTextBox";
 
 type Props = {
   text: string;
@@ -8,11 +8,11 @@ type Props = {
 export function Comment({ text }: Props) {
   return (
     <div className="w-full max-w-2xl text-center">
-      <TextBox>
+      <SpeechTextBox>
         <p>
           <CatSpeechText text={text} />
         </p>
-      </TextBox>
+      </SpeechTextBox>
     </div>
   );
 }

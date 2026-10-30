@@ -16,17 +16,20 @@ export const WINGS_FLAPPING_BEATS: FinaleBeat[] = [
   "landing",
 ];
 
+export const FINALE_DILATED_PUPIL_BEATS: FinaleBeat[] = ["takeOff", "thankYou"];
+
 export const FINALE_BEAT_DURATIONS: Record<
   Exclude<FinaleBeat, "thankYou">,
   number
 > = {
-  takeOff: 2,
-  turnAround: 5,
+  takeOff: 1,
+  turnAround: 2,
   flight: 3.5,
-  landing: 5.5,
+  landing: 3.5,
 };
 
-export const THANK_YOU_LINE = "Thank you! Now I'm ready for Halloween.";
+export const THANK_YOU_LINE =
+  "Now that's what I call a Halloween costume! Thank you!\nI couldn't have done it without you. ";
 
 export const FINALE_HOVER_HEIGHT = 2.5;
 export const FINALE_TAKE_OFF_EASE = "power2.inOut";
@@ -41,3 +44,6 @@ export const FLIGHT_CHASE_BEATS: FinaleBeat[] = [
   "turnAround",
   "flight",
 ];
+
+export const FINALE_BOB_AMPLITUDE = 0.15;
+export const FINALE_BOB_PHASE = Math.PI;

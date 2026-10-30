@@ -15,7 +15,7 @@ import {
 } from "@/settings/finaleSettings";
 import { getEasedProgress } from "@/utils/camera/getEasedProgress";
 import { dampAngle } from "@/utils/animation";
-import { getHeading } from "@/utils/cat";
+import { getForward, getHeading } from "@/utils/cat";
 import { getFlightPoint } from "@/utils/finale";
 import { CAT_CLOSE_UP_ORBIT_DEGREES } from "@/settings/cameraSettings";
 
@@ -49,7 +49,8 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
 
   useFrame(({ clock }, delta) => {
     const root = rootRef.current;
-    const { mode, finaleBeat, catPosition } = useGameStore.getState();
+    const { mode, finaleBeat, catPosition, catForward } =
+      useGameStore.getState();
     if (!root || mode !== "finale") {
       return;
     }
@@ -111,5 +112,6 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
     }
 
     catPosition.copy(root.position);
+    getForward(root.rotation.y, catForward);
   });
 }

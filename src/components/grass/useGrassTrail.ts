@@ -1,25 +1,28 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ClampToEdgeWrapping,
   Color,
   LinearFilter,
+  MathUtils,
   Mesh,
   OrthographicCamera,
   PlaneGeometry,
   RGBAFormat,
   Scene,
   UnsignedByteType,
-  type Vector3,
+  Vector3,
   Vector2,
   type WebGLRenderer,
   WebGLRenderTarget,
 } from "three";
 
 import {
+  TRAIL_BRUSH_FORWARD_OFFSET,
   TRAIL_MAX_STAMP_DISTANCE,
   TRAIL_RECOVERY_TIME,
   TRAIL_RESOLUTION,
+  TRAIL_STAMP_FADE_OUT_HEIGHT,
   TRAIL_TEXEL_SIZE,
 } from "@/settings/grassTrailSettings";
 import { useGameStore } from "@/store/gameStore";
@@ -53,7 +56,7 @@ function createTrailPass() {
     read: createTrailRenderTarget(),
     write: createTrailRenderTarget(),
     center: new Vector2(),
-    catPosition: new Vector2(),
+    brushPosition: new Vector2(),
   };
 }
 
@@ -92,38 +95,40 @@ function snapToTrailTexel(worldCoordinate: number) {
   return Math.round(worldCoordinate / TRAIL_TEXEL_SIZE) * TRAIL_TEXEL_SIZE;
 }
 
-function startTrailPassAtCat(trailPass: TrailPass, catPosition: Vector3) {
+function startTrailPassAtBrush(trailPass: TrailPass, brushPosition: Vector3) {
   trailPass.center.set(
-    snapToTrailTexel(catPosition.x),
-    snapToTrailTexel(catPosition.z),
+    snapToTrailTexel(brushPosition.x),
+    snapToTrailTexel(brushPosition.z),
   );
-  trailPass.catPosition.set(catPosition.x, catPosition.z);
+  trailPass.brushPosition.set(brushPosition.x, brushPosition.z);
 }
 
 function renderTrailFrame(
   trailPass: TrailPass,
   renderer: WebGLRenderer,
-  catPosition: Vector3,
+  brushPosition: Vector3,
   delta: number,
 ) {
-  const centerX = snapToTrailTexel(catPosition.x);
-  const centerZ = snapToTrailTexel(catPosition.z);
+  const centerX = snapToTrailTexel(brushPosition.x);
+  const centerZ = snapToTrailTexel(brushPosition.z);
 
-  const catTravelThisFrame = Math.hypot(
-    catPosition.x - trailPass.catPosition.x,
-    catPosition.z - trailPass.catPosition.y,
+  const brushTravelThisFrame = Math.hypot(
+    brushPosition.x - trailPass.brushPosition.x,
+    brushPosition.z - trailPass.brushPosition.y,
   );
-  if (catTravelThisFrame > TRAIL_MAX_STAMP_DISTANCE) {
-    trailPass.catPosition.set(catPosition.x, catPosition.z);
+  if (brushTravelThisFrame > TRAIL_MAX_STAMP_DISTANCE) {
+    trailPass.brushPosition.set(brushPosition.x, brushPosition.z);
   }
 
   const { uniforms } = trailPass.material;
   uniforms.uPrevious.value = trailPass.read.texture;
   uniforms.uPreviousCenter.value.copy(trailPass.center);
   uniforms.uCenter.value.set(centerX, centerZ);
-  uniforms.uPreviousPlayerPosition.value.copy(trailPass.catPosition);
-  uniforms.uPlayerPosition.value.set(catPosition.x, catPosition.z);
+  uniforms.uPreviousPlayerPosition.value.copy(trailPass.brushPosition);
+  uniforms.uPlayerPosition.value.set(brushPosition.x, brushPosition.z);
   uniforms.uDecay.value = Math.exp(-delta / TRAIL_RECOVERY_TIME);
+  uniforms.uStampStrength.value =
+    1 - MathUtils.smoothstep(brushPosition.y, 0, TRAIL_STAMP_FADE_OUT_HEIGHT);
 
   const previousRenderTarget = renderer.getRenderTarget();
   renderer.setRenderTarget(trailPass.write);
@@ -132,7 +137,7 @@ function renderTrailFrame(
 
   [trailPass.read, trailPass.write] = [trailPass.write, trailPass.read];
   trailPass.center.set(centerX, centerZ);
-  trailPass.catPosition.set(catPosition.x, catPosition.z);
+  trailPass.brushPosition.set(brushPosition.x, brushPosition.z);
 
   grassTrailMapUniform.value = trailPass.read.texture;
   grassTrailCenterUniform.value.copy(trailPass.center);
@@ -141,6 +146,7 @@ function renderTrailFrame(
 export function useGrassTrail() {
   const renderer = useThree((state) => state.gl);
   const trailPassRef = useRef<TrailPass>(undefined);
+  const [brushPosition] = useState(() => new Vector3());
 
   useEffect(
     () => () => {
@@ -153,14 +159,18 @@ export function useGrassTrail() {
   );
 
   useFrame((_, delta) => {
-    const { catPosition } = useGameStore.getState();
+    const { catPosition, catForward } = useGameStore.getState();
+    brushPosition
+      .copy(catForward)
+      .multiplyScalar(TRAIL_BRUSH_FORWARD_OFFSET)
+      .add(catPosition);
 
     if (!trailPassRef.current) {
       trailPassRef.current = createTrailPass();
       clearTrailPass(trailPassRef.current, renderer);
-      startTrailPassAtCat(trailPassRef.current, catPosition);
+      startTrailPassAtBrush(trailPassRef.current, brushPosition);
     }
 
-    renderTrailFrame(trailPassRef.current, renderer, catPosition, delta);
+    renderTrailFrame(trailPassRef.current, renderer, brushPosition, delta);
   });
 }

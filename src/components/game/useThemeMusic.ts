@@ -11,20 +11,24 @@ import { useGameStore } from "@/store/gameStore";
 export function useThemeMusic() {
   const themeMusic = useGameStore((state) => state.themeMusic);
   const isSolving = useGameStore((state) => state.mode === "solving");
+  const isThankYouBeat = useGameStore(
+    (state) => state.finaleBeat === "thankYou",
+  );
 
   useEffect(() => {
     if (themeMusic === null || !themeMusic.playing()) return;
 
-    const targetVolume = isSolving
-      ? THEME_MUSIC_VOLUME * THEME_MUSIC_DURING_PUZZLE_VOLUME_FACTOR
-      : THEME_MUSIC_VOLUME;
+    const targetVolume =
+      isSolving || isThankYouBeat
+        ? THEME_MUSIC_VOLUME * THEME_MUSIC_DURING_PUZZLE_VOLUME_FACTOR
+        : THEME_MUSIC_VOLUME;
 
     themeMusic.fade(
       themeMusic.volume(),
       targetVolume,
       THEME_MUSIC_VOLUME_CHANGE_DURATION_IN_SECONDS * 1000,
     );
-  }, [themeMusic, isSolving]);
+  }, [themeMusic, isSolving, isThankYouBeat]);
 
   const playThemeMusicWithFadeIn = () => {
     if (themeMusic === null || themeMusic.playing()) return;

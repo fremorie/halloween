@@ -7,6 +7,7 @@ uniform float uAreaSize;
 uniform vec2 uPlayerPosition;
 uniform vec2 uPreviousPlayerPosition;
 uniform float uBrushRadius;
+uniform float uStampStrength;
 
 uniform float uDecay;
 
@@ -48,7 +49,8 @@ void main() {
         closest
     );
 
-    float stamp = 1.0 - smoothstep(uBrushRadius * 0.4, uBrushRadius, distanceToPath);
+    float stamp = (1.0 - smoothstep(uBrushRadius * 0.4, uBrushRadius, distanceToPath))
+        * uStampStrength;
 
     vec2 awayFromPath = worldPosition - closest;
     vec2 stampDirection = dot(awayFromPath, awayFromPath) > 1e-6

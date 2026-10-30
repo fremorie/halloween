@@ -10,11 +10,11 @@ export const INTRO_BEAT_ORDER: IntroBeat[] = [
 
 export const INTRO_LINES: Record<Exclude<IntroBeat, "flyIn">, string> = {
   complain:
-    "Um... Hello! The name's Marcelino. It's almost time to go trick-or-treating... And I don't have a costume.",
+    "It's almost time to go trick-or-treating...\nAnd I don't have a costume.",
   askForHelp: "Will you help me make one?",
 };
 
-export const INTRO_TEXT = `${INTRO_LINES.complain}\n${INTRO_LINES.askForHelp}`;
+export const INTRO_TEXT = `${INTRO_LINES.complain} ${INTRO_LINES.askForHelp}`;
 
 export const INTRO_BEAT_DURATIONS: Record<
   Exclude<IntroBeat, "askForHelp">,
