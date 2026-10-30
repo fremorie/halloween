@@ -1,6 +1,5 @@
 import { MathUtils } from "three";
-
-const FULL_TURN = Math.PI * 2;
+import { getShortestAngleDifference } from "@/utils/animation/getShortestAngleDifference";
 
 export function dampAngle(
   currentAngle: number,
@@ -8,9 +7,10 @@ export function dampAngle(
   lambda: number,
   delta: number,
 ) {
-  const shortestDifference =
-    MathUtils.euclideanModulo(targetAngle - currentAngle + Math.PI, FULL_TURN) -
-    Math.PI;
+  const shortestDifference = getShortestAngleDifference(
+    currentAngle,
+    targetAngle,
+  );
 
   return MathUtils.damp(
     currentAngle,

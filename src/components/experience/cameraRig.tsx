@@ -19,6 +19,7 @@ import {
   pushInToCat,
   setShotLookAt,
   snapToShot,
+  orbitBehindCat,
 } from "@/utils/camera";
 import { isTouchScreen } from "@/utils/isTouchScreen";
 
@@ -55,7 +56,7 @@ export function CameraRig() {
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
       scriptedMoveStartRef.current,
-      getScriptedMovePhase(shot, rewardBeat, mode),
+      getScriptedMovePhase(shot, rewardBeat, mode, finaleBeat),
       clock.elapsedTime,
       pose,
     );
@@ -77,6 +78,16 @@ export function CameraRig() {
       flyInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
       pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
+    } else if (scriptedMoveStart?.phase === "finaleTurnAround") {
+      orbitBehindCat(
+        pose,
+        scriptedMoveStart,
+        shotLookAt,
+        shotZoom,
+        shotHeightFactor,
+        shotOrbitAngle,
+        clock.elapsedTime,
+      );
     } else {
       followShot(
         pose,

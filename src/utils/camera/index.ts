@@ -7,6 +7,7 @@ export * from "./getShotFollowSpeed";
 export * from "./getShotHeightFactor";
 export * from "./getShotOrbitAngle";
 export * from "./getShotZoom";
+export * from "./orbitBehindCat";
 export * from "./placeCamera";
 export * from "./pullBackForKnitting";
 export * from "./pushInToCat";

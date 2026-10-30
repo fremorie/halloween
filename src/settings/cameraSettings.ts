@@ -50,3 +50,4 @@ export const INTRO_FLY_IN_LANDING_START_FACTOR = 0.4;
 
 export const FLIGHT_CHASE_ZOOM = 0.6;
 export const FLIGHT_CHASE_HEIGHT_FACTOR = 1.5;
+export const FINALE_TURN_AROUND_EASE = "sine.inOut";
