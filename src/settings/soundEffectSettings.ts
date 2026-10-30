@@ -27,3 +27,8 @@ export const WING_FLAP_SOUND_SPRITES: Record<string, [number, number]> = {
 };
 export const WING_FLAP_SOUND_PEAK_OFFSET_IN_SECONDS = 0.2;
 export const WING_FLAP_SOUND_PEAK_PHASE = 0.35;
+export const PURR_SOUND_SOURCE = `${process.env.NEXT_PUBLIC_BASE_PATH}/sound/cat-purr.mp3`;
+export const PURR_SOUND_VOLUME = 0.5;
+export const PURR_SOUND_FADE_IN_DURATION_IN_MILLISECONDS = 800;
+export const PURR_SOUND_FADE_OUT_DURATION_IN_MILLISECONDS = 1200;
+export const PURR_SOUND_INTERRUPTED_FADE_OUT_DURATION_IN_MILLISECONDS = 300;
