@@ -20,7 +20,7 @@ import {
   getStandSpot,
   isInsideGroundEllipse,
 } from "@/utils/journey";
-import { getMoveDirection, getHeading } from "@/utils/cat";
+import { getForward, getMoveDirection, getHeading } from "@/utils/cat";
 import { joystickTilt } from "@/store/joystickTilt";
 import { dampAngle } from "@/utils/animation";
 import type { LimitStepByObstacles } from "./useCatObstacleBlocking";
@@ -44,6 +44,7 @@ export function useCatMovement(
     const stepDuration = Math.min(delta, MAX_STEP_DURATION);
     const {
       catPosition,
+      catForward,
       mode,
       currentStationIndex,
       isNearStation,
@@ -109,6 +110,7 @@ export function useCatMovement(
     }
 
     catPosition.copy(root.position);
+    getForward(root.rotation.y, catForward);
 
     const isNearStationNow =
       mode === "walking" &&

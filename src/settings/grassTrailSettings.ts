@@ -6,4 +6,5 @@ export const TRAIL_RECOVERY_TIME = 4;
 export const TRAIL_PUSH = 0.3;
 export const TRAIL_FLATTEN = 0.6;
 export const TRAIL_MAX_STAMP_DISTANCE = 1;
+export const TRAIL_BRUSH_FORWARD_OFFSET = 0.5;
 export const TRAIL_STAMP_FADE_OUT_HEIGHT = 0.5;

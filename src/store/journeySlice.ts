@@ -9,6 +9,7 @@ export type JourneySlice = {
   mode: GameMode;
   runCount: number;
   catPosition: Vector3;
+  catForward: Vector3;
   currentStationIndex: number;
   isNearStation: boolean;
   setNearStation: (isNearStation: boolean) => void;
@@ -28,6 +29,7 @@ export const createJourneySlice: StateCreator<
   mode: "intro",
   runCount: 0,
   catPosition: new Vector3(),
+  catForward: new Vector3(0, 0, -1),
   currentStationIndex: 0,
   isNearStation: false,
 
