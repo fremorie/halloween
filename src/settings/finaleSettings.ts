@@ -16,6 +16,8 @@ export const WINGS_FLAPPING_BEATS: FinaleBeat[] = [
   "landing",
 ];
 
+export const FINALE_DILATED_PUPIL_BEATS: FinaleBeat[] = ["takeOff", "thankYou"];
+
 export const FINALE_BEAT_DURATIONS: Record<
   Exclude<FinaleBeat, "thankYou">,
   number

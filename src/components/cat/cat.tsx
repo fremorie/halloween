@@ -27,6 +27,7 @@ import { CatWings } from "./catWings";
 import { useCatFlight } from "./useCatFlight";
 import { useIsFinaleFlying } from "./useIsFinaleFlying";
 import { useCatFlightBob } from "./useCatFlightBob";
+import { FINALE_DILATED_PUPIL_BEATS } from "@/settings/finaleSettings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
   const rootRef = useRef<Group>(null);
@@ -49,8 +50,10 @@ export function Cat({ stationCount }: { stationCount: number }) {
 
   const isPupilDilated = useGameStore(
     (state) =>
-      state.introBeat !== null &&
-      INTRO_DILATED_PUPIL_BEATS.includes(state.introBeat),
+      (state.introBeat !== null &&
+        INTRO_DILATED_PUPIL_BEATS.includes(state.introBeat)) ||
+      (state.finaleBeat !== null &&
+        FINALE_DILATED_PUPIL_BEATS.includes(state.finaleBeat)),
   );
   const isWearingHat = useGameStore((state) =>
     state.wornCostumePieces.includes("hat"),
