@@ -1,6 +1,7 @@
 import type { Vector3 } from "three";
 
-export type CameraShot = "walking" | "puzzle" | "catCloseUp" | "birdView";
+export type CameraShot =
+  "walking" | "puzzle" | "catCloseUp" | "birdView" | "flightChase";
 
 export type ScriptedMovePhase =
   "knittingPullBack" | "catCloseUp" | "introFlyIn";

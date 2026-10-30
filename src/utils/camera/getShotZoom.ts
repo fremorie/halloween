@@ -2,6 +2,7 @@ import {
   BIRD_VIEW_ZOOM,
   CAMERA_FIT_RADIUS,
   CAT_CLOSE_UP_ZOOM,
+  FLIGHT_CHASE_ZOOM,
   SOLVING_HALF_WIDTH,
   TOUCH_SCREEN_SOLVING_HALF_WIDTH,
   WALKING_ZOOM,
@@ -12,6 +13,7 @@ const SHOT_ZOOMS: Record<Exclude<CameraShot, "puzzle">, number> = {
   birdView: BIRD_VIEW_ZOOM,
   walking: WALKING_ZOOM,
   catCloseUp: CAT_CLOSE_UP_ZOOM,
+  flightChase: FLIGHT_CHASE_ZOOM,
 };
 
 export function getShotZoom(

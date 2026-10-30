@@ -34,3 +34,5 @@ export const FINALE_CRUISE_EXTRA_HEIGHT = 3;
 export const FINALE_FLIGHT_EASE = "sine.inOut";
 export const FINALE_LANDING_EASE = "power2.inOut";
 export const FINALE_TURN_SPEED = 3;
+
+export const FLIGHT_CHASE_BEATS: FinaleBeat[] = ["turnAround", "flight"];

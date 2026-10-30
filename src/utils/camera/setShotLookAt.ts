@@ -22,7 +22,7 @@ export function setShotLookAt(
     return;
   }
 
-  if (shot === "catCloseUp") {
+  if (shot === "catCloseUp" || shot === "flightChase") {
     shotLookAt.set(
       catPosition.x,
       catPosition.y + CAT_CLOSE_UP_LOOK_AT_HEIGHT,

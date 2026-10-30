@@ -36,14 +36,20 @@ export function CameraRig() {
   const scriptedMoveStartRef = useRef<ScriptedMoveStart | null>(null);
 
   useFrame(({ camera, clock }, delta) => {
-    const { catPosition, mode, currentStationIndex, rewardBeat, introBeat } =
-      useGameStore.getState();
+    const {
+      catPosition,
+      mode,
+      currentStationIndex,
+      rewardBeat,
+      introBeat,
+      finaleBeat,
+    } = useGameStore.getState();
     const pose = poseRef.current;
     const shotLookAt = shotLookAtRef.current;
-    const shot = getCameraShot(mode, rewardBeat, introBeat);
+    const shot = getCameraShot(mode, rewardBeat, introBeat, finaleBeat);
     const shotZoom = getShotZoom(shot, aspect, isTouchDevice);
     const shotHeightFactor = getShotHeightFactor(shot);
-    const shotOrbitAngle = getShotOrbitAngle(shot);
+    const shotOrbitAngle = getShotOrbitAngle(shot, catPosition);
     const shotFollowSpeed = getShotFollowSpeed(shot, isTouchDevice);
     setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);
 
