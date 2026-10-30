@@ -31,7 +31,7 @@ export const COSTUME_SILHOUETTE_FADE_DURATION = 1;
 export const PUZZLE_BACKGROUND_FADE_DURATION = 0.6;
 
 export const MARCELINOS_COMMENTS: Record<CostumePiece, string> = {
-  hat: "A hat! Perfect. Don't I look fabulous?",
-  cape: "Oh, a cape! Very mysterious. Very comfortable. Mostly.",
-  wings: "Now we're talking! I was born to wear this.",
+  hat: "Oh yes, every cat needs a hat. It's a good start!",
+  cape: "I've always wanted a cape.\nVery mysterious. Very comfortable.\nBut something is still missing...",
+  wings: "YES! Now we're talking!",
 };
