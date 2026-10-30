@@ -5,6 +5,7 @@ import { Vector3 } from "three";
 import { useGameStore } from "@/store/gameStore";
 import type { CameraPose, ScriptedMoveStart } from "@/types/camera";
 import {
+  chaseCat,
   flyInToCat,
   followShot,
   getCameraShot,
@@ -20,6 +21,7 @@ import {
   setShotLookAt,
   snapToShot,
   orbitBehindCat,
+  swingToCatFront,
 } from "@/utils/camera";
 import { isTouchScreen } from "@/utils/isTouchScreen";
 
@@ -78,6 +80,8 @@ export function CameraRig() {
       flyInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
       pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
+    } else if (scriptedMoveStart?.phase === "finaleLanding") {
+      swingToCatFront(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else if (scriptedMoveStart?.phase === "finaleTurnAround") {
       orbitBehindCat(
         pose,
@@ -87,6 +91,15 @@ export function CameraRig() {
         shotHeightFactor,
         shotOrbitAngle,
         clock.elapsedTime,
+      );
+    } else if (shot === "flightChase") {
+      chaseCat(
+        pose,
+        shotLookAt,
+        shotZoom,
+        shotHeightFactor,
+        shotOrbitAngle,
+        delta,
       );
     } else {
       followShot(

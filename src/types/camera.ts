@@ -4,7 +4,11 @@ export type CameraShot =
   "walking" | "puzzle" | "catCloseUp" | "birdView" | "flightChase";
 
 export type ScriptedMovePhase =
-  "knittingPullBack" | "catCloseUp" | "introFlyIn" | "finaleTurnAround";
+  | "knittingPullBack"
+  | "catCloseUp"
+  | "introFlyIn"
+  | "finaleTurnAround"
+  | "finaleLanding";
 
 export type CameraPose = {
   lookAt: Vector3;

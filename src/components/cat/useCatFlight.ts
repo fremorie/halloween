@@ -9,7 +9,6 @@ import {
   FINALE_BEAT_DURATIONS,
   FINALE_FLIGHT_EASE,
   FINALE_HOVER_HEIGHT,
-  FINALE_LANDING_EASE,
   FINALE_LANDING_SPOT,
   FINALE_TAKE_OFF_EASE,
   FINALE_TURN_SPEED,
@@ -22,10 +21,14 @@ import { CAT_CLOSE_UP_ORBIT_DEGREES } from "@/settings/cameraSettings";
 
 const takeOffEase = gsap.parseEase(FINALE_TAKE_OFF_EASE);
 const flightEase = gsap.parseEase(FINALE_FLIGHT_EASE);
-const landingEase = gsap.parseEase(FINALE_LANDING_EASE);
 
-const [landingSpotX, , landingSpotZ] = FINALE_LANDING_SPOT;
-const flightEnd = new Vector3(landingSpotX, FINALE_HOVER_HEIGHT, landingSpotZ);
+const flightEnd = new Vector3(...FINALE_LANDING_SPOT);
+const flightDuration =
+  FINALE_BEAT_DURATIONS.turnAround +
+  FINALE_BEAT_DURATIONS.flight +
+  FINALE_BEAT_DURATIONS.landing;
+const MOTION_START_BEATS: FinaleBeat[] = ["takeOff", "turnAround"];
+
 const closeUpOrbitRadians = MathUtils.degToRad(CAT_CLOSE_UP_ORBIT_DEGREES);
 const directionToCloseUpCamera = new Vector3(
   Math.sin(closeUpOrbitRadians),
@@ -54,8 +57,10 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
     const currentBeatStart = currentBeatStartRef.current;
     if (currentBeatStart.beat !== finaleBeat) {
       currentBeatStart.beat = finaleBeat;
-      currentBeatStart.elapsedTime = clock.elapsedTime;
-      currentBeatStart.position.copy(root.position);
+      if (finaleBeat !== null && MOTION_START_BEATS.includes(finaleBeat)) {
+        currentBeatStart.elapsedTime = clock.elapsedTime;
+        currentBeatStart.position.copy(root.position);
+      }
     }
 
     const elapsedSinceBeatStart =
@@ -70,30 +75,21 @@ export function useCatFlight(rootRef: RefObject<Group | null>) {
       root.position.y = MathUtils.lerp(0, FINALE_HOVER_HEIGHT, takeOffProgress);
     }
 
-    if (finaleBeat === "flight") {
+    if (
+      finaleBeat === "turnAround" ||
+      finaleBeat === "flight" ||
+      finaleBeat === "landing"
+    ) {
       const flightProgress = getEasedProgress(
         flightEase,
         elapsedSinceBeatStart,
-        FINALE_BEAT_DURATIONS.flight,
+        flightDuration,
       );
       getFlightPoint(
         currentBeatStart.position,
         flightEnd,
         flightProgress,
         root.position,
-      );
-    }
-
-    if (finaleBeat === "landing") {
-      const landingProgress = getEasedProgress(
-        landingEase,
-        elapsedSinceBeatStart,
-        FINALE_BEAT_DURATIONS.landing,
-      );
-      root.position.y = MathUtils.lerp(
-        currentBeatStart.position.y,
-        0,
-        landingProgress,
       );
     }
 

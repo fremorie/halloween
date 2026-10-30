@@ -1,3 +1,4 @@
+export * from "./chaseCat";
 export * from "./flyInToCat";
 export * from "./followShot";
 export * from "./getCameraShot";
@@ -13,3 +14,4 @@ export * from "./pullBackForKnitting";
 export * from "./pushInToCat";
 export * from "./setShotLookAt";
 export * from "./snapToShot";
+export * from "./swingToCatFront";

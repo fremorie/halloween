@@ -10,13 +10,24 @@ export function getScriptedMovePhase(
   finaleBeat: FinaleBeat | null,
 ): ScriptedMovePhase | null {
   if (shot === "catCloseUp") {
-    return mode === "intro" ? "introFlyIn" : "catCloseUp";
+    if (mode === "intro") {
+      return "introFlyIn";
+    }
+
+    if (finaleBeat === "landing" || finaleBeat === "thankYou") {
+      return "finaleLanding";
+    }
+
+    return "catCloseUp";
   }
   if (rewardBeat === "knit") {
     return "knittingPullBack";
   }
 
-  if (shot === "flightChase" && finaleBeat === "turnAround") {
+  if (
+    shot === "flightChase" &&
+    (finaleBeat === "takeOff" || finaleBeat === "turnAround")
+  ) {
     return "finaleTurnAround";
   }
 
