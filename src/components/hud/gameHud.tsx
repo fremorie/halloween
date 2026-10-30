@@ -62,8 +62,6 @@ export function GameHud() {
       )}
       {isFirstWalkAfterIntro && <MovementHint />}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
-        {finaleBeat !== null && <p>{finaleBeat}</p>}
-
         {finaleBeat === "thankYou" && (
           <>
             <Comment text={THANK_YOU_LINE} />
