@@ -20,10 +20,10 @@ export const FINALE_BEAT_DURATIONS: Record<
   Exclude<FinaleBeat, "thankYou">,
   number
 > = {
-  takeOff: 2,
-  turnAround: 5,
+  takeOff: 1,
+  turnAround: 2,
   flight: 3.5,
-  landing: 5.5,
+  landing: 3.5,
 };
 
 export const THANK_YOU_LINE = "Thank you! Now I'm ready for Halloween.";
