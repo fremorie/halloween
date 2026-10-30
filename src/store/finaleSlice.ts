@@ -8,6 +8,8 @@ export type FinaleSlice = {
   finaleBeat: FinaleBeat | null;
   startFinale: () => void;
   advanceFinaleBeat: () => void;
+  keepExploring: () => void;
+  resetFinale: () => void;
 };
 
 export const createFinaleSlice: StateCreator<GameState, [], [], FinaleSlice> = (
@@ -37,4 +39,8 @@ export const createFinaleSlice: StateCreator<GameState, [], [], FinaleSlice> = (
 
     set({ finaleBeat: nextBeat });
   },
+
+  keepExploring: () => set({ mode: "done", finaleBeat: null }),
+
+  resetFinale: () => set({ finaleBeat: null }),
 });
