@@ -21,7 +21,7 @@ export const FINALE_BEAT_DURATIONS: Record<
 > = {
   takeOff: 2,
   turnAround: 2.5,
-  flight: 6,
+  flight: 10,
   landing: 2,
 };
 
