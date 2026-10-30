@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { Leva, useControls } from "leva";
+import { Leva, useControls, button } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, OrbitControls, Preload } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
@@ -15,8 +15,10 @@ import { KEYBOARD_CONTROLS_MAP } from "@/settings/controlsSettings";
 import { CameraRig } from "@/components/experience/cameraRig";
 import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
+import { levels } from "@/data/levels";
+import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
 
-const DEBUG = true;
+const DEBUG = false;
 const SHOW_PERF = false;
 
 type ExperienceProps = {
@@ -28,6 +30,14 @@ export function Experience({ onSceneReady }: ExperienceProps) {
   const { freeCamera, physicsDebug } = useControls({
     freeCamera: { value: false, label: "Free camera" },
     physicsDebug: { value: false, label: "Physics debug" },
+    "Jump to finale": button(() =>
+      useGameStore.setState({
+        mode: "rewarding",
+        rewardBeat: "speech",
+        currentStationIndex: levels.length - 1,
+        wornCostumePieces: [...REWARDED_COSTUME_PIECES],
+      }),
+    ),
   });
 
   return (

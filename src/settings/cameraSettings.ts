@@ -47,3 +47,7 @@ export const CAT_CLOSE_UP_LOOK_AT_DURATION_FACTOR = 0.7;
 export const INTRO_FLY_IN_ORBIT_EASE = "sine.inOut";
 export const INTRO_FLY_IN_LANDING_EASE = "power2.inOut";
 export const INTRO_FLY_IN_LANDING_START_FACTOR = 0.4;
+
+export const FLIGHT_CHASE_ZOOM = 1.2;
+export const FLIGHT_CHASE_HEIGHT_FACTOR = 7;
+export const FINALE_TURN_AROUND_EASE = "sine.inOut";

@@ -2,6 +2,7 @@ import { MathUtils, type Vector3 } from "three";
 
 import { CAMERA_ZOOM_SPEED } from "@/settings/cameraSettings";
 import type { CameraPose } from "@/types/camera";
+import { dampAngle } from "@/utils/animation";
 
 export function followShotLookAt(
   pose: CameraPose,
@@ -29,7 +30,7 @@ export function followShot(
     CAMERA_ZOOM_SPEED,
     delta,
   );
-  pose.orbitAngle = MathUtils.damp(
+  pose.orbitAngle = dampAngle(
     pose.orbitAngle,
     shotOrbitAngle,
     CAMERA_ZOOM_SPEED,

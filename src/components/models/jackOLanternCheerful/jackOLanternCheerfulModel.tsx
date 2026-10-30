@@ -1,4 +1,4 @@
-import { FrontSide } from "three";
+import { DoubleSide, FrontSide } from "three";
 
 import { RevealStandardMaterial } from "@/components/materials/revealStandardMaterial";
 import { useLanternFaceMaterial } from "@/components/materials/useLanternFaceMaterial";
@@ -24,7 +24,12 @@ export function JackOLanternCheerfulModel({ faceParams }: Props) {
           shadowSide={FrontSide}
         />
       </mesh>
-      <mesh geometry={nodes.pumpkin002_1.geometry} material={faceMaterial} />
+      <mesh
+        castShadow
+        geometry={nodes.pumpkin002_1.geometry}
+        material={faceMaterial}
+        material-shadowSide={DoubleSide}
+      />
     </group>
   );
 }

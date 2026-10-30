@@ -51,6 +51,12 @@ export function useCatMovement(
       arriveAtStation,
     } = useGameStore.getState();
 
+    if (mode === "finale") {
+      walkPaceRef.current = 0;
+
+      return;
+    }
+
     previousPosition.copy(root.position);
 
     if (mode === "walking" || mode === "done") {

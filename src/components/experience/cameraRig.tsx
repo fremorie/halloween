@@ -5,6 +5,7 @@ import { Vector3 } from "three";
 import { useGameStore } from "@/store/gameStore";
 import type { CameraPose, ScriptedMoveStart } from "@/types/camera";
 import {
+  chaseCat,
   flyInToCat,
   followShot,
   getCameraShot,
@@ -19,6 +20,8 @@ import {
   pushInToCat,
   setShotLookAt,
   snapToShot,
+  orbitBehindCat,
+  swingToCatFront,
 } from "@/utils/camera";
 import { isTouchScreen } from "@/utils/isTouchScreen";
 
@@ -36,20 +39,26 @@ export function CameraRig() {
   const scriptedMoveStartRef = useRef<ScriptedMoveStart | null>(null);
 
   useFrame(({ camera, clock }, delta) => {
-    const { catPosition, mode, currentStationIndex, rewardBeat, introBeat } =
-      useGameStore.getState();
+    const {
+      catPosition,
+      mode,
+      currentStationIndex,
+      rewardBeat,
+      introBeat,
+      finaleBeat,
+    } = useGameStore.getState();
     const pose = poseRef.current;
     const shotLookAt = shotLookAtRef.current;
-    const shot = getCameraShot(mode, rewardBeat, introBeat);
+    const shot = getCameraShot(mode, rewardBeat, introBeat, finaleBeat);
     const shotZoom = getShotZoom(shot, aspect, isTouchDevice);
     const shotHeightFactor = getShotHeightFactor(shot);
-    const shotOrbitAngle = getShotOrbitAngle(shot);
+    const shotOrbitAngle = getShotOrbitAngle(shot, catPosition);
     const shotFollowSpeed = getShotFollowSpeed(shot, isTouchDevice);
     setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
       scriptedMoveStartRef.current,
-      getScriptedMovePhase(shot, rewardBeat, mode),
+      getScriptedMovePhase(shot, rewardBeat, mode, finaleBeat),
       clock.elapsedTime,
       pose,
     );
@@ -71,6 +80,27 @@ export function CameraRig() {
       flyInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
     } else if (scriptedMoveStart?.phase === "catCloseUp") {
       pushInToCat(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
+    } else if (scriptedMoveStart?.phase === "finaleLanding") {
+      swingToCatFront(pose, scriptedMoveStart, shotLookAt, clock.elapsedTime);
+    } else if (scriptedMoveStart?.phase === "finaleTurnAround") {
+      orbitBehindCat(
+        pose,
+        scriptedMoveStart,
+        shotLookAt,
+        shotZoom,
+        shotHeightFactor,
+        shotOrbitAngle,
+        clock.elapsedTime,
+      );
+    } else if (shot === "flightChase") {
+      chaseCat(
+        pose,
+        shotLookAt,
+        shotZoom,
+        shotHeightFactor,
+        shotOrbitAngle,
+        delta,
+      );
     } else {
       followShot(
         pose,

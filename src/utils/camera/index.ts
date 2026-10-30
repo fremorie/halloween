@@ -1,3 +1,4 @@
+export * from "./chaseCat";
 export * from "./flyInToCat";
 export * from "./followShot";
 export * from "./getCameraShot";
@@ -7,8 +8,10 @@ export * from "./getShotFollowSpeed";
 export * from "./getShotHeightFactor";
 export * from "./getShotOrbitAngle";
 export * from "./getShotZoom";
+export * from "./orbitBehindCat";
 export * from "./placeCamera";
 export * from "./pullBackForKnitting";
 export * from "./pushInToCat";
 export * from "./setShotLookAt";
 export * from "./snapToShot";
+export * from "./swingToCatFront";

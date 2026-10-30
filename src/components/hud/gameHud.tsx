@@ -11,6 +11,7 @@ import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleIns
 import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
 import { Comment } from "@/components/ui/comment/comment";
 import { MovementHint } from "@/components/ui/movementHint/movementHint";
+import { THANK_YOU_LINE } from "@/settings/finaleSettings";
 
 const TouchJoystick = dynamic(
   () =>
@@ -35,6 +36,8 @@ export function GameHud() {
   const introBeat = useGameStore((state) => state.introBeat);
   const advanceRewardBeat = useGameStore((state) => state.advanceRewardBeat);
   const runCount = useGameStore((state) => state.runCount);
+  const finaleBeat = useGameStore((state) => state.finaleBeat);
+  const keepExploring = useGameStore((state) => state.keepExploring);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -59,6 +62,16 @@ export function GameHud() {
       )}
       {isFirstWalkAfterIntro && <MovementHint />}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
+        {finaleBeat === "thankYou" && (
+          <>
+            <Comment text={THANK_YOU_LINE} />
+            <div className="flex gap-4">
+              <Button onClick={restartGame}>Play again</Button>
+              <Button onClick={keepExploring}>Keep exploring</Button>
+            </div>
+          </>
+        )}
+
         {rewardBeat === "speech" && (
           <>
             <Comment
@@ -84,8 +97,6 @@ export function GameHud() {
         )}
 
         {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
-
-        {mode === "done" && <Button onClick={restartGame}>Play again</Button>}
       </div>
     </>
   );

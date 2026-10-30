@@ -1,5 +1,11 @@
 import { shaderMaterial } from "@react-three/drei";
-import { type Texture, Uniform, UniformsLib, UniformsUtils } from "three";
+import {
+  DoubleSide,
+  type Texture,
+  Uniform,
+  UniformsLib,
+  UniformsUtils,
+} from "three";
 
 import fragmentShader from "@/shaders/patchwork/fragment.glsl";
 import vertexShader from "@/shaders/patchwork/vertex.glsl";
@@ -35,6 +41,7 @@ export function createPatchworkMaterial(
   material.uniforms.uStitchProgress =
     patchworkStitchProgressUniforms[costumePiece];
   material.uniforms.uRowCount = patchworkRowCountUniform;
+  material.side = DoubleSide;
 
   return material;
 }

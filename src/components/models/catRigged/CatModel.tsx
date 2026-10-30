@@ -6,7 +6,13 @@ import {
   useLayoutEffect,
   useRef,
 } from "react";
-import { type Group, type Material, type Mesh, MathUtils } from "three";
+import {
+  FrontSide,
+  type Group,
+  type Material,
+  type Mesh,
+  MathUtils,
+} from "three";
 import { useFrame } from "@react-three/fiber";
 
 import { useEyeMaterial } from "@/components/materials/useEyeMaterial";
@@ -107,6 +113,7 @@ export function CatRiggedModel({
             receiveShadow
             geometry={nodes.Cat.geometry}
             material={materials.Cat}
+            material-shadowSide={FrontSide}
             skeleton={nodes.Cat.skeleton}
           />
           <primitive object={nodes.Root} />

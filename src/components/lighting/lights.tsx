@@ -12,10 +12,12 @@ import { useControls } from "leva";
 import {
   HEMISPHERE_LIGHT_SETTINGS,
   SHADOW_CAMERA_BOUNDS,
+  SHADOW_CAMERA_UP,
+  SUN_LIGHT_POSITION,
   SUN_LIGHT_SETTINGS,
 } from "@/settings/lightSettings";
 import { EnvironmentLighting } from "./environmentLighting";
-import { useSunFollowing } from "./useSunFollowing";
+import { useSunTarget } from "./useSunTarget";
 
 const DEBUG = false;
 
@@ -23,7 +25,7 @@ export function Lights() {
   const lightRef = useRef<DirectionalLight>(null);
   const shadowCameraRef = useRef<Camera>(null);
 
-  useSunFollowing(lightRef);
+  useSunTarget(lightRef);
 
   const { environmentLighting } = useControls({
     environmentLighting: { value: true, label: "Environment light" },
@@ -59,7 +61,7 @@ export function Lights() {
       <directionalLight
         ref={lightRef}
         castShadow
-        position={SUN_LIGHT_SETTINGS.offsetFromTarget}
+        position={SUN_LIGHT_POSITION}
         color={SUN_LIGHT_SETTINGS.color}
         intensity={SUN_LIGHT_SETTINGS.intensity}
         shadow-mapSize={[
@@ -74,6 +76,8 @@ export function Lights() {
         shadow-camera-bottom={SHADOW_CAMERA_BOUNDS.bottom}
         shadow-camera-near={SHADOW_CAMERA_BOUNDS.near}
         shadow-camera-far={SHADOW_CAMERA_BOUNDS.far}
+        shadow-camera-up={SHADOW_CAMERA_UP}
+        shadow-radius={5}
       />
 
       {environmentLighting && <EnvironmentLighting />}
