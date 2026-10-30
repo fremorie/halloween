@@ -5,7 +5,7 @@ import {
   CAT_CLOSE_UP_ORBIT_DEGREES,
 } from "@/settings/cameraSettings";
 import type { CameraShot } from "@/types/camera";
-import { getHomeHeading } from "@/utils/finale";
+import { getLandingSpotHeading } from "@/utils/finale";
 
 const SHOT_ORBIT_ANGLES: Record<CameraShot, number> = {
   walking: 0,
@@ -17,7 +17,7 @@ const SHOT_ORBIT_ANGLES: Record<CameraShot, number> = {
 
 export function getShotOrbitAngle(shot: CameraShot, catPosition: Vector3) {
   if (shot === "flightChase") {
-    return getHomeHeading(catPosition);
+    return getLandingSpotHeading(catPosition);
   }
 
   return SHOT_ORBIT_ANGLES[shot];

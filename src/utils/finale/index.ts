@@ -1,2 +1,2 @@
 export * from "./getFlightPoint";
-export * from "./getHomeHeading";
+export * from "./getLandingSpotHeading";
