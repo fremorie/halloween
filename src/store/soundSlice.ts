@@ -105,6 +105,7 @@ export const createSoundSlice: StateCreator<GameState, [], [], SoundSlice> = (
       }),
       purrSound: new Howl({
         src: [PURR_SOUND_SOURCE],
+        loop: true,
         volume: PURR_SOUND_VOLUME,
       }),
     });
