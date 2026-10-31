@@ -17,6 +17,9 @@ import { useGameStore } from "@/store/gameStore";
 
 export function useStationReveals() {
   const solvedAttempts = useGameStore((state) => state.solvedAttempts);
+  const isWorldRevealing = useGameStore(
+    (state) => state.mode === "finale" || state.mode === "done",
+  );
 
   useEffect(() => {
     levels.forEach((_, stationIndex) => {
@@ -32,16 +35,14 @@ export function useStationReveals() {
         startStationReveal(stationIndex);
       }
     });
+  }, [solvedAttempts]);
 
-    const areAllStationsSolved = levels.every(
-      (_, stationIndex) => solvedAttempts[stationIndex] !== undefined,
-    );
-
+  useEffect(() => {
     gsap.to(revealUniforms.uRevealMaxRadius, {
-      value: areAllStationsSolved ? WORLD_REVEAL_MAX_RADIUS : REVEAL_MAX_RADIUS,
-      duration: areAllStationsSolved ? WORLD_REVEAL_GROW_DURATION : 0,
+      value: isWorldRevealing ? WORLD_REVEAL_MAX_RADIUS : REVEAL_MAX_RADIUS,
+      duration: isWorldRevealing ? WORLD_REVEAL_GROW_DURATION : 0,
       ease: "power1.in",
       overwrite: true,
     });
-  }, [solvedAttempts]);
+  }, [isWorldRevealing]);
 }

@@ -1,3 +1,5 @@
+import { FINALE_BEAT_DURATIONS } from "@/settings/finaleSettings";
+
 export const REVEAL_MAX_RADIUS = 13.3;
 export const REVEAL_INITIAL_SPEED = 7;
 export const REVEAL_NOISE_SCALE = 0.16;
@@ -6,4 +8,8 @@ export const REVEAL_EDGE_SOFTNESS = 0.1;
 export const REVEAL_WOBBLE_NOISE_SCALE = 0.037;
 export const REVEAL_WOBBLE_AMOUNT = 0.09;
 export const WORLD_REVEAL_MAX_RADIUS = 130;
-export const WORLD_REVEAL_GROW_DURATION = 6;
+export const WORLD_REVEAL_GROW_DURATION =
+  FINALE_BEAT_DURATIONS.takeOff +
+  FINALE_BEAT_DURATIONS.turnAround +
+  FINALE_BEAT_DURATIONS.flight +
+  FINALE_BEAT_DURATIONS.landing;
