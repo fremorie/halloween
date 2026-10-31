@@ -20,7 +20,7 @@ import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
 import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap3.jpg`;
-const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoadFaded.png`;
+const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoad3Faded.png`;
 const GRASS_SEGMENTS = 3;
 const GRASS_BLADE_COUNT = 20000;
 
@@ -56,7 +56,7 @@ export function GrassField() {
   return (
     <>
       <mesh rotation-x={-Math.PI / 2} position-z={-12.554} renderOrder={RENDER_ORDER.ground}>
-        <planeGeometry args={[43.51, 88.81]} />
+        <planeGeometry args={[100, 88.81]} />
         <CustomShaderMaterial
           baseMaterial={MeshBasicMaterial}
           vertexShader={revealVertexShader}
