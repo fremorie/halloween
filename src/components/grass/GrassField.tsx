@@ -22,7 +22,7 @@ import { RENDER_ORDER } from "@/utils/renderOrder";
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap3.jpg`;
 const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/simpleRoadWithFilters3.png`;
 const GRASS_SEGMENTS = 3;
-const GRASS_BLADE_COUNT = 10000;
+const GRASS_BLADE_COUNT = 20000;
 
 export function GrassField() {
   const grassMapTexture = useTexture(GRASS_MAP_TEXTURE_PATH);
