@@ -18,7 +18,12 @@ import { revealUniforms } from "@/components/materials/revealUniforms";
 import fragmentShader from "@/shaders/grass/fragment.glsl";
 import vertexShader from "@/shaders/grass/vertex.glsl";
 
-import { GRASS_MAP_WORLD_SIZE } from "./utils";
+import {
+  GRASS_MAP_WORLD_SIZE,
+  GROUND_PLANE_CENTER_Z,
+  GROUND_PLANE_LENGTH,
+  GROUND_PLANE_WIDTH,
+} from "./utils";
 
 const GRASS_WIDTH = 0.1;
 const GRASS_HEIGHT = 0.6;
@@ -39,6 +44,9 @@ const GrassMaterial = shaderMaterial(
     uHemiGroundColor: new Color(),
     uGrassMap: null as Texture | null,
     uGrassMapWorldSize: GRASS_MAP_WORLD_SIZE,
+    uGroundMap: null as Texture | null,
+    uGroundPlaneSize: new Vector2(GROUND_PLANE_WIDTH, GROUND_PLANE_LENGTH),
+    uGroundPlaneCenterZ: GROUND_PLANE_CENTER_Z,
     uTrailSize: TRAIL_AREA_SIZE,
     uTrailPush: TRAIL_PUSH,
     uTrailFlatten: TRAIL_FLATTEN,
@@ -50,6 +58,7 @@ const GrassMaterial = shaderMaterial(
 export function createGrassMaterial(
   grassSegments: number,
   grassMapTexture: Texture | null,
+  groundTexture: Texture | null,
 ) {
   const material = new GrassMaterial();
   Object.assign(material.uniforms, UniformsUtils.clone(UniformsLib.fog));
@@ -65,6 +74,7 @@ export function createGrassMaterial(
     GRASS_HEIGHT,
   );
   material.uniforms.uGrassMap.value = grassMapTexture;
+  material.uniforms.uGroundMap.value = groundTexture;
 
   return material;
 }

@@ -6,6 +6,9 @@ uniform vec3 uTipColor2;
 uniform vec3 uBaseColor2;
 uniform sampler2D uGrassMap;
 uniform float uGrassMapWorldSize;
+uniform sampler2D uGroundMap;
+uniform vec2 uGroundPlaneSize;
+uniform float uGroundPlaneCenterZ;
 
 uniform sampler2D uTrailMap;
 uniform vec2 uTrailCenter;
@@ -15,7 +18,13 @@ uniform float uTrailFlatten;
 
 attribute vec2 aBladeWorldPosition;
 
+const float BLADE_BRIGHTNESS_VARIATION = 0.18;
+const float BLADE_HUE_VARIATION = 0.85;
+const vec3 GREENER_BLADE_TINT = vec3(0.62, 0.95, 0.5);
+const vec3 WARMER_BLADE_TINT = vec3(1.15, 0.75, 0.55);
+
 varying vec3 vColor;
+varying vec3 vGroundColor;
 varying vec4 vGrassData;
 varying vec3 vNormal;
 varying vec3 vWorldPosition;
@@ -36,6 +45,11 @@ void main() {
     vec3 grassBladeWorldPos = (modelMatrix * vec4(grassOffset, 1.0)).xyz;
     vec2 grassMapUv = vec2(grassBladeWorldPos.x, -grassBladeWorldPos.z) / uGrassMapWorldSize + 0.5;
     float grassMask = textureLod(uGrassMap, grassMapUv, 0.0).r;
+    vec2 groundUv = vec2(
+        grassBladeWorldPos.x / uGroundPlaneSize.x + 0.5,
+        (uGroundPlaneCenterZ - grassBladeWorldPos.z) / uGroundPlaneSize.y + 0.5
+    );
+    vGroundColor = textureLod(uGroundMap, groundUv, 0.0).rgb;
 
     vec3 hashVal = hash(grassBladeWorldPos);
 
@@ -127,6 +141,12 @@ void main() {
     float noiseValue = noise(grassBladeWorldPos * 0.1);
 
     vColor = mix(c1, c2, smoothstep(-1.0, 1.0, noiseValue));
+    vColor *= 1.0 + hashVal.z * BLADE_BRIGHTNESS_VARIATION;
+    float bladeHueChoice = hash(grassBladeWorldPos + vec3(17.0)).x;
+    vec3 bladeHueTint = bladeHueChoice < 0.0
+        ? mix(vec3(1.0), GREENER_BLADE_TINT, -bladeHueChoice * BLADE_HUE_VARIATION)
+        : mix(vec3(1.0), WARMER_BLADE_TINT, bladeHueChoice * BLADE_HUE_VARIATION);
+    vColor *= bladeHueTint;
     vGrassData = vec4(x, heightPercent, 0.0, 0.0);
     vNormal = normalize((modelMatrix * vec4(grassLocalNormal, 0.0)).xyz);
     vWorldPosition = worldPosition.xyz;

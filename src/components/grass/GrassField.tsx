@@ -1,7 +1,11 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
-import { InstancedBufferAttribute, MeshBasicMaterial } from "three";
+import {
+  InstancedBufferAttribute,
+  MeshBasicMaterial,
+  SRGBColorSpace,
+} from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
 import { REVEAL_PATCH_MAP } from "@/components/materials/revealPatchMap";
@@ -16,17 +20,28 @@ import {
 } from "./grassMapScatter";
 import { useGrassColorControls } from "./useGrassColorControls";
 import { useGrassTrail } from "./useGrassTrail";
-import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
+import {
+  createGrassGeometry,
+  GRASS_MAP_WORLD_SIZE,
+  GROUND_PLANE_CENTER_Z,
+  GROUND_PLANE_LENGTH,
+  GROUND_PLANE_WIDTH,
+} from "./utils";
 import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap3.jpg`;
-const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoad3Faded.png`;
+const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoad4Faded.png`;
 const GRASS_SEGMENTS = 3;
 const GRASS_BLADE_COUNT = 20000;
 
 export function GrassField() {
   const grassMapTexture = useTexture(GRASS_MAP_TEXTURE_PATH);
-  const groundTexture = useTexture(GROUND_TEXTURE_PATH);
+  const groundTexture = useTexture(
+    GROUND_TEXTURE_PATH,
+    (loadedGroundTexture) => {
+      loadedGroundTexture.colorSpace = SRGBColorSpace;
+    },
+  );
 
   const grassGeometry = useMemo(() => {
     const geometry = createGrassGeometry(GRASS_SEGMENTS, GRASS_BLADE_COUNT);
@@ -42,8 +57,8 @@ export function GrassField() {
     return geometry;
   }, [grassMapTexture]);
   const grassMaterial = useMemo(
-    () => createGrassMaterial(GRASS_SEGMENTS, grassMapTexture),
-    [grassMapTexture],
+    () => createGrassMaterial(GRASS_SEGMENTS, grassMapTexture, groundTexture),
+    [grassMapTexture, groundTexture],
   );
 
   useGrassColorControls(grassMaterial);
@@ -55,8 +70,12 @@ export function GrassField() {
 
   return (
     <>
-      <mesh rotation-x={-Math.PI / 2} position-z={-12.554} renderOrder={RENDER_ORDER.ground}>
-        <planeGeometry args={[100, 88.81]} />
+      <mesh
+        rotation-x={-Math.PI / 2}
+        position-z={GROUND_PLANE_CENTER_Z}
+        renderOrder={RENDER_ORDER.ground}
+      >
+        <planeGeometry args={[GROUND_PLANE_WIDTH, GROUND_PLANE_LENGTH]} />
         <CustomShaderMaterial
           baseMaterial={MeshBasicMaterial}
           vertexShader={revealVertexShader}
@@ -75,4 +94,3 @@ export function GrassField() {
 
 useTexture.preload(GRASS_MAP_TEXTURE_PATH);
 useTexture.preload(GROUND_TEXTURE_PATH);
-

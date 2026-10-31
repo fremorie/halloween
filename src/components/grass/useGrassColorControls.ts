@@ -11,9 +11,9 @@ export function useGrassColorControls(grassMaterial: ShaderMaterial) {
     hemiSkyColor,
     hemiGroundColor,
   } = useControls("Grass colors", {
-    tipColor: "#ffe9ba",
+    tipColor: "#e6d7a6",
     baseColor: "#84661d",
-    tipColor2: "#fdff6c",
+    tipColor2: "#d6c964",
     baseColor2: "#c24f13",
     hemiSkyColor: "#f3da8e",
     hemiGroundColor: "#4d5d31",

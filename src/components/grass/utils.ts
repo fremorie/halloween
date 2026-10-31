@@ -1,6 +1,9 @@
 import * as THREE from "three";
 
 export const GRASS_MAP_WORLD_SIZE = 100;
+export const GROUND_PLANE_WIDTH = 100;
+export const GROUND_PLANE_LENGTH = 88.81;
+export const GROUND_PLANE_CENTER_Z = -12.554;
 
 export function createGrassGeometry(segments: number, grassBladeCount: number) {
   const VERTICES = (segments + 1) * 2;
