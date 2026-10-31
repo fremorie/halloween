@@ -5,15 +5,16 @@ import {
   InstancedBufferAttribute,
   MeshBasicMaterial,
   SRGBColorSpace,
+  Uniform,
 } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
-import { REVEAL_PATCH_MAP } from "@/components/materials/revealPatchMap";
 import { revealUniforms } from "@/components/materials/revealUniforms";
-import revealFragmentShader from "@/shaders/revealOutput/fragment.glsl";
-import revealVertexShader from "@/shaders/revealOutput/vertex.glsl";
+import groundRevealFragmentShader from "@/shaders/groundReveal/fragment.glsl";
+import groundRevealVertexShader from "@/shaders/groundReveal/vertex.glsl";
 
 import { createGrassMaterial, grassTimeUniform } from "./grassMaterial";
+import { GROUND_REVEAL_PATCH_MAP } from "./groundRevealPatchMap";
 import {
   readGrassMapPixels,
   scatterBladesInsideGrassMap,
@@ -41,6 +42,15 @@ export function GrassField() {
     (loadedGroundTexture) => {
       loadedGroundTexture.colorSpace = SRGBColorSpace;
     },
+  );
+
+  const groundRevealUniforms = useMemo(
+    () => ({
+      ...revealUniforms,
+      uGrassMap: new Uniform(grassMapTexture),
+      uGrassMapWorldSize: new Uniform(GRASS_MAP_WORLD_SIZE),
+    }),
+    [grassMapTexture],
   );
 
   const grassGeometry = useMemo(() => {
@@ -78,10 +88,10 @@ export function GrassField() {
         <planeGeometry args={[GROUND_PLANE_WIDTH, GROUND_PLANE_LENGTH]} />
         <CustomShaderMaterial
           baseMaterial={MeshBasicMaterial}
-          vertexShader={revealVertexShader}
-          fragmentShader={revealFragmentShader}
-          patchMap={REVEAL_PATCH_MAP}
-          uniforms={revealUniforms}
+          vertexShader={groundRevealVertexShader}
+          fragmentShader={groundRevealFragmentShader}
+          patchMap={GROUND_REVEAL_PATCH_MAP}
+          uniforms={groundRevealUniforms}
           map={groundTexture}
           transparent
           depthWrite={false}

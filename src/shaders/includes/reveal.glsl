@@ -19,10 +19,7 @@ float revealRadiusSince(float revealStartTime) {
     return uRevealMaxRadius * (1.0 - remainingGrowth);
 }
 
-vec3 revealColor(vec3 color, vec3 worldPosition) {
-    float luminance = dot(color, vec3(0.2126, 0.7152, 0.0722));
-    vec3 grayscaleColor = vec3(luminance);
-
+float revealAmount(vec3 worldPosition) {
     float edgeNoise = texture2D(uRevealNoiseTexture, worldPosition.xz * uRevealNoiseScale).r;
     float wobbleNoise = texture2D(uRevealNoiseTexture, worldPosition.xz * uRevealWobbleNoiseScale).r;
     float radiusWobbleFactor = 1.0 + (wobbleNoise * 2.0 - 1.0) * uRevealWobbleAmount;
@@ -41,5 +38,12 @@ vec3 revealColor(vec3 color, vec3 worldPosition) {
         isInsideAnyReveal = max(isInsideAnyReveal, isInsideReveal);
     }
 
-    return mix(grayscaleColor, color, isInsideAnyReveal);
+    return isInsideAnyReveal;
+}
+
+vec3 revealColor(vec3 color, vec3 worldPosition) {
+    float luminance = dot(color, vec3(0.2126, 0.7152, 0.0722));
+    vec3 grayscaleColor = vec3(luminance);
+
+    return mix(grayscaleColor, color, revealAmount(worldPosition));
 }
