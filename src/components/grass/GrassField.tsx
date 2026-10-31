@@ -20,7 +20,7 @@ import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
 import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap3.jpg`;
-const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/simpleRoadWithFilters3.png`;
+const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoadFaded.png`;
 const GRASS_SEGMENTS = 3;
 const GRASS_BLADE_COUNT = 20000;
 
