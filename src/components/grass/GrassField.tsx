@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo } from "react";
 import { useTexture } from "@react-three/drei";
-import {InstancedBufferAttribute, MeshStandardMaterial} from "three";
+import { InstancedBufferAttribute, MeshBasicMaterial } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
 import { REVEAL_PATCH_MAP } from "@/components/materials/revealPatchMap";
@@ -20,16 +20,11 @@ import { createGrassGeometry, GRASS_MAP_WORLD_SIZE } from "./utils";
 import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap2.jpg`;
-const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/roadNarrowWithGrassPlacement.png`;
-const GROUND_NORMAL_MAP_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/RoadNormalMap.png`
-
 const GRASS_SEGMENTS = 3;
 const GRASS_BLADE_COUNT = 10000;
 
 export function GrassField() {
   const grassMapTexture = useTexture(GRASS_MAP_TEXTURE_PATH);
-  const groundTexture = useTexture(GROUND_TEXTURE_PATH);
-  const groundNormalMap = useTexture(GROUND_NORMAL_MAP_PATH);
 
   const grassGeometry = useMemo(() => {
     const geometry = createGrassGeometry(GRASS_SEGMENTS, GRASS_BLADE_COUNT);
@@ -58,16 +53,16 @@ export function GrassField() {
 
   return (
     <>
-      <mesh rotation-x={-Math.PI / 2} position-z={-12.554} renderOrder={RENDER_ORDER.ground}>
-        <planeGeometry args={[43.51, 88.81]} />
+      <mesh rotation-x={-Math.PI / 2} renderOrder={RENDER_ORDER.ground}>
+        <planeGeometry args={[GRASS_MAP_WORLD_SIZE, GRASS_MAP_WORLD_SIZE]} />
         <CustomShaderMaterial
-          baseMaterial={MeshStandardMaterial}
+          baseMaterial={MeshBasicMaterial}
           vertexShader={revealVertexShader}
           fragmentShader={revealFragmentShader}
           patchMap={REVEAL_PATCH_MAP}
           uniforms={revealUniforms}
-          map={groundTexture}
-          normalMap={groundNormalMap}
+          color="#84661d"
+          alphaMap={grassMapTexture}
           transparent
           depthWrite={false}
         />
@@ -78,5 +73,3 @@ export function GrassField() {
 }
 
 useTexture.preload(GRASS_MAP_TEXTURE_PATH);
-useTexture.preload(GROUND_NORMAL_MAP_PATH);
-useTexture.preload(GROUND_TEXTURE_PATH);
