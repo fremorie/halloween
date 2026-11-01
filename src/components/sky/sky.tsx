@@ -11,8 +11,8 @@ import {
   SKY_REVEAL_DURATION,
   SKY_REVEAL_EASE,
 } from "@/settings/skySettings";
-import { useGameStore } from "@/store/gameStore";
 import { RENDER_ORDER } from "@/utils/renderOrder";
+import { useIsSkyRevealed } from "@/utils/animation/useIsSkyRevealed";
 
 const PAINTED_SKY_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/sky.jpg`;
 
@@ -24,9 +24,7 @@ export function PaintedSky() {
     },
   );
   const skyMaterialRef = useRef<MeshBasicMaterial>(null);
-  const isRevealed = useGameStore(
-    (state) => state.mode === "done" || state.finaleBeat === "thankYou",
-  );
+  const isSkyRevealed = useIsSkyRevealed();
 
   useEffect(() => {
     const skyMaterial = skyMaterialRef.current;
@@ -36,8 +34,8 @@ export function PaintedSky() {
     }
 
     const skyOpacityTween = gsap.to(skyMaterial, {
-      opacity: isRevealed ? 1 : 0,
-      duration: isRevealed ? SKY_REVEAL_DURATION : 0,
+      opacity: isSkyRevealed ? 1 : 0,
+      duration: isSkyRevealed ? SKY_REVEAL_DURATION : 0,
       ease: SKY_REVEAL_EASE,
       overwrite: true,
     });
@@ -45,11 +43,11 @@ export function PaintedSky() {
     return () => {
       skyOpacityTween.kill();
     };
-  }, [isRevealed]);
+  }, [isSkyRevealed]);
 
   return (
     <mesh
-      visible={isRevealed}
+      visible={isSkyRevealed}
       renderOrder={RENDER_ORDER.sky}
       scale={[SKY_DOME_RADIUS, SKY_DOME_RADIUS, -SKY_DOME_RADIUS]}
     >
