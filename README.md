@@ -1,3 +1,17 @@
+# Costume for Marcelino
+
+Marcelino is a cat, and like any respectable cat, he needs a Halloween costume. 
+
+
+In this small 3D browser game you walk him around an autumn garden and solve an Eulerian path puzzle at each pedestal.
+Each solved puzzle knits another piece of his costume, until he's ready for trick-or-treating. 
+
+[Live](https://fremorie.github.io/halloween/)
+
+![](/resources/images/screenshot.png)
+
+
+
 ## Getting Started
 
 ```bash
