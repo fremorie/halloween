@@ -1,9 +1,15 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
+import { MathUtils, Vector3 } from "three";
 import { Leva, useControls, button } from "leva";
 import { Canvas } from "@react-three/fiber";
-import { KeyboardControls, OrbitControls, Preload } from "@react-three/drei";
+import {
+  KeyboardControls,
+  OrbitControls,
+  Preload,
+  Sky,
+} from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
 
@@ -17,9 +23,17 @@ import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
 import { levels } from "@/data/levels";
 import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
+import { SUN_LIGHT_SETTINGS } from "@/settings/lightSettings";
 
 const DEBUG = true;
 const SHOW_PERF = false;
+
+const [sunLightOffsetX, , sunLightOffsetZ] =
+  SUN_LIGHT_SETTINGS.offsetFromTarget;
+const SUN_LIGHT_AZIMUTH_DEGREES = MathUtils.radToDeg(
+  Math.atan2(sunLightOffsetX, sunLightOffsetZ),
+);
+const LOW_EVENING_SUN_ELEVATION_DEGREES = 4;
 
 type ExperienceProps = {
   onSceneReady: () => void;
@@ -39,6 +53,66 @@ export function Experience({ onSceneReady }: ExperienceProps) {
       }),
     ),
   });
+
+  const {
+    skyVisible,
+    sunElevationDegrees,
+    sunAzimuthDegrees,
+    skyDistance,
+    turbidity,
+    rayleigh,
+    mieCoefficient,
+    mieDirectionalG,
+  } = useControls("Sky", {
+    skyVisible: { value: true, label: "Visible" },
+    sunElevationDegrees: {
+      value: LOW_EVENING_SUN_ELEVATION_DEGREES,
+      min: -10,
+      max: 90,
+      step: 0.1,
+      label: "Sun elevation°",
+    },
+    sunAzimuthDegrees: {
+      value: SUN_LIGHT_AZIMUTH_DEGREES,
+      min: -180,
+      max: 180,
+      step: 0.5,
+      label: "Sun azimuth°",
+    },
+    skyDistance: {
+      value: 1000,
+      min: 10,
+      max: 10000,
+      step: 10,
+      label: "Distance",
+    },
+    turbidity: { value: 10, min: 0, max: 20, step: 0.1, label: "Turbidity" },
+    rayleigh: { value: 3, min: 0, max: 4, step: 0.01, label: "Rayleigh" },
+    mieCoefficient: {
+      value: 0.005,
+      min: 0,
+      max: 0.1,
+      step: 0.001,
+      label: "Mie coefficient",
+    },
+    mieDirectionalG: {
+      value: 0.7,
+      min: 0,
+      max: 1,
+      step: 0.001,
+      label: "Mie directional G",
+    },
+  });
+
+  const skySunPosition = useMemo(
+    () =>
+      new Vector3().setFromSphericalCoords(
+        1,
+        MathUtils.degToRad(90 - sunElevationDegrees),
+        MathUtils.degToRad(sunAzimuthDegrees),
+      ),
+    [sunElevationDegrees, sunAzimuthDegrees],
+  );
 
   return (
     <>
@@ -62,6 +136,16 @@ export function Experience({ onSceneReady }: ExperienceProps) {
         >
           <Suspense fallback={null}>
             <color args={[PAPER_COLOR]} attach="background" />
+            {skyVisible && (
+              <Sky
+                distance={skyDistance}
+                sunPosition={skySunPosition}
+                turbidity={turbidity}
+                rayleigh={rayleigh}
+                mieCoefficient={mieCoefficient}
+                mieDirectionalG={mieDirectionalG}
+              />
+            )}
 
             <Effects />
 
