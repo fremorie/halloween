@@ -5,10 +5,13 @@ import type { RefObject } from "react";
 import type { CapeMaterial } from "@/components/models/cape/capeModel";
 import { COSTUME_SILHOUETTE_FADE_DURATION } from "@/settings/journeySettings";
 
-export function useCapeFadeIn(capeMaterialRef: RefObject<CapeMaterial | null>) {
+export function useCapeFadeIn(
+  capeMaterialRef: RefObject<CapeMaterial | null>,
+  isWorn: boolean,
+) {
   useGSAP(() => {
     const capeMaterial = capeMaterialRef.current;
-    if (!capeMaterial) return;
+    if (!isWorn || !capeMaterial) return;
 
     capeMaterial.transparent = true;
 
@@ -24,5 +27,5 @@ export function useCapeFadeIn(capeMaterialRef: RefObject<CapeMaterial | null>) {
     return () => {
       capeMaterial.transparent = false;
     };
-  }, []);
+  }, [isWorn]);
 }

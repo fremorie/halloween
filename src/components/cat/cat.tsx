@@ -76,9 +76,9 @@ export function Cat({ stationCount }: { stationCount: number }) {
             isFlying={isFlying}
             eyeGlancesEnabled={eyeGlancesEnabled}
           />
-          {isWearingHat && <CatHat />}
-          {isWearingCape && <CatCape />}
-          {isWearingWings && <CatWings />}
+          <CatHat isWorn={isWearingHat} />
+          <CatCape isWorn={isWearingCape} />
+          <CatWings isWorn={isWearingWings} />
         </group>
       </group>
 
