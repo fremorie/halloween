@@ -67,3 +67,5 @@ export function PaintedSky() {
     </mesh>
   );
 }
+
+useTexture.preload(PAINTED_SKY_TEXTURE_PATH);
