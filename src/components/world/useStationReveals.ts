@@ -13,10 +13,21 @@ import {
   WORLD_REVEAL_GROW_DURATION,
   WORLD_REVEAL_MAX_RADIUS,
 } from "@/settings/revealSettings";
+import { FINALE_BEAT_ORDER } from "@/settings/finaleSettings";
 import { useGameStore } from "@/store/gameStore";
+
+const WORLD_REVEAL_FIRST_BEAT_INDEX = FINALE_BEAT_ORDER.indexOf("flight");
 
 export function useStationReveals() {
   const solvedAttempts = useGameStore((state) => state.solvedAttempts);
+  const isWorldRevealing = useGameStore(
+    (state) =>
+      state.mode === "done" ||
+      (state.mode === "finale" &&
+        state.finaleBeat !== null &&
+        FINALE_BEAT_ORDER.indexOf(state.finaleBeat) >=
+          WORLD_REVEAL_FIRST_BEAT_INDEX),
+  );
 
   useEffect(() => {
     levels.forEach((_, stationIndex) => {
@@ -32,16 +43,14 @@ export function useStationReveals() {
         startStationReveal(stationIndex);
       }
     });
+  }, [solvedAttempts]);
 
-    const areAllStationsSolved = levels.every(
-      (_, stationIndex) => solvedAttempts[stationIndex] !== undefined,
-    );
-
+  useEffect(() => {
     gsap.to(revealUniforms.uRevealMaxRadius, {
-      value: areAllStationsSolved ? WORLD_REVEAL_MAX_RADIUS : REVEAL_MAX_RADIUS,
-      duration: areAllStationsSolved ? WORLD_REVEAL_GROW_DURATION : 0,
+      value: isWorldRevealing ? WORLD_REVEAL_MAX_RADIUS : REVEAL_MAX_RADIUS,
+      duration: isWorldRevealing ? WORLD_REVEAL_GROW_DURATION : 0,
       ease: "power1.in",
       overwrite: true,
     });
-  }, [solvedAttempts]);
+  }, [isWorldRevealing]);
 }

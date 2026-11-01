@@ -35,8 +35,8 @@ export const ENVIRONMENT_LIGHTING_SETTINGS = {
 };
 
 export const SHADOW_CATCHER_SETTINGS = {
-  shadowColor: "#4a3d52",
-  shadowOpacity: 0.7,
+  shadowColor: "#252029",
+  shadowOpacity: 0.5,
 };
 
 export const SHADOW_CAMERA_BOUNDS = {
