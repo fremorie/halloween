@@ -10,6 +10,8 @@ import { gsap } from "gsap";
 
 import {
   SKY_FINAL_INTENSITY,
+  SKY_REVEAL_DURATION,
+  SKY_REVEAL_EASE,
   SKY_REVEAL_START_INTENSITY,
 } from "@/settings/skySettings";
 import { useGameStore } from "@/store/gameStore";
@@ -22,33 +24,32 @@ const prepareEquirectangularSkyTexture = (paintedSkyTexture: Texture) => {
 };
 
 export function PaintedSky() {
+  const isRevealed = useGameStore(
+    (state) => state.mode === "done" || state.finaleBeat === "thankYou",
+  );
+
+  return isRevealed ? <RevealingPaintedSky /> : null;
+}
+
+function RevealingPaintedSky() {
   const scene = useThree((state) => state.scene);
   const paintedSkyTexture = useTexture(
     PAINTED_SKY_TEXTURE_PATH,
     prepareEquirectangularSkyTexture,
   );
 
-  const isRevealed = useGameStore(
-    (state) => state.mode === "done" || state.finaleBeat === "thankYou",
-  );
-
   useEffect(() => {
-    if (isRevealed) {
-      gsap.to(scene, {
-        backgroundIntensity: SKY_FINAL_INTENSITY,
-        duration: 2,
-        ease: "power3.out",
-        overwrite: true,
-      });
-    } else {
-      gsap.to(scene, {
-        backgroundIntensity: SKY_REVEAL_START_INTENSITY,
-        duration: 2,
-        ease: "power3.in",
-        overwrite: true,
-      });
-    }
-  }, [isRevealed, scene]);
+    const skyRevealTween = gsap.to(scene, {
+      backgroundIntensity: SKY_FINAL_INTENSITY,
+      duration: SKY_REVEAL_DURATION,
+      ease: SKY_REVEAL_EASE,
+      overwrite: true,
+    });
+
+    return () => {
+      skyRevealTween.kill();
+    };
+  }, [scene]);
 
   return (
     <Environment
@@ -58,3 +59,5 @@ export function PaintedSky() {
     />
   );
 }
+
+useTexture.preload(PAINTED_SKY_TEXTURE_PATH);

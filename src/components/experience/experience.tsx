@@ -17,6 +17,7 @@ import { useGameStore } from "@/store/gameStore";
 import { levels } from "@/data/levels";
 import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
 import { PaintedSky } from "@/components/sky/sky";
+import { PAPER_COLOR } from "@/settings/paperSettings";
 
 const DEBUG = true;
 const SHOW_PERF = false;
@@ -62,6 +63,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
         >
           <Suspense fallback={null}>
             <PaintedSky />
+            <color args={[PAPER_COLOR]} attach="background" />
 
             <Effects />
 
