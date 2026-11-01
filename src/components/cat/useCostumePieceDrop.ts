@@ -10,15 +10,16 @@ import {
 
 export function useCostumePieceDrop(
   costumePieceGroupRef: RefObject<Group | null>,
+  isWorn: boolean,
 ) {
   useGSAP(() => {
     const costumePieceGroup = costumePieceGroupRef.current;
-    if (!costumePieceGroup) return;
+    if (!isWorn || !costumePieceGroup) return;
 
     gsap.from(costumePieceGroup.position, {
       y: COSTUME_PIECE_DROP_HEIGHT,
       duration: COSTUME_PIECE_DROP_DURATION,
       ease: "bounce.out",
     });
-  }, []);
+  }, [isWorn]);
 }

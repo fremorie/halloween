@@ -6,16 +6,20 @@ import { useCostumePieceDrop } from "./useCostumePieceDrop";
 import { useIsFinaleFlying } from "./useIsFinaleFlying";
 import { useWingFlapSound } from "./useWingFlapSound";
 
-export function CatWings() {
+type CatWingsProps = {
+  isWorn: boolean;
+};
+
+export function CatWings({ isWorn }: CatWingsProps) {
   const wingsGroupRef = useRef<Group>(null);
 
   const isFlying = useIsFinaleFlying();
 
-  useCostumePieceDrop(wingsGroupRef);
+  useCostumePieceDrop(wingsGroupRef, isWorn);
   useWingFlapSound(isFlying);
 
   return (
-    <group ref={wingsGroupRef}>
+    <group ref={wingsGroupRef} visible={isWorn}>
       <WingsModel isFlying={isFlying} />
     </group>
   );

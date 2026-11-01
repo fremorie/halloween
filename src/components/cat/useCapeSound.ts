@@ -2,15 +2,15 @@ import { useEffect } from "react";
 
 import { useGameStore } from "@/store/gameStore";
 
-export function useCapeSound() {
+export function useCapeSound(isWorn: boolean) {
   const capeSound = useGameStore((state) => state.capeSound);
 
   useEffect(() => {
-    if (capeSound === null) return;
+    if (!isWorn || capeSound === null) return;
 
     const capeSoundId = capeSound.play();
     return () => {
       capeSound.stop(capeSoundId);
     };
-  }, [capeSound]);
+  }, [capeSound, isWorn]);
 }

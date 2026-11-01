@@ -8,12 +8,20 @@ import { useCapeFadeIn } from "./useCapeFadeIn";
 import { useCapeSound } from "./useCapeSound";
 import { useCapeWave } from "./useCapeWave";
 
-export function CatCape() {
+type CatCapeProps = {
+  isWorn: boolean;
+};
+
+export function CatCape({ isWorn }: CatCapeProps) {
   const capeMaterialRef = useRef<CapeMaterial>(null);
 
-  useCapeFadeIn(capeMaterialRef);
-  useCapeSound();
+  useCapeFadeIn(capeMaterialRef, isWorn);
+  useCapeSound(isWorn);
   useCapeWave();
 
-  return <CapeModel materialRef={capeMaterialRef} />;
+  return (
+    <group visible={isWorn}>
+      <CapeModel materialRef={capeMaterialRef} />
+    </group>
+  );
 }

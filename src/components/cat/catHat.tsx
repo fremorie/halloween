@@ -4,13 +4,17 @@ import type { Group } from "three";
 import { HatModel } from "@/components/models/hat/hatModel";
 import { useCostumePieceDrop } from "./useCostumePieceDrop";
 
-export function CatHat() {
+type CatHatProps = {
+  isWorn: boolean;
+};
+
+export function CatHat({ isWorn }: CatHatProps) {
   const hatGroupRef = useRef<Group>(null);
 
-  useCostumePieceDrop(hatGroupRef);
+  useCostumePieceDrop(hatGroupRef, isWorn);
 
   return (
-    <group ref={hatGroupRef}>
+    <group ref={hatGroupRef} visible={isWorn}>
       <HatModel />
     </group>
   );
