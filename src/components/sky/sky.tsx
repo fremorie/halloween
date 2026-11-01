@@ -1,63 +1,71 @@
-import { Environment, useTexture } from "@react-three/drei";
-import {
-  EquirectangularReflectionMapping,
-  SRGBColorSpace,
-  type Texture,
-} from "three";
-import { useEffect } from "react";
-import { useThree } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
+import { BackSide, type MeshBasicMaterial, SRGBColorSpace } from "three";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 import {
-  SKY_FINAL_INTENSITY,
+  SKY_DOME_HEIGHT_SEGMENTS,
+  SKY_DOME_RADIUS,
+  SKY_DOME_WIDTH_SEGMENTS,
+  SKY_INTENSITY,
   SKY_REVEAL_DURATION,
   SKY_REVEAL_EASE,
-  SKY_REVEAL_START_INTENSITY,
 } from "@/settings/skySettings";
 import { useGameStore } from "@/store/gameStore";
+import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const PAINTED_SKY_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/sky.jpg`;
 
-const prepareEquirectangularSkyTexture = (paintedSkyTexture: Texture) => {
-  paintedSkyTexture.colorSpace = SRGBColorSpace;
-  paintedSkyTexture.mapping = EquirectangularReflectionMapping;
-};
-
 export function PaintedSky() {
+  const paintedSkyTexture = useTexture(
+    PAINTED_SKY_TEXTURE_PATH,
+    (loadedPaintedSkyTexture) => {
+      loadedPaintedSkyTexture.colorSpace = SRGBColorSpace;
+    },
+  );
+  const skyMaterialRef = useRef<MeshBasicMaterial>(null);
   const isRevealed = useGameStore(
     (state) => state.mode === "done" || state.finaleBeat === "thankYou",
   );
 
-  return isRevealed ? <RevealingPaintedSky /> : null;
-}
-
-function RevealingPaintedSky() {
-  const scene = useThree((state) => state.scene);
-  const paintedSkyTexture = useTexture(
-    PAINTED_SKY_TEXTURE_PATH,
-    prepareEquirectangularSkyTexture,
-  );
-
   useEffect(() => {
-    const skyRevealTween = gsap.to(scene, {
-      backgroundIntensity: SKY_FINAL_INTENSITY,
-      duration: SKY_REVEAL_DURATION,
+    const skyMaterial = skyMaterialRef.current;
+
+    if (!skyMaterial) {
+      return;
+    }
+
+    const skyOpacityTween = gsap.to(skyMaterial, {
+      opacity: isRevealed ? 1 : 0,
+      duration: isRevealed ? SKY_REVEAL_DURATION : 0,
       ease: SKY_REVEAL_EASE,
       overwrite: true,
     });
 
     return () => {
-      skyRevealTween.kill();
+      skyOpacityTween.kill();
     };
-  }, [scene]);
+  }, [isRevealed]);
 
   return (
-    <Environment
-      map={paintedSkyTexture}
-      background="only"
-      backgroundIntensity={SKY_REVEAL_START_INTENSITY}
-    />
+    <mesh
+      visible={isRevealed}
+      renderOrder={RENDER_ORDER.sky}
+      scale={[SKY_DOME_RADIUS, SKY_DOME_RADIUS, -SKY_DOME_RADIUS]}
+    >
+      <sphereGeometry
+        args={[1, SKY_DOME_WIDTH_SEGMENTS, SKY_DOME_HEIGHT_SEGMENTS]}
+      />
+      <meshBasicMaterial
+        ref={skyMaterialRef}
+        map={paintedSkyTexture}
+        color={[SKY_INTENSITY, SKY_INTENSITY, SKY_INTENSITY]}
+        side={BackSide}
+        transparent
+        opacity={0}
+        depthWrite={false}
+        fog={false}
+      />
+    </mesh>
   );
 }
-
-useTexture.preload(PAINTED_SKY_TEXTURE_PATH);
