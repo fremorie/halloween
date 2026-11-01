@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const UIExperiments = ["title", "progress-bar", "text-box", "button"];
+const UIExperiments = ["title", "progress-bar", "text-box", "button", "menu"];
 
 export default function Page() {
   return (
