@@ -35,7 +35,7 @@ export function World() {
 
   return (
     <>
-      <fog attach="fog" args={["#ffffff", 25, 75]} />
+      <fog attach="fog" args={["#EECCB8", 25, 75]} />
       <Lights />
       <Ground />
       <Trees />
