@@ -8,6 +8,7 @@ import { GrassField } from "@/components/grass/GrassField";
 import { Trees } from "@/components/trees/trees";
 import { ScatteredPumpkins } from "@/components/scatteredPumpkins/scatteredPumpkins";
 import { Leaves } from "@/components/leaves/leaves";
+import { Fog } from "@/components/fog/fog";
 import { Ground } from "./ground";
 import { Station } from "./station";
 import { useCelebrationTimer } from "./useCelebrationTimer";
@@ -35,7 +36,7 @@ export function World() {
 
   return (
     <>
-      <fog attach="fog" args={["#ffffff", 25, 75]} />
+      <Fog />
       <Lights />
       <Ground />
       <Trees />

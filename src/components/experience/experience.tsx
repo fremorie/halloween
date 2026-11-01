@@ -9,7 +9,6 @@ import { Perf } from "r3f-perf";
 
 import { Effects } from "@/components/postprocessing/effects";
 import { CAMERA_SETTINGS, CAMERA_TARGET } from "@/settings/cameraSettings";
-import { PAPER_COLOR } from "@/settings/paperSettings";
 import { World } from "@/components/world/world";
 import { KEYBOARD_CONTROLS_MAP } from "@/settings/controlsSettings";
 import { CameraRig } from "@/components/experience/cameraRig";
@@ -17,6 +16,8 @@ import { SceneReadySignal } from "@/components/experience/sceneReadySignal";
 import { useGameStore } from "@/store/gameStore";
 import { levels } from "@/data/levels";
 import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
+import { PaintedSky } from "@/components/sky/sky";
+import { PAPER_COLOR } from "@/settings/paperSettings";
 
 const DEBUG = true;
 const SHOW_PERF = false;
@@ -61,6 +62,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
           camera={CAMERA_SETTINGS}
         >
           <Suspense fallback={null}>
+            <PaintedSky />
             <color args={[PAPER_COLOR]} attach="background" />
 
             <Effects />
