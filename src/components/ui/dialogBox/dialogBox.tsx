@@ -22,11 +22,11 @@ export function DialogBox({
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="fixed inset-0" />
+      <Dialog.Overlay className="fixed inset-0 z-40" />
       <Dialog.Content
         onOpenAutoFocus={keepFocusOnGame}
         onCloseAutoFocus={keepFocusOnGame}
-        className={`fixed left-1/2 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 ${verticalPlacementClassName} data-[state=closed]:animate-puzzle-instructions-fade-out motion-reduce:animate-none`}
+        className={`fixed left-1/2 z-40 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 ${verticalPlacementClassName} data-[state=closed]:animate-puzzle-instructions-fade-out motion-reduce:animate-none`}
       >
         <TextBox>
           <Dialog.Title className={`${barrio.className} text-4xl`}>
