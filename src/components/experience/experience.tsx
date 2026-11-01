@@ -19,7 +19,7 @@ import { REWARDED_COSTUME_PIECES } from "@/settings/rewardSettings";
 import { PaintedSky } from "@/components/sky/sky";
 import { PAPER_COLOR } from "@/settings/paperSettings";
 
-const DEBUG = true;
+const DEBUG = false;
 const SHOW_PERF = false;
 
 type ExperienceProps = {
