@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 
 import { useGameStore } from "@/store/gameStore";
 import { IntroTextBox } from "@/components/ui/introTextBox/introTextBox";
+import { KeyCap } from "@/components/ui/keyCap/keyCap";
 import { Button } from "@/components/ui/button/button";
 import { levels } from "@/data/levels";
 import { PuzzleInstructions } from "@/components/ui/puzzleInstructions/puzzleInstructions";
@@ -84,7 +85,9 @@ export function GameHud() {
         {introBeat !== null && introBeat !== "flyIn" && <IntroTextBox />}
 
         {puzzlePhase === "drawing" && (
-          <Button onClick={cutThread}>Reset (Esc)</Button>
+          <Button onClick={cutThread}>
+            Reset <KeyCap>Esc</KeyCap>
+          </Button>
         )}
 
         {introBeat !== null && introBeat !== "flyIn" && (
@@ -96,7 +99,11 @@ export function GameHud() {
           </div>
         )}
 
-        {isNearStation && <Button onClick={beginApproach}>Start (E)</Button>}
+        {isNearStation && (
+          <Button onClick={beginApproach}>
+            Start <KeyCap>E</KeyCap>
+          </Button>
+        )}
       </div>
     </>
   );

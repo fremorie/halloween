@@ -1,3 +1,4 @@
+import { dosis } from "@/components/ui/fonts/fonts";
 import { GithubIcon } from "@/components/ui/svgs/github";
 
 const REPOSITORY_URL = "https://github.com/fremorie/halloween";
@@ -8,10 +9,10 @@ export function GithubLink() {
       href={REPOSITORY_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex w-fit items-center gap-2 underline decoration-1 underline-offset-2 outline-offset-2 hover:decoration-2 focus-visible:outline-2"
+      className={`${dosis.className} mt-3 flex w-fit items-center gap-2 text-sm font-bold tracking-widest text-neutral-900 uppercase decoration-2 underline-offset-4 outline-offset-4 hover:underline focus-visible:outline-2`}
     >
       <GithubIcon />
-      Source code on GitHub
+      View source code
     </a>
   );
 }

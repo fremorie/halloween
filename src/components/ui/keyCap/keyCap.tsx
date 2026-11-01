@@ -9,7 +9,7 @@ type KeyCapProps = {
 export function KeyCap({ children }: KeyCapProps) {
   return (
     <kbd
-      className={`${dosis.className} mx-0.5 inline-block min-w-7 border-2 border-b-4 border-neutral-900 bg-button px-1.5 text-center text-sm leading-snug font-bold`}
+      className={`${dosis.className} mx-0.5 inline-block min-w-7 border-2 border-neutral-900 bg-button px-1.5 text-center text-sm leading-snug font-bold tracking-normal`}
     >
       {children}
     </kbd>

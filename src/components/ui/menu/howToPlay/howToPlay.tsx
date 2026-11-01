@@ -1,15 +1,23 @@
 import { Section } from "@/components/ui/section/section";
-import { KeyCap } from "./keyCap";
+import { ArrowIcon, type ArrowDirection } from "@/components/ui/svgs/arrow";
+import { KeyCap } from "@/components/ui/keyCap/keyCap";
+
+const ARROW_DIRECTIONS: ArrowDirection[] = ["left", "up", "down", "right"];
 
 export function HowToPlay() {
   return (
     <div className="flex flex-col gap-5 text-lg">
       <Section title="Move">
         <p>
-          <KeyCap>←</KeyCap>
-          <KeyCap>↑</KeyCap>
-          <KeyCap>↓</KeyCap>
-          <KeyCap>→</KeyCap> or <KeyCap>W</KeyCap>
+          {ARROW_DIRECTIONS.map((direction) => (
+            <KeyCap key={direction}>
+              <ArrowIcon
+                direction={direction}
+                className="inline-block size-4 align-[-0.2em]"
+              />
+            </KeyCap>
+          ))}{" "}
+          or <KeyCap>W</KeyCap>
           <KeyCap>A</KeyCap>
           <KeyCap>S</KeyCap>
           <KeyCap>D</KeyCap>. On a touch screen, use the joystick.
