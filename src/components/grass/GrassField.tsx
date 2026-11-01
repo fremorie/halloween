@@ -5,7 +5,6 @@ import {
   InstancedBufferAttribute,
   MeshBasicMaterial,
   SRGBColorSpace,
-  Uniform,
 } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
@@ -42,15 +41,6 @@ export function GrassField() {
     (loadedGroundTexture) => {
       loadedGroundTexture.colorSpace = SRGBColorSpace;
     },
-  );
-
-  const groundRevealUniforms = useMemo(
-    () => ({
-      ...revealUniforms,
-      uGrassMap: new Uniform(grassMapTexture),
-      uGrassMapWorldSize: new Uniform(GRASS_MAP_WORLD_SIZE),
-    }),
-    [grassMapTexture],
   );
 
   const grassGeometry = useMemo(() => {
@@ -91,7 +81,7 @@ export function GrassField() {
           vertexShader={groundRevealVertexShader}
           fragmentShader={groundRevealFragmentShader}
           patchMap={GROUND_REVEAL_PATCH_MAP}
-          uniforms={groundRevealUniforms}
+          uniforms={revealUniforms}
           map={groundTexture}
           transparent
           depthWrite={false}

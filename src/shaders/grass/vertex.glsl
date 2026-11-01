@@ -34,6 +34,9 @@ varying vec3 vWorldPosition;
 #include "../includes/utils.glsl"
 #include "../includes/hash.glsl"
 #include "../includes/noise.glsl"
+#include "../includes/reveal.glsl"
+
+const float GRASS_GROW_IN_DISTANCE = 3.0;
 
 void main() {
     int GRASS_SEGMENTS = int(grassParams.x);
@@ -66,8 +69,9 @@ void main() {
     float heightPercent = float(vertID - xTest) / (float(GRASS_SEGMENTS) * 2.0);
 
     float grassMaskScale = smoothstep(0.2, 0.9, grassMask);
+    float grassGrowth = revealAmountWithEdgeSoftness(grassBladeWorldPos, GRASS_GROW_IN_DISTANCE);
     float width = GRASS_WIDTH * easeOut(1.0 - heightPercent, 4.0) * grassMaskScale;
-    float height = GRASS_HEIGHT * grassMaskScale;
+    float height = GRASS_HEIGHT * grassMaskScale * grassGrowth;
 
     float x = (xSide - 0.5) * width;
 
@@ -134,7 +138,7 @@ void main() {
     #include <fog_vertex>
 
     gl_Position = projectionMatrix * mvPosition;
-    gl_Position.w = grassMaskScale <= 0.5 ? 0.0 : gl_Position.w;
+    gl_Position.w = grassMaskScale <= 0.5 || grassGrowth <= 0.0 ? 0.0 : gl_Position.w;
 
     vec3 c1 = mix(uBaseColor, uTipColor, heightPercent);
     vec3 c2 = mix(uBaseColor2, uTipColor2, heightPercent);
