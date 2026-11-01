@@ -20,7 +20,7 @@ export function HowToPlay() {
           or <KeyCap>W</KeyCap>
           <KeyCap>A</KeyCap>
           <KeyCap>S</KeyCap>
-          <KeyCap>D</KeyCap>. On a touch screen, use the joystick.
+          <KeyCap>D</KeyCap> or use the joystick on a touchscreen.
         </p>
       </Section>
       <Section title="Start a puzzle">
