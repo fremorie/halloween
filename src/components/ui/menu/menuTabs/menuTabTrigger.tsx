@@ -14,7 +14,7 @@ export function MenuTabTrigger({ value, label }: MenuTabTriggerProps) {
   return (
     <Tabs.Trigger
       value={value}
-      className={`${dosis.className} group relative cursor-pointer px-4 py-1 text-lg font-bold tracking-widest text-neutral-900 uppercase outline-offset-2 focus-visible:outline-1 focus-visible:outline-neutral-900/40 focus-visible:outline-dashed`}
+      className={`${dosis.className} group relative cursor-pointer px-4 py-1 text-lg font-bold tracking-widest text-neutral-900 uppercase`}
     >
       <Image
         src={yellowBrushStrokeSource}
