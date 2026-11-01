@@ -52,7 +52,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
         label: "Rotation°",
       },
       paintedSkyIntensity: {
-        value: 1,
+        value: 0.83,
         min: 0,
         max: 2,
         step: 0.01,
