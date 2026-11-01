@@ -1,4 +1,5 @@
 import { CuboidCollider } from "@react-three/rapier";
+import { useControls } from "leva";
 
 import { SHADOW_CATCHER_SETTINGS } from "@/settings/lightSettings";
 import {
@@ -8,6 +9,13 @@ import {
 import { RENDER_ORDER } from "@/utils/renderOrder";
 
 export function Ground() {
+  const { shadowColor } = useControls("Shadows", {
+    shadowColor: {
+      value: SHADOW_CATCHER_SETTINGS.shadowColor,
+      label: "Shadow color",
+    },
+  });
+
   return (
     <>
       <mesh
@@ -19,7 +27,7 @@ export function Ground() {
       >
         <planeGeometry />
         <shadowMaterial
-          color={SHADOW_CATCHER_SETTINGS.shadowColor}
+          color={shadowColor}
           opacity={SHADOW_CATCHER_SETTINGS.shadowOpacity}
         />
       </mesh>
