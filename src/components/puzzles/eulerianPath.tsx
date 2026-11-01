@@ -92,12 +92,14 @@ export function EulerianPath({ graph, levelIndex, isActive }: Props) {
         edgeThreadStartNodeIds={edgeThreadStartNodeIds}
       />
 
-      {currentNodeId !== null && (
-        <DragLine
-          startPosition={graph.nodes[currentNodeId].position}
-          yarnColor={getNodeYarnColor(currentNodeId)}
-        />
-      )}
+      <DragLine
+        startPosition={
+          currentNodeId === null ? null : graph.nodes[currentNodeId].position
+        }
+        yarnColor={
+          currentNodeId === null ? null : getNodeYarnColor(currentNodeId)
+        }
+      />
 
       <RejectionMessage graph={graph} levelIndex={levelIndex} />
     </group>

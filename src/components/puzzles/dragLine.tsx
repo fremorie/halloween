@@ -1,12 +1,11 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { type Mesh, Plane, Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 
-import { createDragLineMaterial } from "@/components/materials/dragLineMaterial";
+import { getSharedDragLineMaterial } from "@/components/materials/dragLineMaterial";
 import { yarnUniforms } from "@/components/materials/yarnMaterial";
 import { NODE_RADIUS } from "@/settings/graphSettings";
 import {
-  DRAG_LINE_DEPTH_BIAS,
   DRAG_LINE_MIN_LENGTH,
   YARN_STRAND_RADIAL_SEGMENTS,
 } from "@/settings/puzzleSettings";
@@ -17,17 +16,14 @@ const UP_DIRECTION = new Vector3(0, 1, 0);
 const PUZZLE_PLANE_NORMAL = new Vector3(0, 0, 1);
 
 type Props = {
-  startPosition: Vec3;
-  yarnColor: string;
+  startPosition: Vec3 | null;
+  yarnColor: string | null;
 };
 
 export function DragLine({ startPosition, yarnColor }: Props) {
   const meshRef = useRef<Mesh>(null);
   const [branchThickness] = useState(getBranchThickness);
-  const dragLineMaterial = useMemo(
-    () => createDragLineMaterial(DRAG_LINE_DEPTH_BIAS * branchThickness),
-    [branchThickness],
-  );
+  const dragLineMaterial = getSharedDragLineMaterial();
   const [scratch] = useState(() => ({
     plane: new Plane(),
     planeNormal: new Vector3(),
@@ -39,15 +35,19 @@ export function DragLine({ startPosition, yarnColor }: Props) {
   }));
 
   useLayoutEffect(() => {
+    if (yarnColor === null) return;
     dragLineMaterial.uniforms.uYarnColor.value.set(yarnColor);
   }, [dragLineMaterial, yarnColor]);
-
-  useEffect(() => () => dragLineMaterial.dispose(), [dragLineMaterial]);
 
   useFrame(({ camera, pointer, raycaster }) => {
     const mesh = meshRef.current;
     const puzzleGroup = mesh?.parent;
     if (!mesh || !puzzleGroup) return;
+
+    if (startPosition === null) {
+      mesh.visible = false;
+      return;
+    }
 
     const {
       plane,
