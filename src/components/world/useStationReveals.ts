@@ -13,12 +13,20 @@ import {
   WORLD_REVEAL_GROW_DURATION,
   WORLD_REVEAL_MAX_RADIUS,
 } from "@/settings/revealSettings";
+import { FINALE_BEAT_ORDER } from "@/settings/finaleSettings";
 import { useGameStore } from "@/store/gameStore";
+
+const WORLD_REVEAL_FIRST_BEAT_INDEX = FINALE_BEAT_ORDER.indexOf("flight");
 
 export function useStationReveals() {
   const solvedAttempts = useGameStore((state) => state.solvedAttempts);
   const isWorldRevealing = useGameStore(
-    (state) => state.mode === "finale" || state.mode === "done",
+    (state) =>
+      state.mode === "done" ||
+      (state.mode === "finale" &&
+        state.finaleBeat !== null &&
+        FINALE_BEAT_ORDER.indexOf(state.finaleBeat) >=
+          WORLD_REVEAL_FIRST_BEAT_INDEX),
   );
 
   useEffect(() => {
