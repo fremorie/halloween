@@ -64,7 +64,7 @@ export function useCatMovement(
       getMoveDirection(getKeys(), joystickTilt, direction);
       walkStep.copy(direction).multiplyScalar(CAT_WALK_SPEED * stepDuration);
       root.position.add(limitStepByObstacles(root, walkStep));
-      clampToRoamingArea(root.position, stationCount);
+      clampToRoamingArea(root.position);
     }
 
     if (mode === "approaching") {

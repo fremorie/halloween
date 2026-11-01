@@ -16,7 +16,7 @@ export const PEDESTAL_DETOUR_INSIDE_LEAD_ANGLE = 0.6;
 
 export const CAT_START: Vec3 = [0, 0, 9];
 export const CAT_START_HEADING = Math.PI + 0.26;
-export const ROAM_MARGIN = 14;
+export const ROAM_CIRCLE_FRACTION = 0.8;
 
 // An ellipse around the puzzle
 export const ARRIVAL_RADIUS_X = 8;
