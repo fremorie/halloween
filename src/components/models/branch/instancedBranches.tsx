@@ -14,7 +14,7 @@ import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";
 import { YarnWrap } from "./yarnWrap";
 
-const UNTINTED_LEAF_COLOR = new Color("#ffffff");
+const THREADED_LEAF_COLOR = new Color("#ffe2d8");
 
 type Props = {
   graph: Graph;
@@ -53,7 +53,7 @@ export function InstancedBranches({
     edgeThreading,
     leavesPerEdge: leafNodes.length,
     threadedStemColor: materials["branch.001"].color,
-    threadedLeafColor: UNTINTED_LEAF_COLOR,
+    threadedLeafColor: THREADED_LEAF_COLOR,
   });
 
   return (
