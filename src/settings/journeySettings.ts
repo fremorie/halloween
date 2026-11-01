@@ -33,5 +33,5 @@ export const PUZZLE_BACKGROUND_FADE_DURATION = 0.6;
 export const MARCELINOS_COMMENTS: Record<CostumePiece, string> = {
   hat: "Oh yes, every cat needs a hat. It's a good start!",
   cape: "I've always wanted a cape.\nVery mysterious. Very comfortable.\nBut something is still missing...",
-  wings: "YES! Now we're talking!",
+  wings: "YES! Now we're talking!\nHang on, let me try something...",
 };
