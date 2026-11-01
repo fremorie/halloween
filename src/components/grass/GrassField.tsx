@@ -30,7 +30,7 @@ import {
 import { RENDER_ORDER } from "@/utils/renderOrder";
 
 const GRASS_MAP_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/GroundGrassMap3.jpg`;
-const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoad4Faded.png`;
+const GROUND_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/groundAndRoad4Faded.webp`;
 const GRASS_SEGMENTS = 3;
 const GRASS_BLADE_COUNT = 20000;
 
