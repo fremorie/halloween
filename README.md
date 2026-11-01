@@ -12,6 +12,20 @@ bun dev
 
 ## Credits
 
+### Kuwahara filter
+
+Based on an article by Maxime Heckel: https://blog.maximeheckel.com/posts/on-crafting-painterly-shaders/
+
+### Built with
+
+three.js, React Three Fiber, Drei, Rapier, postprocessing, React Postprocessing, Three Custom Shader Material, Leva, GSAP, Radix UI, Zustand, Howler, NippleJS, Next.js, Tailwind, Blender, GIMP.
+
+### Fonts
+
+[Barrio](https://fonts.google.com/specimen/Barrio), [Dosis](https://fonts.google.com/specimen/Dosis) and [Alef](https://fonts.google.com/specimen/Alef) from [Google Fonts](https://fonts.google.com), used under the [SIL Open Font License](https://openfontlicense.org). Font pairing suggested by [Fontjoy](https://fontjoy.com).
+
+### Sound
+
 - Theme music (`public/sound/theme.mp3`) generated with [Suno](https://suno.com) on the free plan, for non-commercial use only. It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Meow sound (`public/sound/meow.mp3`): ["Cute Cat"](https://pixabay.com/sound-effects/nature-cute-cat-352656/) by Stu9 from [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Magic spell sound (`public/sound/magic-spell.mp3`): ["Mystical Wind Chimes Transition FX"](https://pixabay.com/sound-effects/film-special-effects-mystical-wind-chimes-transition-fx-6327/) by djlprojects (Freesound), shared by freesound_community on [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).

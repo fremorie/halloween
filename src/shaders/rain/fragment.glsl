@@ -1,5 +1,4 @@
 uniform float uTime;
-uniform sampler2D uPerlinNoise;
 uniform float uAspectRatio;
 uniform vec3 uSkyTopColor;
 uniform vec3 uSkyBottomColor;

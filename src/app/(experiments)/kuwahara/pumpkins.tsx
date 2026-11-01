@@ -22,8 +22,8 @@ export function Pumpkins(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF(
     `${process.env.NEXT_PUBLIC_BASE_PATH}/models/pumpkins.glb`,
   ) as unknown as GLTFResult;
-  const brushTexture = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/brush.png`,
+  const noiseTexture = useTexture(
+    `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/noise.webp`,
   );
 
   return (
@@ -37,7 +37,7 @@ export function Pumpkins(props: JSX.IntrinsicElements["group"]) {
         >
           <meshStandardMaterial
             color={materials["Material.001"].color}
-            map={brushTexture}
+            map={noiseTexture}
           />
         </mesh>
         <mesh
