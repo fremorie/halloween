@@ -1,0 +1,2 @@
+export const SKY_REVEAL_START_INTENSITY = 12;
+export const SKY_FINAL_INTENSITY = 0.83;

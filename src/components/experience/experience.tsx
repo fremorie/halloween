@@ -6,7 +6,6 @@ import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, OrbitControls, Preload } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
-import { MathUtils } from "three";
 
 import { Effects } from "@/components/postprocessing/effects";
 import { CAMERA_SETTINGS, CAMERA_TARGET } from "@/settings/cameraSettings";
@@ -41,26 +40,6 @@ export function Experience({ onSceneReady }: ExperienceProps) {
     ),
   });
 
-  const { paintedSkyRotationDegrees, paintedSkyIntensity } = useControls(
-    "Painted sky",
-    {
-      paintedSkyRotationDegrees: {
-        value: 0,
-        min: -180,
-        max: 180,
-        step: 0.5,
-        label: "Rotation°",
-      },
-      paintedSkyIntensity: {
-        value: 0.83,
-        min: 0,
-        max: 2,
-        step: 0.01,
-        label: "Intensity",
-      },
-    },
-  );
-
   return (
     <>
       <Leva
@@ -82,12 +61,7 @@ export function Experience({ onSceneReady }: ExperienceProps) {
           camera={CAMERA_SETTINGS}
         >
           <Suspense fallback={null}>
-            <PaintedSky
-              backgroundRotationY={MathUtils.degToRad(
-                paintedSkyRotationDegrees,
-              )}
-              backgroundIntensity={paintedSkyIntensity}
-            />
+            <PaintedSky />
 
             <Effects />
 
