@@ -1,4 +1,5 @@
 export const BRANCH_MODEL_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/models/Branch.glb`;
+export const BRANCH_LEAF_TEXTURE_PATH = `${process.env.NEXT_PUBLIC_BASE_PATH}/textures/CanopyLeaf.webp`;
 
 // Branch centerline
 // [centerY, centerZ, radius]

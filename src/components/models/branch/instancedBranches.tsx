@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { FrontSide } from "three";
+import { Color, FrontSide } from "three";
 
 import { BRANCH_TUCK_DISTANCE } from "@/settings/graphSettings";
 import type { Graph } from "@/types/graph";
@@ -9,10 +9,12 @@ import {
   getBranchThickness,
 } from "@/utils/graph";
 import { useBranchGLTF } from "./useBranchGLTF";
+import { useBranchLeavesMaterials } from "./useBranchLeavesMaterials";
 import { useBranchThreading } from "./useBranchThreading";
 import { useInstanceMatrices } from "./useInstanceMatrices";
-import { useLeafMaterial } from "./useLeafMaterial";
 import { YarnWrap } from "./yarnWrap";
+
+const THREADED_LEAF_COLOR = new Color("#ffe2d8");
 
 type Props = {
   graph: Graph;
@@ -44,14 +46,14 @@ export function InstancedBranches({
 
   const stemInstancesRef = useInstanceMatrices(stemMatrices);
   const leafInstancesRef = useInstanceMatrices(leafMatrices);
-  const leafMaterial = useLeafMaterial(materials.Leaf);
+  const { leafMaterial, leafShadowMaterial } = useBranchLeavesMaterials();
   useBranchThreading({
     stemInstancesRef,
     leafInstancesRef,
     edgeThreading,
     leavesPerEdge: leafNodes.length,
     threadedStemColor: materials["branch.001"].color,
-    threadedLeafColor: materials.Leaf.color,
+    threadedLeafColor: THREADED_LEAF_COLOR,
   });
 
   return (
@@ -72,9 +74,8 @@ export function InstancedBranches({
         key={`leaves-${leafMatrices.length}`}
         ref={leafInstancesRef}
         args={[leafNodes[0].geometry, leafMaterial, leafMatrices.length]}
+        customDepthMaterial={leafShadowMaterial}
         castShadow
-        receiveShadow
-        material-shadowSide={FrontSide}
       />
       <YarnWrap
         stemMatrices={stemMatrices}

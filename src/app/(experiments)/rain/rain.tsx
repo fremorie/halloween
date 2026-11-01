@@ -4,8 +4,8 @@ import {
   extend,
   type ThreeElement,
 } from "@react-three/fiber";
-import { useTexture, shaderMaterial } from "@react-three/drei";
-import { Color, type ShaderMaterial, type Texture } from "three";
+import { shaderMaterial } from "@react-three/drei";
+import { Color, type ShaderMaterial } from "three";
 import { useRef } from "react";
 
 import vertexShader from "@/shaders/rain/vertex.glsl";
@@ -15,7 +15,6 @@ import { useRainControls } from "./useRainControls";
 const RainMaterial = shaderMaterial(
   {
     uTime: 0,
-    uPerlinNoise: null as Texture | null,
     uAspectRatio: 1,
     uSkyTopColor: new Color(0.035, 0.05, 0.085),
     uSkyBottomColor: new Color(0.008, 0.01, 0.018),
@@ -35,9 +34,6 @@ declare module "@react-three/fiber" {
 }
 
 export function Rain() {
-  const perlinNoise = useTexture(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/perlin.png`,
-  );
   const { skyTopColor, skyBottomColor, rainDropTintNear, rainDropTintFar } =
     useRainControls();
 
@@ -55,7 +51,6 @@ export function Rain() {
       <planeGeometry />
       <rainMaterial
         ref={rainMaterialRef}
-        uPerlinNoise={perlinNoise}
         uAspectRatio={width / height}
         uSkyTopColor={skyTopColor}
         uSkyBottomColor={skyBottomColor}

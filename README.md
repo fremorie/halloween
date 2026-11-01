@@ -1,3 +1,17 @@
+# Costume for Marcelino
+
+Marcelino is a cat, and like any respectable cat, he needs a Halloween costume. 
+
+
+In this small 3D browser game you walk him around an autumn garden and solve an Eulerian path puzzle at each pedestal.
+Each solved puzzle knits another piece of his costume, until he's ready for trick-or-treating. 
+
+[Live](https://fremorie.github.io/halloween/)
+
+![](/resources/images/screenshot.png)
+
+
+
 ## Getting Started
 
 ```bash
@@ -12,6 +26,20 @@ bun dev
 
 ## Credits
 
+### Kuwahara filter
+
+Based on an article by Maxime Heckel: https://blog.maximeheckel.com/posts/on-crafting-painterly-shaders/
+
+### Built with
+
+three.js, React Three Fiber, Drei, Rapier, postprocessing, React Postprocessing, Three Custom Shader Material, Leva, GSAP, Radix UI, Zustand, Howler, NippleJS, Next.js, Tailwind, Blender, GIMP.
+
+### Fonts
+
+[Barrio](https://fonts.google.com/specimen/Barrio), [Dosis](https://fonts.google.com/specimen/Dosis) and [Alef](https://fonts.google.com/specimen/Alef) from [Google Fonts](https://fonts.google.com), used under the [SIL Open Font License](https://openfontlicense.org). Font pairing suggested by [Fontjoy](https://fontjoy.com).
+
+### Sound
+
 - Theme music (`public/sound/theme.mp3`) generated with [Suno](https://suno.com) on the free plan, for non-commercial use only. It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Meow sound (`public/sound/meow.mp3`): ["Cute Cat"](https://pixabay.com/sound-effects/nature-cute-cat-352656/) by Stu9 from [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Magic spell sound (`public/sound/magic-spell.mp3`): ["Mystical Wind Chimes Transition FX"](https://pixabay.com/sound-effects/film-special-effects-mystical-wind-chimes-transition-fx-6327/) by djlprojects (Freesound), shared by freesound_community on [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
@@ -19,7 +47,6 @@ bun dev
 - Cape sound (`public/sound/cape.mp3`): ["Clothes drop 2"](https://pixabay.com/sound-effects/household-clothes-drop-2-40202/) by ZoviPoland (Freesound), shared by freesound_community on [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Whoosh sound (`public/sound/whoosh.mp3`): ["Cinematic Whoosh 3"](https://pixabay.com/sound-effects/cinematic-whoosh-3-467473/) by DRAGON-STUDIO from [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Birds sound (`public/sound/birds.mp3`): [Early_morning_birds_04.mp3](https://freesound.org/s/511758/) by [aladar](https://freesound.org/people/aladar/) -- https://freesound.org/s/511758/ -- License: [Attribution 3.0](https://creativecommons.org/licenses/by/3.0/). It is not covered by the MIT license; see [LICENSE](LICENSE).
-- Knitting sound (`public/sound/echo-chime.mp3`): ["Echo Chime Chime"](https://pixabay.com/sound-effects/musical-echo-chime-chime-89653/) by husky70 (Freesound), shared by freesound_community on [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Sewing machine sound (`public/sound/sewing-machine.mp3`): trimmed excerpt of ["028693_sewing machine"](https://pixabay.com/sound-effects/household-028693-sewing-machine-75851/) by freesound_community from [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Wing flap sound (`public/sound/wing-flap.mp3`): four flaps cut from ["Heavy Wings Flapping"](https://pixabay.com/sound-effects/film-special-effects-heavy-wings-flapping-364607/) by DRAGON-STUDIO from [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).
 - Purr sound (`public/sound/cat-purr.mp3`): trimmed excerpt of ["Cat Perfect Purr"](https://pixabay.com/sound-effects/nature-cat-perfect-purr-54580/) by cristinaadrn (Freesound), shared by freesound_community on [Pixabay](https://pixabay.com), used under the [Pixabay Content License](https://pixabay.com/service/license-summary/). It is not covered by the MIT license; see [LICENSE](LICENSE).

@@ -12,7 +12,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="antialiased">
       <body>
-        <div className="relative h-screen w-full">{children}</div>
+        <div className="relative h-dvh w-full">{children}</div>
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { GameHud } from "@/components/hud/gameHud";
 import { LoadingScreen } from "@/components/ui/loadingScreen/loadingScreen";
+import { Menu } from "@/components/ui/menu/menu";
 import { SoundToggleButton } from "@/components/ui/soundToggleButton/soundToggleButton";
 import { useGameStore } from "@/store/gameStore";
 import { useBirds } from "./useBirds";
@@ -46,6 +47,7 @@ export function Game() {
       )}
       <GameHud />
       <SoundToggleButton />
+      <Menu />
     </>
   );
 }
