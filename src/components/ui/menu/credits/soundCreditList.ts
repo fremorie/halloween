@@ -69,14 +69,6 @@ export const SOUND_CREDITS: SoundCredit[] = [
     license: SOUND_LICENSES.creativeCommonsAttribution,
   },
   {
-    sound: "Knitting",
-    track: "Echo Chime Chime",
-    trackUrl:
-      "https://pixabay.com/sound-effects/musical-echo-chime-chime-89653/",
-    author: "husky70",
-    license: SOUND_LICENSES.pixabay,
-  },
-  {
     sound: "Sewing machine",
     track: "028693_sewing machine",
     trackUrl:

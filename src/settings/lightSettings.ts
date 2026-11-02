@@ -42,7 +42,7 @@ export const SHADOW_CATCHER_SETTINGS = {
 export const SHADOW_CAMERA_BOUNDS = {
   bottom: -31,
   far: 41,
-  left: -29,
+  left: -33,
   near: -16,
   right: 32,
   top: 30,
