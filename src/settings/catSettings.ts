@@ -24,6 +24,7 @@ export const CAT_PAWS_HALF_EXTENTS: Vec3 = [0.45, 0.05, 0.64];
 export const CAT_PAWS_CENTER: Vec3 = [0, 0.05, 0.02];
 
 export const CAT_CONTROLLER_OFFSET = 0.02;
+export const CAT_OBSTACLE_SWEEP_GAP = 0.01;
 export const CAT_BLOCKING_LIFT = 0.1;
 export const CAT_BLOCKING_RADIUS = 1.15;
 

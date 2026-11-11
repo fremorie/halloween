@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { type Group } from "three";
 import {
+  ConvexHullCollider,
   CuboidCollider,
   CylinderCollider,
   type RapierRigidBody,
@@ -17,6 +18,7 @@ import {
   CAT_COLLIDER_CENTER,
   CAT_COLLIDER_HALF_EXTENTS,
 } from "@/settings/catSettings";
+import { useWingColliderGLTF } from "@/components/models/wingCollider/useWingColliderGLTF";
 import { useCatMovement } from "./useCatMovement";
 import { useCatBodyFollow } from "./useCatBodyFollow";
 import { useCatObstacleBlocking } from "./useCatObstacleBlocking";
@@ -37,15 +39,22 @@ export function Cat({ stationCount }: { stationCount: number }) {
   const catBodyRef = useRef<RapierRigidBody>(null);
 
   const isFlying = useIsCatFlying();
+  const wingColliderGLTF = useWingColliderGLTF();
 
-  const { blockingColliderRef, limitStepByObstacles } =
-    useCatObstacleBlocking();
+  const {
+    blockingColliderRef,
+    leftWingColliderRef,
+    rightWingColliderRef,
+    limitStepByObstacles,
+    isTurnBlockedByWings,
+  } = useCatObstacleBlocking();
   const { descendOntoScenery, descendShovingPumpkinsAside } = useCatLanding();
   useCatFreeFlight(rootRef, descendOntoScenery, descendShovingPumpkinsAside);
   const walkPaceRef = useCatMovement(
     rootRef,
     stationCount,
     limitStepByObstacles,
+    isTurnBlockedByWings,
   );
   useCatBodyFollow(rootRef, catBodyRef);
   useCatFlight(rootRef);
@@ -101,6 +110,22 @@ export function Cat({ stationCount }: { stationCount: number }) {
         ref={blockingColliderRef}
         sensor
         args={[CAT_BLOCKING_HALF_HEIGHT, CAT_BLOCKING_RADIUS]}
+      />
+      <ConvexHullCollider
+        ref={leftWingColliderRef}
+        sensor
+        args={[
+          wingColliderGLTF.nodes.LeftWingCollider.geometry.attributes.position
+            .array,
+        ]}
+      />
+      <ConvexHullCollider
+        ref={rightWingColliderRef}
+        sensor
+        args={[
+          wingColliderGLTF.nodes.RightWingCollider.geometry.attributes.position
+            .array,
+        ]}
       />
     </>
   );

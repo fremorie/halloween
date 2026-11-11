@@ -29,12 +29,16 @@ import {
 } from "@/utils/cat";
 import { joystickTilt } from "@/store/joystickTilt";
 import { dampAngle } from "@/utils/animation";
-import type { LimitStepByObstacles } from "./useCatObstacleBlocking";
+import type {
+  IsTurnBlockedByWings,
+  LimitStepByObstacles,
+} from "./useCatObstacleBlocking";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
   stationCount: number,
   limitStepByObstacles: LimitStepByObstacles,
+  isTurnBlockedByWings: IsTurnBlockedByWings,
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
@@ -113,12 +117,16 @@ export function useCatMovement(
         : 0;
 
     if (direction.lengthSq() > 0) {
-      root.rotation.y = dampAngle(
+      const turnedHeading = dampAngle(
         root.rotation.y,
         getHeading(direction),
         CAT_TURN_SPEED,
         stepDuration,
       );
+
+      if (!isTurnBlockedByWings(root, turnedHeading)) {
+        root.rotation.y = turnedHeading;
+      }
     }
 
     catPosition.copy(root.position);
