@@ -1,5 +1,4 @@
 import type { Vec3 } from "@/types/math";
-import { FINALE_HOVER_HEIGHT } from "@/settings/finaleSettings";
 
 export const CAT_WALK_SPEED = 3.3;
 export const CAT_TURN_SPEED = 10;
@@ -10,8 +9,8 @@ export const CAT_STILL_PACE = 0.05;
 export const CAT_WALK_BLEND_SPEED = 12;
 export const CAT_FLY_FADE_DURATION = 0.8;
 
-export const CAT_FREE_FLIGHT_HEIGHT = FINALE_HOVER_HEIGHT;
-export const CAT_FREE_FLIGHT_RISE_SPEED = 2;
+export const CAT_FREE_FLIGHT_HEIGHT = 6;
+export const CAT_FREE_FLIGHT_RISE_SPEED = 0.6;
 export const CAT_LANDING_AIM_BELOW_GROUND = 0.5;
 
 export const CAT_COLLIDER_HALF_EXTENTS: Vec3 = [0.6, 0.7, 1.1];
