@@ -1,7 +1,8 @@
 import { type MouseEvent, useEffect } from "react";
 
-import { BrushKeyCap } from "@/components/ui/brushKeyCap/brushKeyCap";
+import { alef } from "@/components/ui/fonts/fonts";
 import { flyButtonHold } from "@/store/flyButtonHold";
+import { FLY_BUTTON_SIZE, JOYSTICK_COLOR } from "@/settings/controlsSettings";
 import { isTouchScreen } from "@/utils/isTouchScreen";
 
 export function TouchFlyButton() {
@@ -31,9 +32,15 @@ export function TouchFlyButton() {
       onPointerUp={stopFlying}
       onPointerCancel={stopFlying}
       onContextMenu={preventLongPressMenu}
-      className="pointer-events-auto absolute bottom-38 left-38 -translate-x-1/2 translate-y-1/2 touch-none select-none [-webkit-touch-callout:none]"
+      style={{
+        width: FLY_BUTTON_SIZE,
+        height: FLY_BUTTON_SIZE,
+        backgroundColor: JOYSTICK_COLOR.back,
+        borderColor: JOYSTICK_COLOR.front,
+      }}
+      className={`${alef.className} pointer-events-auto absolute bottom-38 left-38 flex -translate-x-1/2 translate-y-1/2 touch-none items-center justify-center rounded-full border-4 text-4xl text-white select-none [-webkit-touch-callout:none]`}
     >
-      <BrushKeyCap className="h-16 px-8 text-2xl">fly</BrushKeyCap>
+      FLY
     </button>
   );
 }
