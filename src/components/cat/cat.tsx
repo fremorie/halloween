@@ -31,6 +31,7 @@ import { useIsCatFlying } from "./useIsCatFlying";
 import { useCatFlightBob } from "./useCatFlightBob";
 import { useCatFreeFlight } from "./useCatFreeFlight";
 import { useCatLanding } from "./useCatLanding";
+import { useCatWingsPumpkinPush } from "./useCatWingsPumpkinPush";
 import { FINALE_DILATED_PUPIL_BEATS } from "@/settings/finaleSettings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
@@ -56,6 +57,8 @@ export function Cat({ stationCount }: { stationCount: number }) {
     limitStepByObstacles,
     isTurnBlockedByWings,
   );
+  const { leftWingPushColliderRef, rightWingPushColliderRef } =
+    useCatWingsPumpkinPush(rootRef);
   useCatBodyFollow(rootRef, catBodyRef);
   useCatFlight(rootRef);
   useCatFlightBob(rootRef, bobGroupRef, isFlying);
@@ -125,6 +128,22 @@ export function Cat({ stationCount }: { stationCount: number }) {
         args={[
           wingColliderGLTF.nodes.RightWingCollider.geometry.attributes.position
             .array,
+        ]}
+      />
+      <ConvexHullCollider
+        ref={leftWingPushColliderRef}
+        sensor
+        args={[
+          wingColliderGLTF.nodes.LeftWingPushCollider.geometry.attributes
+            .position.array,
+        ]}
+      />
+      <ConvexHullCollider
+        ref={rightWingPushColliderRef}
+        sensor
+        args={[
+          wingColliderGLTF.nodes.RightWingPushCollider.geometry.attributes
+            .position.array,
         ]}
       />
     </>
