@@ -47,7 +47,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
   );
   useCatBodyFollow(rootRef, catBodyRef);
   useCatFlight(rootRef);
-  useCatFlightBob(rootRef, bobGroupRef);
+  useCatFlightBob(rootRef, bobGroupRef, isFlying);
   useFootsteps(walkPaceRef);
 
   const isPupilDilated = useGameStore(

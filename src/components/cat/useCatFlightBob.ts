@@ -3,9 +3,7 @@ import { type RefObject, useRef } from "react";
 
 import { useWingsGLTF } from "@/components/models/wings/useWingsGLTF";
 import { WINGS_FLY_TIME_SCALE } from "@/components/models/wings/constants";
-import type { FinaleBeat } from "@/types/finale";
 import { useFrame } from "@react-three/fiber";
-import { useGameStore } from "@/store/gameStore";
 import {
   FINALE_BOB_AMPLITUDE,
   FINALE_BOB_PHASE,
@@ -15,13 +13,14 @@ import {
 export function useCatFlightBob(
   rootRef: RefObject<Group | null>,
   bobGroupRef: RefObject<Group | null>,
+  isFlying: boolean,
 ) {
-  const takeOffStartRef = useRef<{
-    lastSeenBeat: FinaleBeat | null;
-    takeOffElapsedTime: number;
+  const flyingStartRef = useRef<{
+    wasFlying: boolean;
+    flyingStartElapsedTime: number;
   }>({
-    lastSeenBeat: null,
-    takeOffElapsedTime: 0,
+    wasFlying: false,
+    flyingStartElapsedTime: 0,
   });
   const { animations } = useWingsGLTF();
 
@@ -37,26 +36,22 @@ export function useCatFlightBob(
 
     const flapPeriod = flyClip.duration / WINGS_FLY_TIME_SCALE;
 
-    const { mode, finaleBeat } = useGameStore.getState();
+    const flyingStart = flyingStartRef.current;
 
-    if (mode !== "finale") {
+    if (isFlying && !flyingStart.wasFlying) {
+      flyingStart.flyingStartElapsedTime = clock.elapsedTime;
+    }
+    flyingStart.wasFlying = isFlying;
+
+    if (!isFlying) {
       bobGroup.position.y = 0;
       return;
     }
 
-    const takeOffStart = takeOffStartRef.current;
-
-    if (takeOffStart.lastSeenBeat !== finaleBeat) {
-      takeOffStart.lastSeenBeat = finaleBeat;
-      if (finaleBeat === "takeOff") {
-        takeOffStart.takeOffElapsedTime = clock.elapsedTime;
-      }
-    }
-
-    const elapsedSinceTakeOff =
-      clock.elapsedTime - takeOffStart.takeOffElapsedTime;
+    const elapsedSinceFlyingStart =
+      clock.elapsedTime - flyingStart.flyingStartElapsedTime;
     const flapAngle =
-      (2 * Math.PI * elapsedSinceTakeOff) / flapPeriod + FINALE_BOB_PHASE;
+      (2 * Math.PI * elapsedSinceFlyingStart) / flapPeriod + FINALE_BOB_PHASE;
     const heightEnvelope = MathUtils.clamp(
       root.position.y / FINALE_HOVER_HEIGHT,
       0,
