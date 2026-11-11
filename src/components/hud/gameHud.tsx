@@ -13,6 +13,7 @@ import { MARCELINOS_COMMENTS } from "@/settings/journeySettings";
 import { Comment } from "@/components/ui/comment/comment";
 import { MovementHint } from "@/components/ui/movementHint/movementHint";
 import { FlyHint } from "@/components/ui/flyHint/flyHint";
+import { TouchFlyButton } from "@/components/hud/touchFlyButton";
 import { THANK_YOU_LINE } from "@/settings/finaleSettings";
 
 const TouchJoystick = dynamic(
@@ -64,6 +65,7 @@ export function GameHud() {
       )}
       {isFirstWalkAfterIntro && <MovementHint />}
       {mode === "done" && <FlyHint />}
+      {mode === "done" && <TouchFlyButton />}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-16 text-center">
         {finaleBeat === "thankYou" && (
           <>

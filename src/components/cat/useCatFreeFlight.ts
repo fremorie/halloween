@@ -11,6 +11,7 @@ import {
   MAX_STEP_DURATION,
 } from "@/settings/catSettings";
 import { useGameStore } from "@/store/gameStore";
+import { flyButtonHold } from "@/store/flyButtonHold";
 
 export function useCatFreeFlight(rootRef: RefObject<Group | null>) {
   const [, getKeys] = useKeyboardControls<ControlName>();
@@ -23,7 +24,8 @@ export function useCatFreeFlight(rootRef: RefObject<Group | null>) {
       return;
     }
 
-    const isFlyHeld = mode === "done" && getKeys().fly;
+    const isFlyHeld =
+      mode === "done" && (getKeys().fly || flyButtonHold.isHeld);
     const targetHeight = isFlyHeld
       ? CAT_FREE_FLIGHT_HEIGHT
       : -CAT_LANDING_AIM_BELOW_GROUND;
