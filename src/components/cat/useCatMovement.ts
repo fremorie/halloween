@@ -35,6 +35,7 @@ import type {
   IsTurnBlockedByWings,
   LimitStepByObstacles,
 } from "./useCatObstacleBlocking";
+import { useNextStationFacing } from "./useNextStationFacing";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
@@ -43,6 +44,8 @@ export function useCatMovement(
   isTurnBlockedByWings: IsTurnBlockedByWings,
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
+  const { turnTowardNextStation, stopFacingNextStation } =
+    useNextStationFacing();
   const [direction] = useState(() => new Vector3());
   const [steeringInput] = useState(() => new Vector2());
   const [standSpot] = useState(() => new Vector3());
@@ -78,10 +81,19 @@ export function useCatMovement(
 
     if (isSteeredByPlayer) {
       getSteeringInput(getKeys(), joystickTilt, steeringInput);
+
+      if (steeringInput.x !== 0) {
+        stopFacingNextStation();
+      }
+
+      const isTurningTowardNextStation =
+        mode === "walking" &&
+        turnTowardNextStation(root, currentStationIndex, stepDuration);
       const steeredHeading =
         root.rotation.y - steeringInput.x * CAT_STEER_TURN_SPEED * stepDuration;
 
       if (
+        !isTurningTowardNextStation &&
         steeringInput.x !== 0 &&
         !isTurnBlockedByWings(root, steeredHeading)
       ) {
