@@ -21,7 +21,7 @@ export function HintBox({ dismissKeyCodes, children }: HintBoxProps) {
       <div
         aria-live="polite"
         onAnimationEnd={handleAnimationEnd}
-        className={`${alef.className} relative flex items-center gap-4 overflow-hidden border-2 border-black bg-background px-5 py-3 text-lg text-neutral-900 ${
+        className={`${alef.className} relative flex items-center gap-4 overflow-hidden border-2 border-black bg-background px-5 py-3 text-lg text-neutral-900 [font-variant-ligatures:none] ${
           hintPhase === "leaving"
             ? "animate-movement-hint-fade-out"
             : "animate-movement-hint-fade-in"

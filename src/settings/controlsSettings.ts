@@ -9,6 +9,8 @@ export const KEYBOARD_CONTROLS_MAP: KeyboardControlsEntry<ControlName>[] = [
   { name: "right", keys: ["ArrowRight", "KeyD"] },
 ];
 
+export const FLY_KEY_CODES = ["ShiftLeft", "ShiftRight"];
+
 export type HeldControls = Record<ControlName, boolean>;
 
 export const JOYSTICK_SIZE = 120;
