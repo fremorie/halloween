@@ -28,7 +28,7 @@ import { useCatFlight } from "./useCatFlight";
 import { useIsCatFlying } from "./useIsCatFlying";
 import { useCatFlightBob } from "./useCatFlightBob";
 import { useCatFreeFlight } from "./useCatFreeFlight";
-import { useCatLandingShove } from "./useCatLandingShove";
+import { useCatLanding } from "./useCatLanding";
 import { FINALE_DILATED_PUPIL_BEATS } from "@/settings/finaleSettings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
@@ -40,8 +40,8 @@ export function Cat({ stationCount }: { stationCount: number }) {
 
   const { blockingColliderRef, limitStepByObstacles } =
     useCatObstacleBlocking();
-  const descendShovingPumpkinsAside = useCatLandingShove();
-  useCatFreeFlight(rootRef, descendShovingPumpkinsAside);
+  const { descendOntoScenery, descendShovingPumpkinsAside } = useCatLanding();
+  useCatFreeFlight(rootRef, descendOntoScenery, descendShovingPumpkinsAside);
   const walkPaceRef = useCatMovement(
     rootRef,
     stationCount,

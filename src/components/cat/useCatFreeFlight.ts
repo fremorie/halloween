@@ -8,15 +8,17 @@ import {
   CAT_FREE_FLIGHT_HEIGHT,
   CAT_FREE_FLIGHT_RISE_SPEED,
   CAT_LANDING_AIM_BELOW_GROUND,
+  CAT_STEP_DOWN_SPEED,
   MAX_STEP_DURATION,
 } from "@/settings/catSettings";
 import { useGameStore } from "@/store/gameStore";
 import { flyButtonHold } from "@/store/flyButtonHold";
-import type { DescendShovingPumpkinsAside } from "./useCatLandingShove";
+import type { DescendOntoWhatIsBelow } from "./useCatLanding";
 
 export function useCatFreeFlight(
   rootRef: RefObject<Group | null>,
-  descendShovingPumpkinsAside: DescendShovingPumpkinsAside,
+  descendOntoScenery: DescendOntoWhatIsBelow,
+  descendShovingPumpkinsAside: DescendOntoWhatIsBelow,
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
 
@@ -34,19 +36,28 @@ export function useCatFreeFlight(
       ? CAT_FREE_FLIGHT_HEIGHT
       : -CAT_LANDING_AIM_BELOW_GROUND;
 
+    const stepDuration = Math.min(delta, MAX_STEP_DURATION);
+    const isCatWalking = !isFlyHeld && !isCatFreeFlying;
     const desiredHeight = Math.max(
       0,
-      MathUtils.damp(
-        root.position.y,
-        targetHeight,
-        CAT_FREE_FLIGHT_RISE_SPEED,
-        Math.min(delta, MAX_STEP_DURATION),
-      ),
+      isCatWalking
+        ? root.position.y - CAT_STEP_DOWN_SPEED * stepDuration
+        : MathUtils.damp(
+            root.position.y,
+            targetHeight,
+            CAT_FREE_FLIGHT_RISE_SPEED,
+            stepDuration,
+          ),
     );
 
-    root.position.y = descendShovingPumpkinsAside(root, desiredHeight);
+    const sceneryLimitedHeight = descendOntoScenery(root, desiredHeight);
+    const isStandingOnScenery = sceneryLimitedHeight > desiredHeight;
 
-    const isCatAirborne = isFlyHeld || root.position.y > 0;
+    root.position.y = descendShovingPumpkinsAside(root, sceneryLimitedHeight);
+
+    const isCatAirborne =
+      isFlyHeld ||
+      (isCatFreeFlying && root.position.y > 0 && !isStandingOnScenery);
 
     if (isCatAirborne !== isCatFreeFlying) {
       setCatFreeFlying(isCatAirborne);

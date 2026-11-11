@@ -53,6 +53,7 @@ export function useCatMovement(
       catForward,
       mode,
       currentStationIndex,
+      isCatFreeFlying,
       isNearStation,
       setNearStation,
       arriveAtStation,
@@ -106,9 +107,8 @@ export function useCatMovement(
     }
 
     const movedDistance = root.position.distanceTo(previousPosition);
-    const isCatAirborne = root.position.y > 0;
     walkPaceRef.current =
-      stepDuration > 0 && !isCatAirborne
+      stepDuration > 0 && !isCatFreeFlying
         ? movedDistance / stepDuration / CAT_WALK_NATURAL_SPEED
         : 0;
 
