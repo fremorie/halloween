@@ -1,8 +1,8 @@
 import { ArrowKeysImg } from "@/components/ui/movementHint/arrowKeysImg";
 import { HintBox } from "@/components/ui/hintBox/hintBox";
-import { KEYBOARD_CONTROLS_MAP } from "@/settings/controlsSettings";
+import { MOVEMENT_CONTROLS_MAP } from "@/settings/controlsSettings";
 
-const MOVEMENT_KEY_CODES = KEYBOARD_CONTROLS_MAP.flatMap(
+const MOVEMENT_KEY_CODES = MOVEMENT_CONTROLS_MAP.flatMap(
   (control) => control.keys,
 );
 

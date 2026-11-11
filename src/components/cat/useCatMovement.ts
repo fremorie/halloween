@@ -95,8 +95,9 @@ export function useCatMovement(
     }
 
     const movedDistance = root.position.distanceTo(previousPosition);
+    const isCatAirborne = root.position.y > 0;
     walkPaceRef.current =
-      stepDuration > 0
+      stepDuration > 0 && !isCatAirborne
         ? movedDistance / stepDuration / CAT_WALK_NATURAL_SPEED
         : 0;
 
