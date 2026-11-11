@@ -1,12 +1,14 @@
 import { type RefObject, useRef, useState } from "react";
-import { type Group, MathUtils, Vector3 } from "three";
+import { type Group, MathUtils, Vector2, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
 import type { ControlName } from "@/settings/controlsSettings";
 import {
   CAT_FREE_FLIGHT_SPEED,
+  CAT_STEER_TURN_SPEED,
   CAT_TURN_SPEED,
+  CAT_WALK_BACKWARD_SPEED_FACTOR,
   CAT_WALK_NATURAL_SPEED,
   CAT_WALK_SPEED,
   MAX_STEP_DURATION,
@@ -24,8 +26,8 @@ import {
 import {
   getForward,
   getFreeFlightProgress,
-  getMoveDirection,
   getHeading,
+  getSteeringInput,
 } from "@/utils/cat";
 import { joystickTilt } from "@/store/joystickTilt";
 import { dampAngle } from "@/utils/animation";
@@ -42,6 +44,7 @@ export function useCatMovement(
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
+  const [steeringInput] = useState(() => new Vector2());
   const [standSpot] = useState(() => new Vector3());
   const [previousPosition] = useState(() => new Vector3());
   const [walkStep] = useState(() => new Vector3());
@@ -71,13 +74,29 @@ export function useCatMovement(
 
     previousPosition.copy(root.position);
 
-    if (mode === "walking" || mode === "done") {
-      getMoveDirection(getKeys(), joystickTilt, direction);
-      const moveSpeed = MathUtils.lerp(
-        CAT_WALK_SPEED,
-        CAT_FREE_FLIGHT_SPEED,
-        getFreeFlightProgress(root.position),
-      );
+    const isSteeredByPlayer = mode === "walking" || mode === "done";
+
+    if (isSteeredByPlayer) {
+      getSteeringInput(getKeys(), joystickTilt, steeringInput);
+      const steeredHeading =
+        root.rotation.y - steeringInput.x * CAT_STEER_TURN_SPEED * stepDuration;
+
+      if (
+        steeringInput.x !== 0 &&
+        !isTurnBlockedByWings(root, steeredHeading)
+      ) {
+        root.rotation.y = steeredHeading;
+      }
+
+      const walkSpeedFactor =
+        steeringInput.y < 0 ? CAT_WALK_BACKWARD_SPEED_FACTOR : 1;
+      const moveSpeed =
+        MathUtils.lerp(
+          CAT_WALK_SPEED,
+          CAT_FREE_FLIGHT_SPEED,
+          getFreeFlightProgress(root.position),
+        ) * walkSpeedFactor;
+      getForward(root.rotation.y, direction).multiplyScalar(steeringInput.y);
       walkStep.copy(direction).multiplyScalar(moveSpeed * stepDuration);
       root.position.add(limitStepByObstacles(root, walkStep));
       clampToRoamingArea(root.position);
@@ -116,7 +135,7 @@ export function useCatMovement(
         ? movedDistance / stepDuration / CAT_WALK_NATURAL_SPEED
         : 0;
 
-    if (direction.lengthSq() > 0) {
+    if (!isSteeredByPlayer && direction.lengthSq() > 0) {
       const turnedHeading = dampAngle(
         root.rotation.y,
         getHeading(direction),
