@@ -25,7 +25,7 @@ import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
 import { useCatFlight } from "./useCatFlight";
-import { useIsFinaleFlying } from "./useIsFinaleFlying";
+import { useIsCatFlying } from "./useIsCatFlying";
 import { useCatFlightBob } from "./useCatFlightBob";
 import { useCatFreeFlight } from "./useCatFreeFlight";
 import { FINALE_DILATED_PUPIL_BEATS } from "@/settings/finaleSettings";
@@ -35,7 +35,7 @@ export function Cat({ stationCount }: { stationCount: number }) {
   const bobGroupRef = useRef<Group>(null);
   const catBodyRef = useRef<RapierRigidBody>(null);
 
-  const isFlying = useIsFinaleFlying();
+  const isFlying = useIsCatFlying();
 
   const { blockingColliderRef, limitStepByObstacles } =
     useCatObstacleBlocking();

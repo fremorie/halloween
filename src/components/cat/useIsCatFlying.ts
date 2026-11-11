@@ -1,10 +1,11 @@
 import { useGameStore } from "@/store/gameStore";
 import { WINGS_FLAPPING_BEATS } from "@/settings/finaleSettings";
 
-export function useIsFinaleFlying() {
+export function useIsCatFlying() {
   return useGameStore(
     (state) =>
-      state.finaleBeat !== null &&
-      WINGS_FLAPPING_BEATS.includes(state.finaleBeat),
+      state.isCatFreeFlying ||
+      (state.finaleBeat !== null &&
+        WINGS_FLAPPING_BEATS.includes(state.finaleBeat)),
   );
 }

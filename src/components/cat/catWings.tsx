@@ -3,7 +3,7 @@ import type { Group } from "three";
 
 import { WingsModel } from "@/components/models/wings/wingsModel";
 import { useCostumePieceDrop } from "./useCostumePieceDrop";
-import { useIsFinaleFlying } from "./useIsFinaleFlying";
+import { useIsCatFlying } from "./useIsCatFlying";
 import { useWingFlapSound } from "./useWingFlapSound";
 
 type CatWingsProps = {
@@ -13,7 +13,7 @@ type CatWingsProps = {
 export function CatWings({ isWorn }: CatWingsProps) {
   const wingsGroupRef = useRef<Group>(null);
 
-  const isFlying = useIsFinaleFlying();
+  const isFlying = useIsCatFlying();
 
   useCostumePieceDrop(wingsGroupRef, isWorn);
   useWingFlapSound(isFlying);

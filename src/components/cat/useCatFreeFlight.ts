@@ -17,7 +17,7 @@ export function useCatFreeFlight(rootRef: RefObject<Group | null>) {
 
   useFrame((_, delta) => {
     const root = rootRef.current;
-    const { mode } = useGameStore.getState();
+    const { mode, isCatFreeFlying, setCatFreeFlying } = useGameStore.getState();
 
     if (!root || mode === "finale") {
       return;
@@ -37,5 +37,11 @@ export function useCatFreeFlight(rootRef: RefObject<Group | null>) {
         Math.min(delta, MAX_STEP_DURATION),
       ),
     );
+
+    const isCatAirborne = isFlyHeld || root.position.y > 0;
+
+    if (isCatAirborne !== isCatFreeFlying) {
+      setCatFreeFlying(isCatAirborne);
+    }
   });
 }
