@@ -9,7 +9,7 @@ export const CAT_STILL_PACE = 0.05;
 export const CAT_WALK_BLEND_SPEED = 12;
 export const CAT_FLY_FADE_DURATION = 0.8;
 
-export const CAT_FREE_FLIGHT_HEIGHT = 6;
+export const CAT_FREE_FLIGHT_HEIGHT = 2.5;
 export const CAT_FREE_FLIGHT_RISE_SPEED = 0.6;
 export const CAT_FREE_FLIGHT_SPEED = 5.3;
 export const CAT_LANDING_AIM_BELOW_GROUND = 0.5;
