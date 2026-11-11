@@ -1,10 +1,11 @@
 import { type RefObject, useRef, useState } from "react";
-import { type Group, Vector3 } from "three";
+import { type Group, MathUtils, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
 import type { ControlName } from "@/settings/controlsSettings";
 import {
+  CAT_FREE_FLIGHT_SPEED,
   CAT_TURN_SPEED,
   CAT_WALK_NATURAL_SPEED,
   CAT_WALK_SPEED,
@@ -20,7 +21,12 @@ import {
   getStandSpot,
   isInsideGroundEllipse,
 } from "@/utils/journey";
-import { getForward, getMoveDirection, getHeading } from "@/utils/cat";
+import {
+  getForward,
+  getFreeFlightProgress,
+  getMoveDirection,
+  getHeading,
+} from "@/utils/cat";
 import { joystickTilt } from "@/store/joystickTilt";
 import { dampAngle } from "@/utils/animation";
 import type { LimitStepByObstacles } from "./useCatObstacleBlocking";
@@ -62,7 +68,12 @@ export function useCatMovement(
 
     if (mode === "walking" || mode === "done") {
       getMoveDirection(getKeys(), joystickTilt, direction);
-      walkStep.copy(direction).multiplyScalar(CAT_WALK_SPEED * stepDuration);
+      const moveSpeed = MathUtils.lerp(
+        CAT_WALK_SPEED,
+        CAT_FREE_FLIGHT_SPEED,
+        getFreeFlightProgress(root.position),
+      );
+      walkStep.copy(direction).multiplyScalar(moveSpeed * stepDuration);
       root.position.add(limitStepByObstacles(root, walkStep));
       clampToRoamingArea(root.position);
     }

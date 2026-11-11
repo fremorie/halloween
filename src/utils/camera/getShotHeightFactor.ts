@@ -7,7 +7,7 @@ import {
   FREE_FLIGHT_HEIGHT_FACTOR,
 } from "@/settings/cameraSettings";
 import type { CameraShot } from "@/types/camera";
-import { getFreeFlightProgress } from "./getFreeFlightProgress";
+import { getFreeFlightProgress } from "@/utils/cat";
 
 const SHOT_HEIGHT_FACTORS: Record<CameraShot, number> = {
   walking: 1,

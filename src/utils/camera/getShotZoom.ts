@@ -11,7 +11,7 @@ import {
   WALKING_ZOOM,
 } from "@/settings/cameraSettings";
 import type { CameraShot } from "@/types/camera";
-import { getFreeFlightProgress } from "./getFreeFlightProgress";
+import { getFreeFlightProgress } from "@/utils/cat";
 
 const SHOT_ZOOMS: Record<Exclude<CameraShot, "puzzle">, number> = {
   birdView: BIRD_VIEW_ZOOM,
