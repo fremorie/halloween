@@ -7,6 +7,7 @@ export * from "./getScriptedMovePhase";
 export * from "./getShotFollowSpeed";
 export * from "./getShotHeightFactor";
 export * from "./getShotOrbitAngle";
+export * from "./getShotOrbitFollowSpeed";
 export * from "./getShotZoom";
 export * from "./orbitBehindCat";
 export * from "./placeCamera";

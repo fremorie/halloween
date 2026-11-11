@@ -14,6 +14,7 @@ import {
   getShotFollowSpeed,
   getShotHeightFactor,
   getShotOrbitAngle,
+  getShotOrbitFollowSpeed,
   getShotZoom,
   placeCamera,
   pullBackForKnitting,
@@ -41,6 +42,7 @@ export function CameraRig() {
   useFrame(({ camera, clock }, delta) => {
     const {
       catPosition,
+      catForward,
       mode,
       currentStationIndex,
       rewardBeat,
@@ -52,9 +54,16 @@ export function CameraRig() {
     const shot = getCameraShot(mode, rewardBeat, introBeat, finaleBeat);
     const shotZoom = getShotZoom(shot, aspect, isTouchDevice, catPosition);
     const shotHeightFactor = getShotHeightFactor(shot, catPosition);
-    const shotOrbitAngle = getShotOrbitAngle(shot, catPosition);
+    const shotOrbitAngle = getShotOrbitAngle(shot, catPosition, catForward);
     const shotFollowSpeed = getShotFollowSpeed(shot, isTouchDevice);
-    setShotLookAt(shotLookAt, shot, catPosition, currentStationIndex);
+    const shotOrbitFollowSpeed = getShotOrbitFollowSpeed(shot);
+    setShotLookAt(
+      shotLookAt,
+      shot,
+      catPosition,
+      catForward,
+      currentStationIndex,
+    );
 
     scriptedMoveStartRef.current = getNextScriptedMoveStart(
       scriptedMoveStartRef.current,
@@ -109,6 +118,7 @@ export function CameraRig() {
         shotHeightFactor,
         shotOrbitAngle,
         shotFollowSpeed,
+        shotOrbitFollowSpeed,
         delta,
       );
     }

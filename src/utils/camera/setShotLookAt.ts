@@ -15,6 +15,7 @@ export function setShotLookAt(
   shotLookAt: Vector3,
   shot: CameraShot,
   catPosition: Vector3,
+  catForward: Vector3,
   currentStationIndex: number,
 ) {
   if (shot === "birdView") {
@@ -38,8 +39,8 @@ export function setShotLookAt(
   }
 
   shotLookAt.set(
-    catPosition.x,
+    catPosition.x + catForward.x * WALKING_LEAD,
     catPosition.y + LOOK_AT_HEIGHT - WALKING_DROP,
-    catPosition.z - WALKING_LEAD,
+    catPosition.z + catForward.z * WALKING_LEAD,
   );
 }

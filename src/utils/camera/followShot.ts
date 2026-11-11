@@ -20,6 +20,7 @@ export function followShot(
   shotHeightFactor: number,
   shotOrbitAngle: number,
   followSpeed: number,
+  orbitFollowSpeed: number,
   delta: number,
 ) {
   followShotLookAt(pose, shotLookAt, followSpeed, delta);
@@ -33,7 +34,7 @@ export function followShot(
   pose.orbitAngle = dampAngle(
     pose.orbitAngle,
     shotOrbitAngle,
-    CAMERA_ZOOM_SPEED,
+    orbitFollowSpeed,
     delta,
   );
 }

@@ -6,6 +6,7 @@ import {
 } from "@/settings/cameraSettings";
 import type { CameraShot } from "@/types/camera";
 import { getLandingSpotHeading } from "@/utils/finale";
+import { getHeading } from "@/utils/cat";
 
 const SHOT_ORBIT_ANGLES: Record<CameraShot, number> = {
   walking: 0,
@@ -15,9 +16,17 @@ const SHOT_ORBIT_ANGLES: Record<CameraShot, number> = {
   flightChase: 0,
 };
 
-export function getShotOrbitAngle(shot: CameraShot, catPosition: Vector3) {
+export function getShotOrbitAngle(
+  shot: CameraShot,
+  catPosition: Vector3,
+  catForward: Vector3,
+) {
   if (shot === "flightChase") {
     return getLandingSpotHeading(catPosition);
+  }
+
+  if (shot === "walking") {
+    return getHeading(catForward);
   }
 
   return SHOT_ORBIT_ANGLES[shot];
