@@ -21,7 +21,7 @@ export const CAT_COLLIDER_CENTER: Vec3 = [0, 0.7, 0.25];
 
 export const CAT_CONTROLLER_OFFSET = 0.02;
 export const CAT_BLOCKING_LIFT = 0.1;
-export const CAT_BLOCKING_RADIUS = 0.9;
+export const CAT_BLOCKING_RADIUS = 1.15;
 
 const [, catHalfHeight] = CAT_COLLIDER_HALF_EXTENTS;
 const [, catCentreY] = CAT_COLLIDER_CENTER;
