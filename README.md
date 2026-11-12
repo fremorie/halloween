@@ -21,6 +21,24 @@ pnpm dev
 bun dev
 ```
 
+Open http://localhost:3000/halloween (the app runs under the `/halloween` base path, same as on GitHub Pages).
+
+## Experiments
+
+[Experiments](https://fremorie.github.io/halloween/experiments) is an index of the small test scenes used to build the game's pieces one at a time.
+
+- [kuwahara](https://fremorie.github.io/halloween/kuwahara): the painterly Kuwahara post-processing filter, tested on a pile of pumpkins.
+- [pumpkins](https://fremorie.github.io/halloween/pumpkins): the same pumpkins without the filter, with render stats, as a baseline.
+- [rain](https://fremorie.github.io/halloween/rain) and [window](https://fremorie.github.io/halloween/window): a full-screen rain shader, then the same rain seen through a window in a wall.
+- [yarn-balls](https://fremorie.github.io/halloween/yarn-balls): the yarn ball model and its materials.
+- [eulerian-path](https://fremorie.github.io/halloween/eulerian-path): a puzzle graph built from yarn balls joined by branches.
+- [jack-o-lantern](https://fremorie.github.io/halloween/jack-o-lantern), [2](https://fremorie.github.io/halloween/jack-o-lantern-2) and [3](https://fremorie.github.io/halloween/jack-o-lantern-3): three carved faces with an animated glow.
+- [pedestal](https://fremorie.github.io/halloween/pedestal): the pedestal that holds each puzzle.
+- [cat](https://fremorie.github.io/halloween/cat), [cat-rigged](https://fremorie.github.io/halloween/cat-rigged) and [cat-in-a-hat](https://fremorie.github.io/halloween/cat-in-a-hat): Marcelino with adjustable eyes, then rigged and animated, then wearing the hat.
+- [tree](https://fremorie.github.io/halloween/tree) to [tree-v4](https://fremorie.github.io/halloween/tree-v4): four versions of the tree. v4 is the one in the game.
+- [grass](https://fremorie.github.io/halloween/grass): the grass field with the paper-to-color reveal fully on.
+- [ui](https://fremorie.github.io/halloween/ui): game UI components.
+
 ## Credits
 
 ### Kuwahara filter
