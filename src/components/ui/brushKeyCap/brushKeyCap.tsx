@@ -10,7 +10,7 @@ type BrushKeyCapProps = {
 
 export function BrushKeyCap({
   children,
-  className = "h-8 px-2.5 text-lg",
+  className = "h-8 px-3.5 text-lg",
 }: BrushKeyCapProps) {
   return (
     <kbd
@@ -18,7 +18,7 @@ export function BrushKeyCap({
     >
       <BrushStroke
         color="purple"
-        className="top-1/2 left-1/2 h-3/4 -translate-1/2"
+        className="top-1/2 left-1/2 size-[calc(100%_-_0.25rem)]! -translate-1/2"
       />
       <span className="relative">{children}</span>
     </kbd>
