@@ -4,7 +4,7 @@ import {
   useRapier,
 } from "@react-three/rapier";
 import { useState } from "react";
-import { type Object3D, Vector3 } from "three";
+import { type Object3D, type Quaternion, Vector3 } from "three";
 
 import type { Vec3 } from "@/types/math";
 import {
@@ -46,22 +46,22 @@ export function useCatLanding() {
   const [landingCastOrigin] = useState(() => new Vector3());
   const [shoveVelocity] = useState(() => new Vector3());
 
-  const placeLandingCastOrigin = (catRoot: Object3D, shapeCenter: Vec3) => {
+  const getLandingCastOrigin = (catRoot: Object3D, shapeCenter: Vec3) =>
     landingCastOrigin
       .set(...shapeCenter)
       .applyQuaternion(catRoot.quaternion)
       .add(catRoot.position);
-  };
 
   const castCatShapeDownward = (
-    catRoot: Object3D,
+    castOrigin: Vector3,
+    catRotation: Quaternion,
     catShape: RapierCuboid,
     descentDistance: number,
     isColliderToLandOn: (collider: RapierCollider) => boolean,
   ) =>
     world.castShape(
-      landingCastOrigin,
-      catRoot.quaternion,
+      castOrigin,
+      catRotation,
       DOWNWARD_CAST_DIRECTION,
       catShape,
       CAT_LANDING_GAP,
@@ -74,10 +74,13 @@ export function useCatLanding() {
       isColliderToLandOn,
     );
 
-  const arePawsInsideScenery = (catRoot: Object3D) =>
+  const arePawsInsideScenery = (
+    pawsCastOrigin: Vector3,
+    catRotation: Quaternion,
+  ) =>
     world.intersectionWithShape(
-      landingCastOrigin,
-      catRoot.quaternion,
+      pawsCastOrigin,
+      catRotation,
       catPawsShape,
       undefined,
       undefined,
@@ -88,18 +91,19 @@ export function useCatLanding() {
 
   const shovePumpkinFromUnderCat = (
     pumpkinBody: RapierRigidBody,
-    catRoot: Object3D,
+    catBodyCenter: Vector3,
+    catRotation: Quaternion,
   ) => {
     const pumpkinPosition = pumpkinBody.translation();
 
     shoveVelocity.set(
-      pumpkinPosition.x - landingCastOrigin.x,
+      pumpkinPosition.x - catBodyCenter.x,
       0,
-      pumpkinPosition.z - landingCastOrigin.z,
+      pumpkinPosition.z - catBodyCenter.z,
     );
 
     if (shoveVelocity.lengthSq() < NEGLIGIBLE_SHOVE_OFFSET_SQUARED) {
-      shoveVelocity.set(1, 0, 0).applyQuaternion(catRoot.quaternion);
+      shoveVelocity.set(1, 0, 0).applyQuaternion(catRotation);
     }
 
     shoveVelocity.normalize().multiplyScalar(CAT_LANDING_SHOVE_SPEED);
@@ -124,14 +128,15 @@ export function useCatLanding() {
       return desiredHeight;
     }
 
-    placeLandingCastOrigin(catRoot, CAT_PAWS_CENTER);
+    const pawsCastOrigin = getLandingCastOrigin(catRoot, CAT_PAWS_CENTER);
 
-    if (arePawsInsideScenery(catRoot)) {
+    if (arePawsInsideScenery(pawsCastOrigin, catRoot.quaternion)) {
       return desiredHeight;
     }
 
     const sceneryHit = castCatShapeDownward(
-      catRoot,
+      pawsCastOrigin,
+      catRoot.quaternion,
       catPawsShape,
       descentDistance,
       isColliderOnFixedBody,
@@ -157,10 +162,11 @@ export function useCatLanding() {
       return desiredHeight;
     }
 
-    placeLandingCastOrigin(catRoot, CAT_COLLIDER_CENTER);
+    const bodyCastOrigin = getLandingCastOrigin(catRoot, CAT_COLLIDER_CENTER);
 
     const pumpkinHit = castCatShapeDownward(
-      catRoot,
+      bodyCastOrigin,
+      catRoot.quaternion,
       catBodyShape,
       descentDistance,
       isColliderOnDynamicBody,
@@ -171,7 +177,7 @@ export function useCatLanding() {
       return desiredHeight;
     }
 
-    shovePumpkinFromUnderCat(pumpkinBody, catRoot);
+    shovePumpkinFromUnderCat(pumpkinBody, bodyCastOrigin, catRoot.quaternion);
 
     return catRoot.position.y - pumpkinHit.time_of_impact;
   };
