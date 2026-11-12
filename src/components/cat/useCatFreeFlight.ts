@@ -13,14 +13,11 @@ import {
 } from "@/settings/catSettings";
 import { useGameStore } from "@/store/gameStore";
 import { flyButtonHold } from "@/store/flyButtonHold";
-import type { DescendOntoWhatIsBelow } from "./useCatLanding";
+import { useCatLanding } from "./useCatLanding";
 
-export function useCatFreeFlight(
-  rootRef: RefObject<Group | null>,
-  descendOntoScenery: DescendOntoWhatIsBelow,
-  descendShovingPumpkinsAside: DescendOntoWhatIsBelow,
-) {
+export function useCatFreeFlight(rootRef: RefObject<Group | null>) {
   const [, getKeys] = useKeyboardControls<ControlName>();
+  const { descendOntoScenery, descendShovingPumpkinsAside } = useCatLanding();
 
   useFrame((_, delta) => {
     const root = rootRef.current;

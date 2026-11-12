@@ -30,7 +30,7 @@ const isColliderOnDynamicBody = (collider: RapierCollider) =>
 const isColliderOnFixedBody = (collider: RapierCollider) =>
   collider.parent()?.isFixed() ?? false;
 
-export type DescendOntoWhatIsBelow = (
+type DescendOntoWhatIsBelow = (
   catRoot: Object3D,
   desiredHeight: number,
 ) => number;
