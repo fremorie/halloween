@@ -9,12 +9,25 @@ export const CAT_STILL_PACE = 0.05;
 export const CAT_WALK_BLEND_SPEED = 12;
 export const CAT_FLY_FADE_DURATION = 0.8;
 
+export const CAT_FREE_FLIGHT_HEIGHT = 2.5;
+export const CAT_FREE_FLIGHT_RISE_SPEED = 0.6;
+export const CAT_FREE_FLIGHT_SPEED = 5.3;
+export const CAT_LANDING_AIM_BELOW_GROUND = 0.5;
+export const CAT_LANDING_GAP = 0.02;
+export const CAT_STANDABLE_SURFACE_MIN_UPWARD_NORMAL = 0.9;
+export const CAT_STEP_DOWN_SPEED = 3;
+export const CAT_LANDING_SHOVE_SPEED = 3;
+
 export const CAT_COLLIDER_HALF_EXTENTS: Vec3 = [0.6, 0.7, 1.1];
 export const CAT_COLLIDER_CENTER: Vec3 = [0, 0.7, 0.25];
+export const CAT_PAWS_HALF_EXTENTS: Vec3 = [0.45, 0.05, 0.64];
+export const CAT_PAWS_CENTER: Vec3 = [0, 0.05, 0.02];
+export const CAT_WING_PUSH_MAX_SPEED = 8;
 
 export const CAT_CONTROLLER_OFFSET = 0.02;
+export const CAT_OBSTACLE_SWEEP_GAP = 0.01;
 export const CAT_BLOCKING_LIFT = 0.1;
-export const CAT_BLOCKING_RADIUS = 0.9;
+export const CAT_BLOCKING_RADIUS = 1.15;
 
 const [, catHalfHeight] = CAT_COLLIDER_HALF_EXTENTS;
 const [, catCentreY] = CAT_COLLIDER_CENTER;

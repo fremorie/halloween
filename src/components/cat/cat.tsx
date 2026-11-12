@@ -24,9 +24,12 @@ import { useFootsteps } from "./useFootsteps";
 import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
+import { WingSensorCollider } from "./wingSensorCollider";
 import { useCatFlight } from "./useCatFlight";
-import { useIsFinaleFlying } from "./useIsFinaleFlying";
+import { useIsCatFlying } from "./useIsCatFlying";
 import { useCatFlightBob } from "./useCatFlightBob";
+import { useCatFreeFlight } from "./useCatFreeFlight";
+import { useCatWingsPumpkinPush } from "./useCatWingsPumpkinPush";
 import { FINALE_DILATED_PUPIL_BEATS } from "@/settings/finaleSettings";
 
 export function Cat({ stationCount }: { stationCount: number }) {
@@ -34,18 +37,27 @@ export function Cat({ stationCount }: { stationCount: number }) {
   const bobGroupRef = useRef<Group>(null);
   const catBodyRef = useRef<RapierRigidBody>(null);
 
-  const isFlying = useIsFinaleFlying();
+  const isFlying = useIsCatFlying();
 
-  const { blockingColliderRef, limitStepByObstacles } =
-    useCatObstacleBlocking();
+  const {
+    blockingColliderRef,
+    leftWingColliderRef,
+    rightWingColliderRef,
+    limitStepByObstacles,
+    isTurnBlockedByWings,
+  } = useCatObstacleBlocking();
+  useCatFreeFlight(rootRef);
   const walkPaceRef = useCatMovement(
     rootRef,
     stationCount,
     limitStepByObstacles,
+    isTurnBlockedByWings,
   );
+  const { leftWingPushColliderRef, rightWingPushColliderRef } =
+    useCatWingsPumpkinPush(rootRef);
   useCatBodyFollow(rootRef, catBodyRef);
   useCatFlight(rootRef);
-  useCatFlightBob(rootRef, bobGroupRef);
+  useCatFlightBob(rootRef, bobGroupRef, isFlying);
   useFootsteps(walkPaceRef);
 
   const isPupilDilated = useGameStore(
@@ -97,6 +109,22 @@ export function Cat({ stationCount }: { stationCount: number }) {
         ref={blockingColliderRef}
         sensor
         args={[CAT_BLOCKING_HALF_HEIGHT, CAT_BLOCKING_RADIUS]}
+      />
+      <WingSensorCollider
+        ref={leftWingColliderRef}
+        nodeName="LeftWingCollider"
+      />
+      <WingSensorCollider
+        ref={rightWingColliderRef}
+        nodeName="RightWingCollider"
+      />
+      <WingSensorCollider
+        ref={leftWingPushColliderRef}
+        nodeName="LeftWingPushCollider"
+      />
+      <WingSensorCollider
+        ref={rightWingPushColliderRef}
+        nodeName="RightWingPushCollider"
       />
     </>
   );

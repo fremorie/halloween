@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { CylinderCollider, RigidBody } from "@react-three/rapier";
+import { CylinderCollider, MeshCollider, RigidBody } from "@react-three/rapier";
 
 import type { CostumePiece, Level, PumpkinVariant } from "@/types/level";
 import type { LanternFaceParams } from "@/types/lantern";
@@ -71,6 +71,11 @@ export function Station({ level, stationIndex }: Props) {
       <RigidBody type="fixed" colliders={false}>
         <PedestalModel />
         <PedestalCollider />
+        <MeshCollider type="trimesh">
+          <group position-y={PEDESTAL_TOP_HEIGHT}>
+            <PatchworkModel levelIndex={stationIndex} />
+          </group>
+        </MeshCollider>
       </RigidBody>
       <group position-y={PEDESTAL_TOP_HEIGHT}>
         <EulerianPath
@@ -78,7 +83,6 @@ export function Station({ level, stationIndex }: Props) {
           levelIndex={stationIndex}
           isActive={isActive}
         />
-        <PatchworkModel levelIndex={stationIndex} />
         <PuzzleBackground piece={level.piece} isActive={isActive} />
       </group>
       <RigidBody

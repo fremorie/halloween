@@ -39,7 +39,7 @@ export function setShotLookAt(
 
   shotLookAt.set(
     catPosition.x,
-    LOOK_AT_HEIGHT - WALKING_DROP,
+    catPosition.y + LOOK_AT_HEIGHT - WALKING_DROP,
     catPosition.z - WALKING_LEAD,
   );
 }

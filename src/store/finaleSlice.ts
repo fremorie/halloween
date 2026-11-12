@@ -10,6 +10,8 @@ export type FinaleSlice = {
   advanceFinaleBeat: () => void;
   keepExploring: () => void;
   resetFinale: () => void;
+  isCatFreeFlying: boolean;
+  setCatFreeFlying: (isCatFreeFlying: boolean) => void;
 };
 
 export const createFinaleSlice: StateCreator<GameState, [], [], FinaleSlice> = (
@@ -42,5 +44,9 @@ export const createFinaleSlice: StateCreator<GameState, [], [], FinaleSlice> = (
 
   keepExploring: () => set({ mode: "done", finaleBeat: null }),
 
-  resetFinale: () => set({ finaleBeat: null }),
+  resetFinale: () => set({ finaleBeat: null, isCatFreeFlying: false }),
+
+  isCatFreeFlying: false,
+
+  setCatFreeFlying: (isCatFreeFlying) => set({ isCatFreeFlying }),
 });

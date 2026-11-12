@@ -1,10 +1,11 @@
 import { type RefObject, useRef, useState } from "react";
-import { type Group, Vector3 } from "three";
+import { type Group, MathUtils, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
 import type { ControlName } from "@/settings/controlsSettings";
 import {
+  CAT_FREE_FLIGHT_SPEED,
   CAT_TURN_SPEED,
   CAT_WALK_NATURAL_SPEED,
   CAT_WALK_SPEED,
@@ -20,15 +21,24 @@ import {
   getStandSpot,
   isInsideGroundEllipse,
 } from "@/utils/journey";
-import { getForward, getMoveDirection, getHeading } from "@/utils/cat";
+import {
+  getForward,
+  getFreeFlightProgress,
+  getMoveDirection,
+  getHeading,
+} from "@/utils/cat";
 import { joystickTilt } from "@/store/joystickTilt";
 import { dampAngle } from "@/utils/animation";
-import type { LimitStepByObstacles } from "./useCatObstacleBlocking";
+import type {
+  IsTurnBlockedByWings,
+  LimitStepByObstacles,
+} from "./useCatObstacleBlocking";
 
 export function useCatMovement(
   rootRef: RefObject<Group | null>,
   stationCount: number,
   limitStepByObstacles: LimitStepByObstacles,
+  isTurnBlockedByWings: IsTurnBlockedByWings,
 ) {
   const [, getKeys] = useKeyboardControls<ControlName>();
   const [direction] = useState(() => new Vector3());
@@ -47,6 +57,7 @@ export function useCatMovement(
       catForward,
       mode,
       currentStationIndex,
+      isCatFreeFlying,
       isNearStation,
       setNearStation,
       arriveAtStation,
@@ -62,7 +73,12 @@ export function useCatMovement(
 
     if (mode === "walking" || mode === "done") {
       getMoveDirection(getKeys(), joystickTilt, direction);
-      walkStep.copy(direction).multiplyScalar(CAT_WALK_SPEED * stepDuration);
+      const moveSpeed = MathUtils.lerp(
+        CAT_WALK_SPEED,
+        CAT_FREE_FLIGHT_SPEED,
+        getFreeFlightProgress(root.position),
+      );
+      walkStep.copy(direction).multiplyScalar(moveSpeed * stepDuration);
       root.position.add(limitStepByObstacles(root, walkStep));
       clampToRoamingArea(root.position);
     }
@@ -96,17 +112,21 @@ export function useCatMovement(
 
     const movedDistance = root.position.distanceTo(previousPosition);
     walkPaceRef.current =
-      stepDuration > 0
+      stepDuration > 0 && !isCatFreeFlying
         ? movedDistance / stepDuration / CAT_WALK_NATURAL_SPEED
         : 0;
 
     if (direction.lengthSq() > 0) {
-      root.rotation.y = dampAngle(
+      const turnedHeading = dampAngle(
         root.rotation.y,
         getHeading(direction),
         CAT_TURN_SPEED,
         stepDuration,
       );
+
+      if (!isTurnBlockedByWings(root, turnedHeading)) {
+        root.rotation.y = turnedHeading;
+      }
     }
 
     catPosition.copy(root.position);
