@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { type Group } from "three";
 import {
-  ConvexHullCollider,
   CuboidCollider,
   CylinderCollider,
   type RapierRigidBody,
@@ -18,7 +17,6 @@ import {
   CAT_COLLIDER_CENTER,
   CAT_COLLIDER_HALF_EXTENTS,
 } from "@/settings/catSettings";
-import { useWingColliderGLTF } from "@/components/models/wingCollider/useWingColliderGLTF";
 import { useCatMovement } from "./useCatMovement";
 import { useCatBodyFollow } from "./useCatBodyFollow";
 import { useCatObstacleBlocking } from "./useCatObstacleBlocking";
@@ -26,6 +24,7 @@ import { useFootsteps } from "./useFootsteps";
 import { CatHat } from "./catHat";
 import { CatCape } from "./catCape";
 import { CatWings } from "./catWings";
+import { WingSensorCollider } from "./wingSensorCollider";
 import { useCatFlight } from "./useCatFlight";
 import { useIsCatFlying } from "./useIsCatFlying";
 import { useCatFlightBob } from "./useCatFlightBob";
@@ -39,7 +38,6 @@ export function Cat({ stationCount }: { stationCount: number }) {
   const catBodyRef = useRef<RapierRigidBody>(null);
 
   const isFlying = useIsCatFlying();
-  const wingColliderGLTF = useWingColliderGLTF();
 
   const {
     blockingColliderRef,
@@ -112,37 +110,21 @@ export function Cat({ stationCount }: { stationCount: number }) {
         sensor
         args={[CAT_BLOCKING_HALF_HEIGHT, CAT_BLOCKING_RADIUS]}
       />
-      <ConvexHullCollider
+      <WingSensorCollider
         ref={leftWingColliderRef}
-        sensor
-        args={[
-          wingColliderGLTF.nodes.LeftWingCollider.geometry.attributes.position
-            .array,
-        ]}
+        nodeName="LeftWingCollider"
       />
-      <ConvexHullCollider
+      <WingSensorCollider
         ref={rightWingColliderRef}
-        sensor
-        args={[
-          wingColliderGLTF.nodes.RightWingCollider.geometry.attributes.position
-            .array,
-        ]}
+        nodeName="RightWingCollider"
       />
-      <ConvexHullCollider
+      <WingSensorCollider
         ref={leftWingPushColliderRef}
-        sensor
-        args={[
-          wingColliderGLTF.nodes.LeftWingPushCollider.geometry.attributes
-            .position.array,
-        ]}
+        nodeName="LeftWingPushCollider"
       />
-      <ConvexHullCollider
+      <WingSensorCollider
         ref={rightWingPushColliderRef}
-        sensor
-        args={[
-          wingColliderGLTF.nodes.RightWingPushCollider.geometry.attributes
-            .position.array,
-        ]}
+        nodeName="RightWingPushCollider"
       />
     </>
   );
